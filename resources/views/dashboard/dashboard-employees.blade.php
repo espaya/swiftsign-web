@@ -6,18 +6,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Swift Sign - Employees</title>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>SwiftSign - Employees</title>
     <link href="../../../../css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <!-- inject:css-->
-
     <link rel="stylesheet" href="{{asset('css/plugin.min.css')}}">
-
     <link rel="stylesheet" href="{{asset('style.css')}}">
-
     <!-- endinject -->
-
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('SwiftSign Web.png')}}">
 </head>
 
@@ -49,9 +44,9 @@
                                         <span class="sub-title ml-sm-25 pl-sm-25"></span>
                                     </div>
 
-                                    <form action="/" class="d-flex align-items-center add-contact__form my-sm-0 my-2">
+                                    <form id="search-employee-form" method="get" enctype="multipart/form-data" action="#" class="d-flex align-items-center add-contact__form my-sm-0 my-2">
                                         <span data-feather="search"></span>
-                                        <input class="form-control mr-sm-2 border-0 box-shadow-none" type="search" placeholder="Search by Name" aria-label="Search">
+                                        <input autocomplete="off" name="search" class="form-control mr-sm-2 border-0 box-shadow-none" type="search" placeholder="Search by Name" aria-label="Search">
                                     </form>
 
                                 </div>
@@ -188,6 +183,32 @@
                                     </tbody>
                                 </table>
                                 </div>
+                                <div class="d-flex justify-content-end pt-30">
+                                    <nav class="atbd-page ">
+                                        <ul class="atbd-pagination d-flex">
+                                            <li class="atbd-pagination__item">
+                                                <a href="#" class="atbd-pagination__link pagination-control"><span class="la la-angle-left"></span></a>
+                                                <a href="#" class="atbd-pagination__link"><span class="page-number">1</span></a>
+                                                <a href="#" class="atbd-pagination__link active"><span class="page-number">2</span></a>
+                                                <a href="#" class="atbd-pagination__link"><span class="page-number">3</span></a>
+                                                <a href="#" class="atbd-pagination__link pagination-control"><span class="page-number">...</span></a>
+                                                <a href="#" class="atbd-pagination__link"><span class="page-number">12</span></a>
+                                                <a href="#" class="atbd-pagination__link pagination-control"><span class="la la-angle-right"></span></a>
+                                                <a href="#" class="atbd-pagination__option">
+                                                </a>
+                                            </li>
+                                            <li class="atbd-pagination__item">
+                                                <div class="paging-option">
+                                                <select name="page-number" class="page-selection">
+                                                    <option value="20">20/page</option>
+                                                    <option value="40">40/page</option>
+                                                    <option value="60">60/page</option>
+                                                </select>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -271,45 +292,80 @@
 
 <script>
 $(document).ready(function() {
-    // Function to fetch employees
+    // Function to fetch employees (default data)
     function fetchEmployees() {
         $.ajax({
-            url: "{{ route('dashboard.employees.all') }}", // Use the correct route
+            url: "{{ route('dashboard.employees.all') }}",
             type: "GET",
             success: function(response) {
-                $("#employeeBody").html(""); // Clear table before appending
-                $.each(response.employees, function(index, employee) {
-                    $("#employeeBody").append(`
-                        <tr>
-                            <td>${employee.fullname}</td>
-                            <td>${employee.position}</td>
-                            <td>${employee.employee_id}</td>
-                            <td>${employee.phone}</td>
-                            <td>
-                                <div class="d-flex">
-                                    <a href="/dashboard/employees/${employee.userID}" title="View" class="border-0 bg-transparent view-btn me-3" data-id="${employee.userID}">
-                                        <i class="fas fa-eye text-primary fs-5"></i>
-                                    </a>
-                                    <button title="Edit" class="border-0 bg-transparent edit-btn me-3" data-id="${employee.id}">
-                                        <i class="fas fa-edit text-primary fs-5"></i>
-                                    </button>
-                                    <button title="Delete" class="border-0 bg-transparent delete-btn" data-id="${employee.id}">
-                                        <i class="fas fa-trash text-danger fs-5"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `);
-                });
+                updateTable(response.employees);
             }
+        });
+    }
+
+    // Function to search employees
+    function searchEmployees(query) {
+        $.ajax({
+            url: "{{ route('dashboard.employees.search') }}",
+            type: "POST",
+            data: {
+                search: query,
+                _token: $('meta[name="csrf-token"]').attr("content"), // CSRF token
+            },
+            success: function(response) {
+                updateTable(response.employees);
+            }
+        });
+    }
+
+    // Function to update the table dynamically
+    function updateTable(employees) {
+        $("#employeeBody").html(""); // Clear table before appending
+        $.each(employees, function(index, employee) {
+            $("#employeeBody").append(`
+                <tr>
+                    <td>${employee.fullname}</td>
+                    <td>${employee.position}</td>
+                    <td>${employee.employee_id}</td>
+                    <td>${employee.phone}</td>
+                    <td>
+                        <div class="d-flex">
+                            <a href="/dashboard/employees/${employee.userID}" title="View" class="border-0 bg-transparent view-btn me-3" data-id="${employee.userID}">
+                                <i class="fas fa-eye text-primary fs-5"></i>
+                            </a>
+                            <button title="Edit" class="border-0 bg-transparent edit-btn me-3" data-id="${employee.id}">
+                                <i class="fas fa-edit text-primary fs-5"></i>
+                            </button>
+                            <button title="Delete" class="border-0 bg-transparent delete-btn" data-id="${employee.id}">
+                                <i class="fas fa-trash text-danger fs-5"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `);
         });
     }
 
     // Fetch employees on page load
     fetchEmployees();
-    // fetch employees every 1sec
-    setInterval(fetchEmployees, 1000);
+
+    // Automatically refresh employees every 1 second when not searching
+    let autoRefresh = setInterval(fetchEmployees, 1000);
+
+    // Live search event
+    $("#search-employee-form input[name='search']").on("keyup", function() {
+        let query = $(this).val().trim();
+
+        if (query.length > 0) {
+            clearInterval(autoRefresh); // Stop auto-refresh when searching
+            searchEmployees(query);
+        } else {
+            autoRefresh = setInterval(fetchEmployees, 1000); // Restart auto-refresh
+            fetchEmployees(); // Load default data
+        }
+    });
 });
+
 </script>
 
 
