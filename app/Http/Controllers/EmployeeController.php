@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -234,5 +235,37 @@ class EmployeeController extends Controller
                 'message' => 'An error occurred: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function search(Request $request)
+    {
+        $query = strtolower($request->input('search'));
+
+    $employees = Employee::all()->map(function ($employee) use ($query) {
+        try {
+            $fullname = strtolower(Crypt::decryptString($employee->fullname));
+            $position = strtolower(Crypt::decryptString($employee->position));
+            $employee_id = strtolower(Crypt::decryptString($employee->employee_id));
+            $phone = strtolower(Crypt::decryptString($employee->phone));
+
+            if (str_contains($fullname, $query) ||
+                str_contains($position, $query) ||
+                str_contains($employee_id, $query) ||
+                str_contains($phone, $query)) {
+                return [
+                    'fullname' => $fullname,
+                    'position' => $position,
+                    'employee_id' => $employee_id,
+                    'phone' => $phone,
+                    'userID' => $employee->userID,
+                    'id' => $employee->id,
+                ];
+            }
+        } catch (\Exception $e) {
+            return null; // Skip records if decryption fails
+        }
+    })->filter(); // Remove null values
+
+    return response()->json(['employees' => $employees]);
     }
 }
