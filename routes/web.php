@@ -23,13 +23,11 @@ Route::group(['middleware' => ['guest']], function(){
     })->name('dashboard.employees');
 
     Route::get('/dashboard/employees/all', [EmployeeController::class, 'index'])->name('dashboard.employees.all');
-
     Route::post('/dashboard/employees/new', [EmployeeController::class, 'save'])->name('dashboard.employees.new');
-
     Route::get('/dashboard/employees/{uid}', [EmployeeController::class, 'view'])->name('dashboard.employees.view');
     Route::put('/dashboard/employees/update/{id}', [EmployeeController::class, 'update'])->name('dashboard.employees.update');
-
     Route::get('/dashboard/employees/get-employee/{id}', [EmployeeController::class, 'getEmployee'])->name('dashboard.employees.get.employee');
+    Route::post('/dashboard/employees/search', [EmployeeController::class, 'search'])->name('dashboard.employees.search');
 
     Route::get('/dashboard/settings', function(){
         return view('dashboard.dashboard-settings');
@@ -43,8 +41,11 @@ Route::group(['middleware' => ['guest']], function(){
 
     Route::get('/dashboard/attendance', [DashboardAttendanceController::class, 'index'])->name('dashboard.attendance');
     Route::get('/dashboard/attendance/all', [DashboardAttendanceController::class, 'getAllAttendance'])->name('dashboard.attendance.all');
+    Route::delete('dashboard/attendance/all/delete/{id}', [DashboardAttendanceController::class, 'destroy'])
+        ->name('dashboard.attendance.delete');
     
-
-    Route::get('/dashboard/employee/update-email-username/{id}', [ProfileController::class, 'getUsernameEmail'])->name('dashboard.get.username.email');
-    Route::put('/dashboard/employee/update-email-username/{id}', [ProfileController::class, 'updateUsernameEmail'])->name('dashboard.update.username.email');
+    Route::get('/dashboard/employee/update-email-username/{id}', [ProfileController::class, 'getUsernameEmail'])
+        ->name('dashboard.get.username.email');
+    Route::put('/dashboard/employee/update-email-username/{id}', [ProfileController::class, 'updateUsernameEmail'])
+        ->name('dashboard.update.username.email');
 });
