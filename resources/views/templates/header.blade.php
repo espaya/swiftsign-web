@@ -6,10 +6,10 @@
                 <a class="navbar-brand" href="{{ route('dashboard') }}">
                     <img class="dark" src="{{asset('SwiftSign Web.png')}}" alt="svg">
                 <img class="light" src="{{asset('SwiftSign Web.png')}}" alt="img"></a>
-                <form action="/" class="search-form">
+                <!-- <form action="/" class="search-form">
                     <span data-feather="search"></span>
                     <input class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
-                </form>
+                </form> -->
                 <div class="top-menu">
 
                     <div class="strikingDash-top-menu position-relative">
@@ -195,10 +195,10 @@
                             <i class="la la-search"></i>
                             <i class="la la-times"></i>
                         </a>
-                        <form action="/" class="search-form-topMenu">
+                        <!-- <form action="/" class="search-form-topMenu">
                             <span class="search-icon" data-feather="search"></span>
                             <input class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
-                        </form>
+                        </form> -->
                     </li>
                     
                     <!-- ends: nav-message -->
