@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Swift Sign - Dashboard</title>
+    <title>SwiftSign - Dashboard</title>
 
     <link href="../../../../css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -43,52 +43,7 @@
                         <div class="col-lg-12">
 
                             <div class="breadcrumb-main">
-                                <!-- <h4 class="text-capitalize breadcrumb-title">CRM</h4> -->
-                                <div class="breadcrumb-action justify-content-center flex-wrap">
-                                    
-                                    <div class="dropdown action-btn">
-                                        <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="la la-download"></i> Export
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                            <span class="dropdown-item">Export With</span>
-                                            <div class="dropdown-divider"></div>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-print"></i> Printer</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-file-pdf"></i> PDF</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-file-text"></i> Google Sheets</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-file-excel"></i> Excel (XLSX)</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-file-csv"></i> CSV</a>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown action-btn">
-                                        <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="la la-share"></i> Share
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
-                                            <span class="dropdown-item">Share Link</span>
-                                            <div class="dropdown-divider"></div>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-facebook"></i> Facebook</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-twitter"></i> Twitter</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-google"></i> Google</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-feed"></i> Feed</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-instagram"></i> Instagram</a>
-                                        </div>
-                                    </div>
-                                    <div class="action-btn">
-                                        <a href="" class="btn btn-sm btn-primary btn-add">
-                                            <i class="la la-plus"></i> Add New</a>
-                                    </div>
-                                </div>
+                                <h4 class="text-capitalize breadcrumb-title">Welcome, <span>admin</span></h4>
                             </div>
 
                         </div>
