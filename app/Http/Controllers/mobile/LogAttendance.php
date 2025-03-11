@@ -4,11 +4,14 @@ namespace App\Http\Controllers\mobile;
 
 use App\Http\Controllers\Controller;
 use App\Models\mobile\LogAttendance as MobileLogAttendance;
+use App\Models\QRCode;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class LogAttendance extends Controller
 {
@@ -31,61 +34,106 @@ class LogAttendance extends Controller
         {
             DB::beginTransaction();
 
-            $status = $expired = '';
-
-            if($request->logged_at > $request->expires_at)
+            // Ensure expires_at is retrieved from the database before using it
+            $mainQrCode = QRCode::where('session_id', $request->session_id)->first();
+            
+            if (!$mainQrCode) 
+            {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'QR Code not found for the provided session ID.',
+                ], 404);
+            }
+            
+            $expires_at = $mainQrCode->expires_at;
+            
+            // Define status and expired variables
+            $status = "SIGNED";
+            $expired = "NO";
+            
+            if ($request->logged_at > $expires_at) 
             {
                 $status = "LATE";
                 $expired = "YES";
             }
-            else
-            {
-                $status = "SIGNED";
-                $expired = "NO";
-            }
 
-            // check if user has already logged attendance and it checking out
+            // Check if the user has already logged attendance and is checking out
             $checkedIn = MobileLogAttendance::where('userID', $request->userID)
-                ->whereNotNull('logged_at')
-                ->whereNull('signed_out_at')
+            ->where('session_id', $request->session_id)
+            // ->whereNotNull('logged_at')
+            // ->whereNull('signed_out_at')
+            ->whereDate('created_at', now()->toDateString()) // Compare only the date part
+            ->first();
+
+            
+            
+
+            // Check if the user has already logged attendance for this session
+            $existingAttendance = MobileLogAttendance::where('userID', $request->userID)
+                ->where('session_id', $request->session_id)
                 ->first();
 
-            if($checkedIn)
+                Log::error($request->signed_out_at);
+
+
+            // If the user has already logged attendance and is checking out
+            if ($checkedIn && empty($checkedIn->signed_out_at) && !empty($checkedIn->logged_at) && now()->format('Y-m-d H:i:s') > $request->expires_at) 
             {
-                // checkout
                 $checkedIn->update([
                     'signed_out_at' => Crypt::encryptString($request->signed_out_at),
                 ]);
-            }
-            else 
+            
+                DB::commit();
+            
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Attendance signed out successfully',
+                ], 200);
+            } 
+            else if (!empty($checkedIn->logged_at) && empty($checkedIn->signed_out_at)) 
             {
-                // check in
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'You have already logged your attendance for this session.',
+                ], 400);
+            }
+            else if(empty($checkedIn->logged_at))
+            {
+                // Create a new attendance record
                 MobileLogAttendance::create([
                     'userID' => $request->userID,
-                    'session_id' => Crypt::encryptString($request->session_id),
+                    'session_id' => $request->session_id,
                     'logged_at' => Crypt::encryptString($request->logged_at),
-                    'signed_out_at' => Crypt::encryptString($request->signed_out_at),
+                    'signed_out_at' => null,
                     'expired' => Crypt::encryptString($expired),
                     'status' => Crypt::encryptString($status),
                 ]);
+            
+                DB::commit();
+            
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Your attendance has been logged successfully',
+                ], 200);
             }
-
-            DB::commit();
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Your attendance has been logged successfully'
-            ], 200);
-        }
-        catch(Exception $ex)
+            else
+            {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Your attendance for today is complete. Thank you',
+                ], 200);
+            }
+        } 
+        catch (Exception $ex) 
         {
             DB::rollBack();
 
             return response()->json([
                 'status' => 'error',
-                'message' => 'An Unknown Error Occurred: ' . $ex
+                'message' => 'An Unknown Error Occurred: ' . $ex->getMessage(),
             ], 500);
         }
+
     }
 
     

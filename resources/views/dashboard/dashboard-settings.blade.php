@@ -44,51 +44,6 @@
 
                             <div class="breadcrumb-main">
                                 <h4 class="text-capitalize breadcrumb-title">My profile</h4>
-                                <div class="breadcrumb-action justify-content-center flex-wrap">
-                                    
-                                    <div class="dropdown action-btn">
-                                        <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="la la-download"></i> Export
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                            <span class="dropdown-item">Export With</span>
-                                            <div class="dropdown-divider"></div>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-print"></i> Printer</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-file-pdf"></i> PDF</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-file-text"></i> Google Sheets</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-file-excel"></i> Excel (XLSX)</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-file-csv"></i> CSV</a>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown action-btn">
-                                        <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="la la-share"></i> Share
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
-                                            <span class="dropdown-item">Share Link</span>
-                                            <div class="dropdown-divider"></div>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-facebook"></i> Facebook</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-twitter"></i> Twitter</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-google"></i> Google</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-feed"></i> Feed</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-instagram"></i> Instagram</a>
-                                        </div>
-                                    </div>
-                                    <div class="action-btn">
-                                        <a href="" class="btn btn-sm btn-primary btn-add">
-                                            <i class="la la-plus"></i> Add New</a>
-                                    </div>
-                                </div>
                             </div>
 
                         </div>
@@ -122,8 +77,6 @@
                                                 setting</a>
                                             <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
                                                 <span data-feather="key"></span>change password</a>
-                                            <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">
-                                                <span data-feather="users"></span>social profiles</a>
                                             <a class="nav-link" id="v-pills-notification-tab" data-toggle="pill" href="#v-pills-notification" role="tab" aria-controls="v-pills-notification" aria-selected="false">
                                                 <span data-feather="bell"></span>notification</a>
                                         </div>
@@ -397,119 +350,8 @@
                                         </div>
                                         <!-- Edit Profile End -->
                                     </div>
-                                    <div class="tab-pane fade " id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                                        <!-- Edit Profile -->
-                                        <div class="edit-profile edit-social mt-25">
-                                            <div class="card">
-                                                <div class="card-header  px-sm-25 px-3">
-                                                    <div class="edit-profile__title">
-                                                        <h6>social profiles</h6>
-                                                        <span class="fs-13 color-light fw-400">Add elsewhere links to your
-                                                            profile</span>
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="row justify-content-center">
-                                                        <div class="col-xxl-6 col-lg-8 col-sm-10">
-                                                            <div class="edit-profile__body mx-lg-20">
-                                                                <form>
-                                                                    <div class=" mb-30">
-                                                                        <label for="socialUrl">facebook</label>
-                                                                        <div class="input-group flex-nowrap">
-                                                                            <div class="input-group-prepend">
-                                                                                <span class="input-group-text border-facebook bg-facebook text-white wh-44 radius-xs justify-content-center" id="addon-wrapping1">
-                                                                                    <i class="lab la-facebook-f fs-18"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                            <input type="text" class="form-control form-control--social" placeholder="Url" aria-label="Username" aria-describedby="addon-wrapping1" id="socialUrl">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class=" mb-30">
-                                                                        <label for="twitterUrl">twitter</label>
-                                                                        <div class="input-group flex-nowrap">
-                                                                            <div class="input-group-prepend">
-                                                                                <span class="input-group-text border-twitter bg-twitter text-white wh-44 radius-xs justify-content-center" id="addon-wrapping2">
-                                                                                    <i class="lab la-twitter fs-18"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                            <input type="text" class="form-control form-control--social" placeholder="@Username" aria-label="Username" aria-describedby="addon-wrapping2" id="twitterUrl">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class=" mb-30">
-                                                                        <label for="webUrl">Website</label>
-                                                                        <div class="input-group flex-nowrap">
-                                                                            <div class="input-group-prepend">
-                                                                                <span class="input-group-text border-ruby  bg-ruby text-white wh-44 radius-xs justify-content-center" id="addon-wrapping3">
-                                                                                    <i class="las la-basketball-ball fs-18"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                            <input type="text" class="form-control form-control--social" placeholder="Url" aria-label="Username" aria-describedby="addon-wrapping3" id="webUrl">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class=" mb-30">
-                                                                        <label for="instagramUrl">instagram</label>
-                                                                        <div class="input-group flex-nowrap">
-                                                                            <div class="input-group-prepend">
-                                                                                <span class="input-group-text border-instagram  bg-instagram text-white wh-44 radius-xs justify-content-center" id="addon-wrapping4">
-                                                                                    <i class="lab la-instagram fs-18"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                            <input type="text" class="form-control form-control--social" aria-describedby="addon-wrapping4" placeholder="Url" id="instagramUrl">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class=" mb-30">
-                                                                        <label for="githubUrl">github</label>
-                                                                        <div class="input-group flex-nowrap">
-                                                                            <div class="input-group-prepend">
-                                                                                <span class="input-group-text border-dark  bg-dark  text-white wh-44 radius-xs justify-content-center" id="addon-wrapping5">
-                                                                                    <i class="lab la-github fs-18"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                            <input type="text" class="form-control form-control--social" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping5" id="githubUrl">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class=" mb-0">
-                                                                        <label for="mediumUrl">medium</label>
-                                                                        <div class="input-group flex-nowrap">
-                                                                            <div class="input-group-prepend">
-                                                                                <span class="input-group-text border-dark bg-dark text-white wh-44 radius-xs justify-content-center" id="addon-wrapping6">
-                                                                                    <i class="lab la-medium fs-18"></i>
-                                                                                </span>
-                                                                            </div>
-                                                                            <input type="text" class="form-control form-control--social" placeholder="Username" aria-label="medium" aria-describedby="addon-wrapping6" id="mediumUrl">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="button-group d-flex flex-wrap pt-50 mb-15">
+                                    
 
-
-
-                                                                        <button class="btn btn-primary btn-default btn-squared mr-15 text-capitalize">Update Social Profiles
-                                                                        </button>
-
-
-
-
-
-
-
-
-                                                                        <button class="btn btn-light btn-default btn-squared fw-400 text-capitalize">cancel
-                                                                        </button>
-
-
-
-
-
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Edit Profile End -->
-                                    </div>
                                     <div class="tab-pane fade" id="v-pills-notification" role="tabpanel" aria-labelledby="v-pills-notification-tab">
                                         <!-- Edit Profile -->
                                         <div class="edit-profile edit-social mt-25">

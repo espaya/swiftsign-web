@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>SwiftSign - {{ Crypt::decryptString($employee->fullname) }}</title>
+    <title>SwiftSign - {{ $employee && $employee->fullname ? Crypt::decryptString($employee->fullname) : 'Employees' }}</title>
 
     <link href="../../../../css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -44,52 +44,7 @@
                         <div class="col-lg-12">
 
                             <div class="breadcrumb-main">
-                                <h4 class="text-capitalize breadcrumb-title">My profile</h4>
-                                <div class="breadcrumb-action justify-content-center flex-wrap">
-                                    
-                                    <div class="dropdown action-btn">
-                                        <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="la la-download"></i> Export
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                            <span class="dropdown-item">Export With</span>
-                                            <div class="dropdown-divider"></div>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-print"></i> Printer</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-file-pdf"></i> PDF</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-file-text"></i> Google Sheets</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-file-excel"></i> Excel (XLSX)</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-file-csv"></i> CSV</a>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown action-btn">
-                                        <button class="btn btn-sm btn-default btn-white dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="la la-share"></i> Share
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
-                                            <span class="dropdown-item">Share Link</span>
-                                            <div class="dropdown-divider"></div>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-facebook"></i> Facebook</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-twitter"></i> Twitter</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-google"></i> Google</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-feed"></i> Feed</a>
-                                            <a href="" class="dropdown-item">
-                                                <i class="la la-instagram"></i> Instagram</a>
-                                        </div>
-                                    </div>
-                                    <div class="action-btn">
-                                        <a href="" class="btn btn-sm btn-primary btn-add">
-                                            <i class="la la-plus"></i> Add New</a>
-                                    </div>
-                                </div>
+                                <h4 class="text-capitalize breadcrumb-title">Employee profile</h4>
                             </div>
 
                         </div>
@@ -110,8 +65,8 @@
                                             </label>
                                         </div>
                                         <div class="ap-nameAddress pb-3">
-                                            <h5 class="ap-nameAddress__title">{{ $employee->fullname ? Crypt::decryptString($employee->fullname) : 'N/A' }}</h5>
-                                            <p class="ap-nameAddress__subTitle fs-14 m-0">{{ $employee->position ? Crypt::decryptString($employee->position) : 'N/A' }}</p>
+                                            <h5 class="ap-nameAddress__title">{{ $employee && $employee->fullname ? Crypt::decryptString($employee->fullname) : 'N/A' }}</h5>
+                                            <p class="ap-nameAddress__subTitle fs-14 m-0">{{ $employee && $employee->position ? Crypt::decryptString($employee->position) : 'N/A' }}</p>
                                         </div>
                                     </div>
                                     <div class="ps-tab p-20 pb-25">
@@ -131,24 +86,12 @@
                             <!-- Profile Acoount End -->
                         </div>
                         <div class="col-xxl-9 col-lg-8 col-sm-7">
-                            <div class="as-cover">
-                                <div class="as-cover__imgWrapper">
-                                    <input id="file-upload1" type="file" name="fileUpload" class="d-none">
-                                    <label for="file-upload1">
-                                        <img src="{{asset('img/ap-header.png')}}" alt="image" class="w-100">
-                                        <span class="ap-cover__changeImgBtn">
-                                            <span class="btn btn-outline-primary cover-btn">
-                                                <span data-feather="camera"></span>Change
-                                                Cover</span>
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
+                            
                             <div class="mb-50">
                                 <div class="tab-content" id="v-pills-tabContent">
                                     <div class="tab-pane fade  show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                                         <!-- Edit Profile -->
-                                        <div class="edit-profile mt-25">
+                                        <div class="edit-profile ">
                                             <div class="card">
                                                 <div class="card-header px-sm-25 px-3">
                                                     <div class="edit-profile__title">
@@ -163,7 +106,7 @@
                                                             <div class="edit-profile__body mx-lg-20">
                                                                 
                                                             <div id="status-message" class="alert d-none"></div> <!-- Success/Error Message Container -->
-                                                            <form id="profile-form" method="post" enctype="multipart/form-data" data-id="{{ $employee->userID }}">
+                                                            <form id="profile-form" method="post" enctype="multipart/form-data" data-id="{{ $employee ? $employee->userID : '' }}">
                                                                 @csrf
                                                                 <div class="form-group mb-20">
                                                                     <label for="names">Name</label>
@@ -202,7 +145,7 @@
                                     </div>
                                     <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                         <!-- Edit Profile -->
-                                        <div class="edit-profile mt-25">
+                                        <div class="edit-profile ">
                                             <div class="card">
                                                 <div class="card-header  px-sm-25 px-3">
                                                     <div class="edit-profile__title">
@@ -277,7 +220,7 @@
                                     </div>
                                     <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                                         <!-- Edit Profile -->
-                                        <div class="edit-profile mt-25">
+                                        <div class="edit-profile ">
                                             <div class="card">
                                                 <div class="card-header  px-sm-25 px-3">
                                                     <div class="edit-profile__title">
