@@ -14,7 +14,7 @@
                                     <a href="#">About</a>
                                 </li>
                                 <li>
-                                    <a href="#">Team</a>
+                                    <a href="{{ route('team') }}">Team</a>
                                 </li>
                                 <li>
                                     <a href="#">Contact</a>

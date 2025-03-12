@@ -13,6 +13,7 @@ class Employee extends Model
         'position',
         'phone',
         'userID',
-        'employee_id'
+        'employee_id',
+        'pic'
     ];
 }

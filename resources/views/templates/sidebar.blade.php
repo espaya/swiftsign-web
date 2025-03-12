@@ -13,7 +13,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('dashboard.employees') }}" class="{{ request()->routeIs('dashboard.employees') ? 'active' : '' }}">
+                            <a href="{{ route('dashboard.employees') }}" class="{{ request()->routeIs('dashboard.employees') || request()->routeIs('dashboard.employees.view') ? 'active' : '' }}">
                                 <span data-feather="user" class="nav-icon"></span>
                                 <span class="menu-text">Employees</span>
                                 <span class="toggle-icon"></span>

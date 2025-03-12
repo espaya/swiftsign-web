@@ -160,7 +160,7 @@ class EmployeeController extends Controller
             'fullname' => ['required', "regex:/^[A-Za-z\s\'-]+$/"],
             'phone' => ['required', 'regex:/^[0-9]{10,15}$/', Rule::unique('employee', 'phone')->ignore($id)],
             'position' => ['required', 'regex:/^[A-Za-z\s\-]+$/'], // Allow hyphens in position
-            'employee_id' => ['required', 'string']
+            // 'employee_id' => ['required', 'string']
         ], [
             'fullname.required' => 'This field is required',
             'fullname.regex' => 'This field is invalid',
@@ -171,8 +171,8 @@ class EmployeeController extends Controller
             'phone.required' => 'This field is required',
             'phone.regex' => 'This field is invalid',
 
-            'employee_id.required' => 'This field is required',
-            'employee_id.string' => 'Invalid Employee ID'
+            // 'employee_id.required' => 'This field is required',
+            // 'employee_id.string' => 'Invalid Employee ID'
         ]);
 
         DB::beginTransaction();
@@ -182,7 +182,8 @@ class EmployeeController extends Controller
             $employee = Employee::where('userID', $id)->first();
 
             // Check if the employee exists
-            if (!$employee) {
+            if (!$employee) 
+            {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Employee not found'
@@ -241,29 +242,29 @@ class EmployeeController extends Controller
     {
         $query = strtolower($request->input('search'));
 
-    $employees = Employee::all()->map(function ($employee) use ($query) {
-        try {
-            $fullname = strtolower(Crypt::decryptString($employee->fullname));
-            $position = strtolower(Crypt::decryptString($employee->position));
-            $employee_id = strtolower(Crypt::decryptString($employee->employee_id));
-            $phone = strtolower(Crypt::decryptString($employee->phone));
+        $employees = Employee::all()->map(function ($employee) use ($query) {
+            try {
+                $fullname = strtolower(Crypt::decryptString($employee->fullname));
+                $position = strtolower(Crypt::decryptString($employee->position));
+                $employee_id = strtolower(Crypt::decryptString($employee->employee_id));
+                $phone = strtolower(Crypt::decryptString($employee->phone));
 
-            if (str_contains($fullname, $query) ||
-                str_contains($position, $query) ||
-                str_contains($employee_id, $query) ||
-                str_contains($phone, $query)) {
-                return [
-                    'fullname' => $fullname,
-                    'position' => $position,
-                    'employee_id' => $employee_id,
-                    'phone' => $phone,
-                    'userID' => $employee->userID,
-                    'id' => $employee->id,
-                ];
+                if (str_contains($fullname, $query) ||
+                    str_contains($position, $query) ||
+                    str_contains($employee_id, $query) ||
+                    str_contains($phone, $query)) {
+                    return [
+                        'fullname' => $fullname,
+                        'position' => $position,
+                        'employee_id' => $employee_id,
+                        'phone' => $phone,
+                        'userID' => $employee->userID,
+                        'id' => $employee->id,
+                    ];
+                }
+            } catch (\Exception $e) {
+                return null; // Skip records if decryption fails
             }
-        } catch (\Exception $e) {
-            return null; // Skip records if decryption fails
-        }
     })->filter(); // Remove null values
 
     return response()->json(['employees' => $employees]);
