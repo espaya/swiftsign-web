@@ -411,7 +411,7 @@
                         </div>
                     </div>
                 </td>
-                <td><span class="email">${qr.status.toUpperCase() || 'N/A'}</span></td>
+                <td><span class="alert ${ qr.status == 'EXPIRED' ? 'alert-danger' : 'alert-success' }">${qr.status.toUpperCase() || 'N/A'}</span></td>
                 <td><span class="com-name">${qr.session_id || 'N/A'}</span></td>
                 <td><span class="position">${qr.expires_at || 'N/A'}</span></td>
                 <td>

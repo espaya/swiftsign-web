@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\QRCode as ModelsQRCode;
 use Carbon\Carbon;
-use Endroid\QrCode\Encoding\Encoding;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Endroid\QrCode\Writer\PngWriter;
@@ -12,7 +11,6 @@ use Exception;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
-use Endroid\QrCode\ErrorCorrectionLevel; // Use the constants
 
 use Endroid\QrCode\QrCode;
 use Illuminate\Support\Facades\DB;
@@ -80,14 +78,28 @@ class QRCodeController extends Controller
     
             // Decrypt only if values are not null
             $qrCodes = $qrCodes->map(function ($qr) {
+                // Decrypt the expires_at field if it's not null
+                $expiresAt = $qr->expires_at ? Crypt::decryptString($qr->expires_at) : null;
+
+                // Format the expires_at field if it's not null
+                $formattedExpiresAt = $expiresAt ? Carbon::parse($expiresAt)->format('jS F Y | h:i A') : null;
+
+                // Determine the status based on the comparison
+                $status = $qr->status ? Crypt::decryptString($qr->status) : null; // Original status
+
+                if($expiresAt) 
+                {
+                    // Overwrite the status if expires_at is not null
+                    $status = Carbon::parse($expiresAt)->isPast() ? 'EXPIRED' : 'ACTIVE';
+                }
                 return [
                     'id' => $qr->id,
                     'qr_code_name' => $qr->qr_code_name ? Crypt::decryptString($qr->qr_code_name) : null,
-                    'status' => $qr->status ? Crypt::decryptString($qr->status) : null,
+                    'status' => $status, // Updated status
                     'session_id' => $qr->session_id ? $qr->session_id : null,
                     // 'qrcode' => $qr->qrcode ? asset(Crypt::decryptString($qr->qrcode)) : null,
                     'qrcode' => $qr->qrcode ? $qr->qrcode : null,
-                    'expires_at' => $qr->expires_at ? Crypt::decryptString($qr->expires_at) : null,
+                    'expires_at' => $formattedExpiresAt,
                 ];
             });
     
