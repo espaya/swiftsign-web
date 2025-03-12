@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use PhpParser\Node\Expr;
 
 class ProfileController extends Controller
 {
@@ -257,6 +258,81 @@ class ProfileController extends Controller
             ], 500);
         }
     }
+
+    public function blockEmployee(Request $request, $id)
+    {
+        try 
+        {
+            DB::beginTransaction();
+
+            $findUser = User::withTrashed()->find($id); // Include trashed users
+
+            if (!$findUser) 
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User Not Found'
+                ], 404);
+            }
+
+            if ($request->action === "Block Account") 
+            {
+                $findUser->delete(); // Soft delete (block)
+                $message = 'Employee Blocked Successfully';
+            } 
+            else 
+            {
+                $findUser->restore(); // Restore (unblock)
+                $message = 'Employee Unblocked Successfully';
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => $message
+            ], 200);
+
+        } 
+        catch (Exception $ex) 
+        {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'An Unknown Error Occurred'
+            ], 500);
+        }
+    }
+
+    public function isBlocked($id)
+    {
+        try 
+        {
+            $user = User::withTrashed()->find($id);
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found'
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'isBlocked' => $user->deleted_at !== null
+            ]);
+
+        } 
+        catch (Exception $ex) 
+        {
+            return response()->json([
+                'success' => false,
+                'message' => 'An Unknown Error Occurred'
+            ], 500);
+        }
+    }
+
 
 
 }

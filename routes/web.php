@@ -58,6 +58,10 @@ Route::group(['middleware' => ['guest']], function(){
     Route::post('/dashboard/employee/update-password/{id}', [ProfileController::class, 'updatePassword']);
     Route::post('/dashboard/employee/update-profile-picture/{id}', [ProfileController::class, 'updateProfilePicture']);
     Route::get('/dashboard/employee/get-profile-picture/{id}', [ProfileController::class, 'getProfilePicture']);
+
+    Route::get('/dashboard/employee/check-employee-status/{id}', [ProfileController::class, 'isBlocked'])->name('is.blocked');
+    
+    Route::post('/dashboard/employee/block-employee/{id}', [ProfileController::class, 'blockEmployee'])->name('block.employee');
 });
 
 Auth::routes(); 
