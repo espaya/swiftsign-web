@@ -158,13 +158,11 @@
                                              <div class="col-xxl-6 col-lg-8 col-sm-10">
                                                 <div class="d-flex justify-content-between mt-1 align-items-center flex-wrap">
                                                    <div class="text-capitalize py-10">
-                                                      <h6>close account</h6>
-                                                      <span class="fs-13 color-light fw-400">Delete your account and
-                                                      account
-                                                      data</span>
+                                                      <h6>block account</h6>
+                                                      <span class="fs-13 color-light fw-400">Block this employee from accessing the system</span>
                                                    </div>
                                                    <div class="my-sm-0 my-10 py-10">
-                                                      <button class="btn btn-danger btn-default btn-squared fw-400 text-capitalize">close account
+                                                      <button class="btn btn-warning btn-default btn-squared fw-400 text-capitalize">Block account
                                                       </button>
                                                    </div>
                                                 </div>
