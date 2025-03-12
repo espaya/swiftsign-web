@@ -6,10 +6,6 @@
                 <a class="navbar-brand" href="{{ route('dashboard') }}">
                     <img class="dark" src="{{asset('SwiftSign Web.png')}}" alt="svg">
                 <img class="light" src="{{asset('SwiftSign Web.png')}}" alt="img"></a>
-                <!-- <form action="/" class="search-form">
-                    <span data-feather="search"></span>
-                    <input class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
-                </form> -->
                 <div class="top-menu">
 
                     <div class="strikingDash-top-menu position-relative">
@@ -195,10 +191,6 @@
                             <i class="la la-search"></i>
                             <i class="la la-times"></i>
                         </a>
-                        <!-- <form action="/" class="search-form-topMenu">
-                            <span class="search-icon" data-feather="search"></span>
-                            <input class="form-control mr-sm-2 box-shadow-none" type="text" placeholder="Search...">
-                        </form> -->
                     </li>
                     
                     <!-- ends: nav-message -->
@@ -305,11 +297,11 @@
                     <!-- ends: .nav-flag-select -->
                     <li class="nav-author">
                         <div class="dropdown-custom">
-                            <a href="javascript:;" class="nav-item-toggle"><img src="{{asset('img/author-nav.jpg')}}" alt="" class="rounded-circle"></a>
+                            <a href="javascript:;" class="nav-item-toggle"><img src="{{asset('img/Sample_User_Icon.png')}}" alt="" class="rounded-circle"></a>
                             <div class="dropdown-wrapper">
                                 <div class="nav-author__info">
                                     <div class="author-img">
-                                        <img src="{{asset('img/author-nav.jpg')}}" alt="" class="rounded-circle">
+                                        <img src="{{asset('img/Sample_User_Icon.png')}}" alt="" class="rounded-circle">
                                     </div>
                                     <div>
                                         <h6>Abdullah Bin Talha</h6>
