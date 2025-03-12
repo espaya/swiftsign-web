@@ -6,6 +6,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\mobile\mobileAuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QRCodeController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -49,3 +50,7 @@ Route::group(['middleware' => ['guest']], function(){
     Route::put('/dashboard/employee/update-email-username/{id}', [ProfileController::class, 'updateUsernameEmail'])
         ->name('dashboard.update.username.email');
 });
+
+Auth::routes(); 
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
