@@ -319,8 +319,9 @@
                                                 <span data-feather="settings"></span> Settings</a>
                                         </li>
                                     </ul>
-                                    <a href="" class="nav-author__signout">
-                                        <span data-feather="log-out"></span> Sign Out</a>
+                                    <a href="#" class="nav-author__signout" id="logout-link">
+                                        <span data-feather="log-out"></span> Sign Out
+                                    </a>
                                 </div>
                             </div>
                             <!-- ends: .dropdown-wrapper -->
