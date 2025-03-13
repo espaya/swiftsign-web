@@ -49,7 +49,7 @@
                     <div class="col-lg-4  col-md-7 col-sm-6 col-6 order-2 order-sm-3">
                         <div class="appie-btn-box text-right">
                         @auth
-                            <a class="main-btn ml-30" href="{{ route('dashboard') }}"><i class="fal fa-user"></i>Dashboard</a>
+                            <a class="main-btn ml-30" href="{{ route('dashboard') }}"><i class="fal fa-user"></i> Dashboard</a>
                         @else
                             <a class="login-btn" href="{{ route('login') }}"><i class="fal fa-user"></i> Login</a>
                         @endauth

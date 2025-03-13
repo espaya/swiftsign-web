@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Swift Sign - Settings</title>
 
     <link href="../../../../css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -547,6 +548,31 @@
     <script src="{{asset('js/plugins.min.js')}}"></script>
     <script src="{{asset('js/script.min.js')}}"></script>
     <!-- endinject-->
+    <script>
+    $(document).ready(function () {
+        $('#logout-link').click(function (e) {
+            e.preventDefault(); // Prevent default link behavior
+
+            $.ajax({
+                url: '/logout',  // Your logout route
+                type: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')  // CSRF token for Laravel
+                },
+                success: function (response) {
+                    if (response.success) {
+                        window.location.href = response.redirect || '/login';  // Redirect to login page
+                    } else {
+                        alert(response.message || "Logout failed.");
+                    }
+                },
+                error: function (xhr) {
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+    });
+</script>
 </body>
 
 </html>

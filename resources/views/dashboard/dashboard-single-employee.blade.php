@@ -162,8 +162,11 @@
                                                       <span class="fs-13 color-light fw-400">Block this employee from accessing the system</span>
                                                    </div>
                                                    <div class="my-sm-0 my-10 py-10">
-                                                      <button class="btn btn-warning btn-default btn-squared fw-400 text-capitalize">Block account
-                                                      </button>
+                                                      <form id="block-form" method="post">
+                                                        @csrf
+                                                        <button class="btn btn-warning btn-default btn-squared fw-400 text-capitalize" id="block-btn" data-user-id="3">
+                                                        </button>
+                                                      </form>
                                                    </div>
                                                 </div>
                                                 <div class="button-group d-flex flex-wrap pt-35 mb-35">
@@ -179,6 +182,30 @@
                                  </div>
                                  <!-- Edit Profile End -->
                               </div>
+
+
+                              
+                        <div class="modal-info-delete modal fade" id="modal-info-delete" tabindex="-1" role="dialog" aria-hidden="true">
+                    `       <div class="modal-dialog modal-sm modal-info" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <div class="modal-info-body d-flex">
+                                            <div class="modal-info-icon warning">
+                                                <span data-feather="info"></span>
+                                            </div>
+                                            <div class="modal-info-text">
+                                                <h6 id="modal-title">Are you sure?</h6>
+                                                <p id="modal-message">Some contents...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger btn-outlined btn-sm" data-dismiss="modal">No</button>
+                                        <button type="button" class="btn btn-success btn-outlined btn-sm" id="confirm-action">Yes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                               <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
                                  <!-- Edit Profile -->
@@ -245,12 +272,16 @@
       </div>
       <div class="overlay-dark-sidebar"></div>
       <div class="customizer-overlay"></div>
+`
+
       <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDduF2tLXicDEPDMAtC6-NLOekX0A5vlnY"></script>
       <!-- inject:js-->
       <script src="{{asset('js/plugins.min.js')}}"></script>
       <script src="{{asset('js/script.min.js')}}"></script>
       <!-- endinject-->
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <!-- Bootstrap JS (Ensure this is included AFTER jQuery) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
       <script>
          $(document).on("submit", "#profile-form", function (e) {
              e.preventDefault(); // Prevent full-page reload
@@ -574,6 +605,154 @@
             fetchProfilePicture(); // Call the function on page load
         });
       </script>
+
+    <script>
+    $(document).ready(function () {
+        function getUserIdFromURL() {
+                    var pathArray = window.location.pathname.split('/');
+                    return pathArray[pathArray.length - 1]; // Get the last segment of the URL (user ID)
+                }
+
+        let employeeId = getUserIdFromURL(); // Change this dynamically based on the employee ID
+
+        function checkEmployeeStatus() {
+            $.ajax({
+                url: `/dashboard/employee/check-employee-status/${employeeId}`,
+                type: 'GET',
+                success: function (response) {
+                    if (response.success) {
+                        if (response.isBlocked) {
+                            // User is blocked
+                            $('#block-form button').text('Unblock Account').removeClass('btn-warning').addClass('btn-success');
+                        } else {
+                            // User is active
+                            $('#block-form button').text('Block Account').removeClass('btn-success').addClass('btn-warning');
+                        }
+                    }
+                }
+            });
+        }
+
+
+        // Call function on page load
+        checkEmployeeStatus();
+
+        // Handle click event to block/unblock
+        $('#block-form').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: `/dashboard/employee/block-employee/${employeeId}`,
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function (response) {
+                    if (response.success) {
+                        checkEmployeeStatus(); // Refresh status after action
+                    } else {
+                        alert('Something went wrong!');
+                    }
+                }
+            });
+        });
+    });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Get the current URL
+            let currentUrl = window.location.href;
+
+            // Extract user ID from URL (assuming the format: /dashboard/employee/{userId})
+            let userId = currentUrl.split("/").pop(); // Gets the last segment of the URL
+
+            // Assign the user ID to the button's data attribute
+            $("#block-btn").attr("data-user-id", userId);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Handle Block/Unblock button click
+            $("#block-btn").click(function (e) {
+                e.preventDefault();
+
+                let button = $(this);
+                let userId = button.data("user-id");
+                let action = button.text().trim(); // Get button text (Block Account or Unblock Account)
+                
+                // Update modal text
+                $("#modal-title").text(action === "Block Account" ? "Confirm Blocking" : "Confirm Unblocking");
+                $("#modal-message").text(`Are you sure you want to ${action.toLowerCase()} this user?`);
+                
+                // Show modal
+                $("#modal-info-delete").modal("show");
+
+                // When "Yes" is clicked, perform the action
+                $("#confirm-action").off("click").on("click", function () {
+                    $.ajax({
+                        url: `/dashboard/employee/block-employee/${userId}`,
+                        type: "POST",
+                        data: {
+                            _token: $("input[name=_token]").val(),
+                            action: action
+                        },
+                        success: function (response) {
+                            $("#modal-message").text(response.message);
+                            
+                            // Update button text & style
+                            if (response.success) {
+                                button.text(response.new_status);
+                                button.toggleClass("btn-warning btn-danger");
+                            }
+                            
+                            // Hide modal after 2 seconds
+                            setTimeout(function () {
+                                $("#modal-info-delete").modal("hide");
+                            }, 2000);
+                        },
+                        error: function () {
+                            $("#modal-message").text("An error occurred. Please try again.");
+                        }
+                    });
+                });
+            });
+
+            // Close modal when "No" is clicked
+            $(".btn-danger[data-dismiss='modal']").click(function () {
+                $("#modal-info-delete").modal("hide");
+            });
+        });
+
+    </script>
+
+<script>
+    $(document).ready(function () {
+        $('#logout-link').click(function (e) {
+            e.preventDefault(); // Prevent default link behavior
+
+            $.ajax({
+                url: '/logout',  // Your logout route
+                type: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')  // CSRF token for Laravel
+                },
+                success: function (response) {
+                    if (response.success) {
+                        window.location.href = response.redirect || '/login';  // Redirect to login page
+                    } else {
+                        alert(response.message || "Logout failed.");
+                    }
+                },
+                error: function (xhr) {
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+    });
+</script>
+
 
    </body>
 </html>

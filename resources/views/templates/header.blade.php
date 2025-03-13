@@ -304,8 +304,8 @@
                                         <img src="{{asset('img/Sample_User_Icon.png')}}" alt="" class="rounded-circle">
                                     </div>
                                     <div>
-                                        <h6>Abdullah Bin Talha</h6>
-                                        <span>UI Designer</span>
+                                        <h6>{{ Auth::check() ? ucfirst(Auth::user()->name) : '' }}</h6>
+                                        <span>{{ Auth::check() ? ucfirst(Auth::user()->role) : '' }}</span>
                                     </div>
                                 </div>
                                 <div class="nav-author__options">

@@ -1,73 +1,197 @@
-@extends('layouts.app')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+<!doctype html>
+<html lang="en" dir="ltr">
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SwiftSign - Login</title>
 
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+    <link href="../../../../css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+    <!-- inject:css-->
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+    <link rel="stylesheet" href="{{asset('css/plugin.min.css')}}">
 
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+    <link rel="stylesheet" href="{{asset('style.css')}}">
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+    <!-- endinject -->
 
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('SwiftSign Web.png')}}">
+</head>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+<body>
+    <main class="main-content">
 
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
+        <div class="signUP-admin">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-xl-4 col-lg-5 col-md-5 p-0">
+                        <div class="signUP-admin-left signIn-admin-left position-relative">
+                            <div class="signUP-overlay">
+                                <img class="svg signupTop" src="{{asset('img/svg/signuptop.svg')}}" alt="">
+                                <img class="svg signupBottom" src="{{asset('img/svg/signupbottom.svg')}}" alt="">
+                            </div><!-- End: .signUP-overlay  -->
+                            <div class="signUP-admin-left__content">
+                                <div class="text-capitalize mb-md-30 mb-15 d-flex align-items-center justify-content-md-start justify-content-center">
+                                    <a class="" href="{{ url('/') }}">
+                                        <img height="50%" width="50%" class="svg " src="{{asset('SwiftSign Web.png')}}" alt="">
                                     </a>
-                                @endif
+                                    <!-- <span class="text-dark">SwiftSign</span> -->
+                                </div>
+                                <h1>An Advanced Employee Attendance System</h1>
+                            </div><!-- End: .signUP-admin-left__content  -->
+                            <div class="signUP-admin-left__img">
+                                <img class="img-fluid svg" src="{{asset('img/svg/signupIllustration.svg')}}" alt="">
+                            </div><!-- End: .signUP-admin-left__img  -->
+                        </div><!-- End: .signUP-admin-left  -->
+                    </div><!-- End: .col-xl-4  -->
+                    <div class="col-xl-8 col-lg-7 col-md-7 col-sm-8">
+                        <div class="signUp-admin-right signIn-admin-right  p-md-40 p-10">
+                            <div class="row justify-content-center">
+                                <div class="col-xl-7 col-lg-8 col-md-12">
+                                    <div class="edit-profile mt-md-25 mt-0">
+                                        <div class="card border-0">
+                                            <div class="card-header border-0  pb-md-15 pb-10 pt-md-20 pt-10 ">
+                                                <div class="edit-profile__title">
+                                                    <h6>Sign in to <span class="color-primary">Dashboard</span></h6>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="alert-container"></div>
+                                                <form id="login-form" action="{{ route('login') }}" method="post">
+                                                    @csrf
+                                                    <div class="edit-profile__body">
+                                                        <div class="form-group mb-20">
+                                                            <label for="email">Email Address</label>
+                                                            <input name="email" type="text" class="form-control" id="email" autocomplete="off">
+                                                        </div>
+                                                        <div class="form-group mb-15">
+                                                            <label for="password-field">Password</label>
+                                                            <div class="position-relative">
+                                                                <input id="password-field" type="password" class="form-control" name="password" autocomplete="off">
+                                                                <div class="fa fa-fw fa-eye-slash text-light fs-16 field-icon toggle-password2"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="signUp-condition signIn-condition">
+                                                            <div class="checkbox-theme-default custom-checkbox">
+                                                                <input name="remember" class="checkbox" type="checkbox" id="check-1" {{ old('remember') ? 'checked' : '' }}>
+                                                                <label for="check-1">
+                                                                    <span class="checkbox-text">Keep me logged in</span>
+                                                                </label>
+                                                            </div>
+                                                            <a href="forget-password.html">Forget password?</a>
+                                                        </div>
+                                                        <div class="button-group d-flex pt-1 justify-content-md-start justify-content-center">
+                                                            <button class="btn btn-primary btn-default btn-squared mr-15 text-capitalize lh-normal px-50 py-15 signIn-createBtn">
+                                                                Sign in
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                            </div><!-- End: .card-body -->
+                                        </div><!-- End: .card -->
+                                    </div><!-- End: .edit-profile -->
+                                </div><!-- End: .col-xl-5 -->
                             </div>
-                        </div>
-                    </form>
+                        </div><!-- End: .signUp-admin-right  -->
+                    </div><!-- End: .col-xl-8  -->
                 </div>
             </div>
-        </div>
+        </div><!-- End: .signUP-admin  -->
+
+    </main>
+    <div id="overlayer">
+        <span class="loader-overlay">
+            <div class="atbd-spin-dots spin-lg">
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
+                <span class="spin-dot badge-dot dot-primary"></span>
+            </div>
+        </span>
     </div>
-</div>
-@endsection
+
+    <!-- inject:js-->
+    <script src="{{asset('js/plugins.min.js')}}"></script>
+    <script src="{{asset('js/script.min.js')}}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#login-form").submit(function (e) {
+                e.preventDefault();
+
+                let form = $(this);
+                let formData = form.serialize();
+
+                // Clear previous errors
+                $(".error-message").remove();
+                $(".form-control").removeClass("is-invalid");
+
+                $.ajax({
+                    url: form.attr("action"),
+                    type: "POST",
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.href = response.redirect || "/dashboard";
+                        } else {
+                            showAlert("danger", response.message);
+                        }
+                    },
+                    error: function (xhr) {
+                        if (xhr.status === 403) {
+                            // Redirect employees to home
+                            window.location.href = xhr.responseJSON.redirect;
+                        } else if (xhr.status === 422) {
+                            // Display validation errors
+                            let errors = xhr.responseJSON.errors;
+                            $(".error-message").remove(); // Remove old error messages
+                            $(".is-invalid").removeClass("is-invalid"); // Reset validation states
+
+                            $.each(errors, function (field, messages) {
+                                let input = $('[name="' + field + '"]');
+                                input.addClass("is-invalid");
+                                input.after('<div class="error-message text-danger small">' + messages[0] + "</div>");
+                            });
+                        } else if (xhr.status === 401) {
+                            // Unauthorized (Invalid email or password)
+                            showAlert("danger", xhr.responseJSON.message || "Invalid email or password.");
+                        } else if (xhr.status === 500) {
+                            // Internal Server Error - Get actual message from the response
+                            let errorMessage = xhr.responseJSON?.message || "An unexpected server error occurred. Please try again later.";
+                            showAlert("danger", errorMessage);
+                        } else {
+                            showAlert("danger", "An unexpected error occurred. Please try again.");
+                        }
+                    }
+                });
+            });
+
+            // Function to show alert message
+            function showAlert(type, message) {
+                $(".alert-container").html(`
+                    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                        ${message}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+            }
+
+            // Store last visited page before login
+            let currentPath = window.location.pathname;
+            if (currentPath !== "/login") {
+                localStorage.setItem("lastPage", currentPath);
+            }
+        });
+
+    </script>
+
+    <!-- endinject-->
+</body>
+
+</html>

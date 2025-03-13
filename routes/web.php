@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\AdminAttendanceController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardAttendanceController;
 use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\mobile\mobileAuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QRCodeController;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +12,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['middleware' => ['guest']], function(){
+Route::group(['middleware' => ['admin', 'prevent.history.back']], function(){
 
     Route::get('/dashboard', function(){
         return view('dashboard.dashboard');
@@ -64,6 +63,15 @@ Route::group(['middleware' => ['guest']], function(){
     Route::post('/dashboard/employee/block-employee/{id}', [ProfileController::class, 'blockEmployee'])->name('block.employee');
 });
 
+// Route::middleware('guest')->group(function () {
+//     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+//     Route::post('/login', [LoginController::class, 'login']);
+//     Route::get('/register', [LoginController::class, 'showRegisterForm'])->name('register');
+//     Route::post('/register', [LoginController::class, 'register']);
+//     Route::get('/password/reset', [LoginController::class, 'showResetForm'])->name('password.request');
+// });
+
+
 Auth::routes(); 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
