@@ -21,10 +21,7 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return response()->json([
-            'success' => false,
-            'message' => 'Unauthorized access.',
-            'redirect' => url('/'), // Redirect to home if unauthorized
-        ], 403);
+        return redirect('/');
+
     }
 }
