@@ -79,8 +79,8 @@ class LoginController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'redirect' => url()->previous(),
-                ]);
+                    'redirect' => url('/dashboard'),
+                ], 200);
             }
 
             return response()->json([
@@ -114,8 +114,9 @@ class LoginController extends Controller
         // Clear browser cache by adding headers
         return response()->json([
             'success' => true,
-            'message' => 'Logged out successfully.'
-        ])
+            'message' => 'Logged out successfully.',
+            'redirect' => url('/'),
+        ], 200)
         ->header('Cache-Control', 'no-cache, no-store, must-revalidate')  // Prevent caching
         ->header('Pragma', 'no-cache')  // Older HTTP/1.0 Cache Control
         ->header('Expires', '0')  // Ensure that the browser doesn't cache the response
