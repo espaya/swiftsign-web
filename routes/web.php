@@ -61,17 +61,20 @@ Route::group(['middleware' => ['admin', 'prevent.history.back']], function(){
     Route::get('/dashboard/employee/check-employee-status/{id}', [ProfileController::class, 'isBlocked'])->name('is.blocked');
     
     Route::post('/dashboard/employee/block-employee/{id}', [ProfileController::class, 'blockEmployee'])->name('block.employee');
+
+    Route::post('/logout', [LoginController::class, 'logout']);
 });
 
-// Route::middleware('guest')->group(function () {
-//     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-//     Route::post('/login', [LoginController::class, 'login']);
-//     Route::get('/register', [LoginController::class, 'showRegisterForm'])->name('register');
-//     Route::post('/register', [LoginController::class, 'register']);
-//     Route::get('/password/reset', [LoginController::class, 'showResetForm'])->name('password.request');
-// });
+Route::middleware('guest')->group(function () {
+    
+// Auth::routes(); 
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::get('/register', [LoginController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [LoginController::class, 'register']);
+    Route::get('/password/reset', [LoginController::class, 'showResetForm'])->name('password.request');
+});
 
 
-Auth::routes(); 
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
