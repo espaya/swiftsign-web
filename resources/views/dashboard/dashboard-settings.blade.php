@@ -351,6 +351,27 @@
                                         </div>
                                         <!-- Edit Profile End -->
                                     </div>
+
+                                    <div class="modal-info-warning modal fade" id="modal-info-warning" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-sm modal-info" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="modal-info-body d-flex">
+                                        <div class="modal-info-icon warning">
+                                            <span data-feather="info"></span>
+                                        </div>
+                                        <div class="modal-info-text">
+                                            <p id="modal-message">Some contents...</p> <!-- Dynamic message will go here -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Ok</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ends: .modal-info-warning -->
                                     
 
                                     <div class="tab-pane fade" id="v-pills-notification" role="tabpanel" aria-labelledby="v-pills-notification-tab">
@@ -563,11 +584,15 @@
                     if (response.success) {
                         window.location.href = response.redirect || '/login';  // Redirect to login page
                     } else {
-                        alert(response.message || "Logout failed.");
+                        // Update modal content and show it
+                        $('#modal-message').text(response.message || "Logout failed.");
+                        $('#modal-info-warning').modal('show');
                     }
                 },
                 error: function (xhr) {
-                    alert("An error occurred. Please try again.");
+                    // Update modal content and show it for errors
+                    $('#modal-message').text("An error occurred. Please try again.");
+                    $('#modal-info-warning').modal('show');
                 }
             });
         });
