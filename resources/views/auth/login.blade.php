@@ -30,7 +30,7 @@
                             <div class="signUP-admin-left__content text-center text-md-start">
                                 <div class="text-capitalize mb-md-30 mb-15 d-flex align-items-center justify-content-md-start justify-content-center">
                                     <a class="" href="{{ url('/') }}">
-                                        <img class="img-fluid" style="" src="{{ asset('SwiftSign Web.png') }}" alt="SwiftSign Logo">
+                                        <img class="img-fluid" src="{{ asset('SwiftSign Web.png') }}" alt="SwiftSign Logo">
                                     </a>
                                 </div>
                                 <!-- <h1 class="fs-3 fs-md-2 fs-lg-1">Attendance Made Easier With <i>SwiftSign</i></h1> -->
@@ -181,6 +181,19 @@
             }
         });
     </script>
+
+<script>
+    $(document).ready(function () {
+        $(".toggle-password2").click(function () {
+            let passwordField = $("#password-field");
+            let fieldType = passwordField.attr("type") === "password" ? "text" : "password";
+            passwordField.attr("type", fieldType);
+
+            // Toggle eye icon
+            $(this).toggleClass("fa-eye fa-eye-slash");
+        });
+    });
+</script>
 
     <!-- endinject-->
 </body>
