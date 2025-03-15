@@ -266,8 +266,8 @@ class EmployeeController extends Controller
             } catch (\Exception $e) {
                 return null; // Skip records if decryption fails
             }
-    })->filter(); // Remove null values
+        })->filter(); // Remove null values
 
-    return response()->json(['employees' => $employees]);
+        return response()->json(['employees' => $employees]);
     }
 }
