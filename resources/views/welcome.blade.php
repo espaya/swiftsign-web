@@ -27,6 +27,57 @@
     <link rel="stylesheet" href="{{asset('welcome/css/default.css')}}">
     <!--====== Style css ======-->
     <link rel="stylesheet" href="{{asset('welcome/css/style.css')}}">
+
+    <style>
+        /* Ensure the section covers the full viewport height */
+        .appie-hero-area {
+            height: 100vh; /* Full viewport height */
+            width: 100%; /* Full width */
+            display: flex;
+            align-items: center; /* Vertically center content */
+            justify-content: center; /* Horizontally center content */
+            background-size: cover; /* Ensure background images cover the area */
+            background-position: center; /* Center background images */
+        }
+
+        /* Ensure the container takes full width and height */
+        .appie-hero-area .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center; /* Vertically center content */
+        }
+
+        /* Adjust the title for better responsiveness */
+        .appie-title {
+            font-size: 3rem; /* Adjust font size for larger screens */
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        /* Ensure images are responsive */
+        .appie-hero-thumb-6 img {
+            max-width: 100%; /* Make images responsive */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        /* Media queries for smaller screens */
+        @media (max-width: 768px) {
+            .appie-title {
+                font-size: 2rem; /* Smaller font size for mobile */
+            }
+
+            .appie-hero-area .row {
+                flex-direction: column; /* Stack columns vertically on small screens */
+                text-align: center; /* Center-align text */
+            }
+
+            .appie-hero-thumb-6 {
+                margin-top: 20px; /* Add spacing between text and image */
+            }
+        }
+    </style>
+
 </head>
 
 <body>    
@@ -65,30 +116,28 @@
     </header>
     <!--====== APPIE HERO PART START ======-->
     
-    <section class="appie-hero-area appie-hero-6-area appie-hero-7-area">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-7">
-                    <div class="appie-hero-content appie-hero-content-6 appie-hero-content-7">
-                        <h1 class="appie-title">Creative way to Showcase your app </h1>
-                        <p>Lost the plot so I said nancy boy I don't want no agro bleeder bum bag easy peasy cheesed off cheers ruddy.</p>
-                        <div class="info"></div>
-                    </div>
+    <section class="appie-hero-area appie-hero-6-area appie-hero-7-area" style="height: 100vh; display: flex; align-items: center;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <div class="appie-hero-content appie-hero-content-6 appie-hero-content-7">
+                    <h1 class="appie-title">Attendance Made Easier With <i>SwiftSign</i></h1>
+                    <div class="info"></div>
                 </div>
-                <div class="col-lg-5">
-                    <div class="appie-hero-thumb-6">
-                        <div class="thumb wow animated fadeInUp text-center" data-wow-duration="1000ms" data-wow-delay="600ms">
-                            <img src="{{asset('welcome/images/hero-thumb-8.png')}}" alt="">
-                            <div class="back-image">
-                                <img src="{{asset('welcome/images/hero-shape-2.png')}}" alt="">
-                            </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="appie-hero-thumb-6">
+                    <div class="thumb wow animated fadeInUp text-center" data-wow-duration="1000ms" data-wow-delay="600ms">
+                        <img width="50%" src="{{asset('img/android.png')}}" alt="">
+                        <div class="back-image">
+                            <img src="{{asset('welcome/images/hero-shape-2.png')}}" alt="">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>    
-    <!--====== APPIE HERO PART ENDS ======-->
+    </div>
+</section>
 
     <!--====== jquery js ======-->
     <script src="{{asset('welcome/js/vendor/modernizr-3.6.0.min.js')}}"></script>

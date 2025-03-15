@@ -24,7 +24,7 @@ class mobileAuthController extends Controller
 
         try 
         {
-            $user = User::where('email', $request->email)->first();
+            $user = User::withoutTrashed()->where('email', $request->email)->first();
 
             if (!$user || !Hash::check($request->password, $user->password)) 
             {

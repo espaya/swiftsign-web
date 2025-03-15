@@ -7,17 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SwiftSign - Login</title>
-
     <link href="../../../../css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <!-- inject:css-->
-
     <link rel="stylesheet" href="{{asset('css/plugin.min.css')}}">
-
     <link rel="stylesheet" href="{{asset('style.css')}}">
-
     <!-- endinject -->
-
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('SwiftSign Web.png')}}">
 </head>
 
@@ -33,15 +27,15 @@
                                 <img class="svg signupTop" src="{{asset('img/svg/signuptop.svg')}}" alt="">
                                 <img class="svg signupBottom" src="{{asset('img/svg/signupbottom.svg')}}" alt="">
                             </div><!-- End: .signUP-overlay  -->
-                            <div class="signUP-admin-left__content">
+                            <div class="signUP-admin-left__content text-center text-md-start">
                                 <div class="text-capitalize mb-md-30 mb-15 d-flex align-items-center justify-content-md-start justify-content-center">
                                     <a class="" href="{{ url('/') }}">
-                                        <img height="50%" width="50%" class="svg " src="{{asset('SwiftSign Web.png')}}" alt="">
+                                        <img class="img-fluid" style="" src="{{ asset('SwiftSign Web.png') }}" alt="SwiftSign Logo">
                                     </a>
-                                    <!-- <span class="text-dark">SwiftSign</span> -->
                                 </div>
-                                <h1>An Advanced Employee Attendance System</h1>
-                            </div><!-- End: .signUP-admin-left__content  -->
+                                <!-- <h1 class="fs-3 fs-md-2 fs-lg-1">Attendance Made Easier With <i>SwiftSign</i></h1> -->
+                            </div>
+                            <!-- End: .signUP-admin-left__content  -->
                             <div class="signUP-admin-left__img">
                                 <img class="img-fluid svg" src="{{asset('img/svg/signupIllustration.svg')}}" alt="">
                             </div><!-- End: .signUP-admin-left__img  -->
@@ -90,7 +84,6 @@
                                                         </div>
                                                     </div>
                                                 </form>
-
                                             </div><!-- End: .card-body -->
                                         </div><!-- End: .card -->
                                     </div><!-- End: .edit-profile -->
@@ -101,7 +94,6 @@
                 </div>
             </div>
         </div><!-- End: .signUP-admin  -->
-
     </main>
     <div id="overlayer">
         <span class="loader-overlay">
@@ -188,10 +180,8 @@
                 localStorage.setItem("lastPage", currentPath);
             }
         });
-
     </script>
 
     <!-- endinject-->
 </body>
-
 </html>

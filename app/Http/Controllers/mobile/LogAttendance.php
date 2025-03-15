@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\mobile\LogAttendance as MobileLogAttendance;
 use App\Models\QRCode;
 use Carbon\Carbon;
+use Error;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -136,6 +137,54 @@ class LogAttendance extends Controller
 
     }
 
-    
+    public function getAttendance($id)
+    {
+        try 
+        {
+            $attendances = MobileLogAttendance::where('userID', $id)->get();
+
+
+            $decryptedData = $attendances->map(function ($attendance) {
+                // Get QR codes associated with the session
+                $qrcodes = QRCode::where('session_id', $attendance->session_id)->pluck('qr_code_name');
+
+                return [
+                    'id' => $attendance->id ? $attendance->id : null, 
+                    'userID' => $attendance->userID ? $attendance->userID : null,
+                    'session_id' => $attendance->session_id ? $attendance->session_id : null,
+
+                    'logged_at' => $attendance->logged_at ? Carbon::parse(Crypt::decryptString($attendance->logged_at))
+                        ->format('M j, y | g:i A') : null,
+
+                    'signed_out_at' => $attendance->signed_out_at ? Carbon::parse(Crypt::decryptString($attendance->signed_out_at))
+                    ->format('M j, y | g:i A') : null,
+
+                    'expired' => $attendance->expired ? Crypt::decryptString($attendance->expired) : null,
+                    'status' => $attendance->status ? Crypt::decryptString($attendance->status) : null,
+                    'created_at' => $attendance->created_at ? $attendance->created_at : null,
+                    'updated_at' =>  $attendance->updated_at ? $attendance->updated_at : null,
+                    // Fix: Use `pluck()` to get an array of QR code names
+                    'qr_code_names' => $qrcodes ? $qrcodes->map(fn($code) => Crypt::decryptString($code)) : [],  
+                ];
+            });
+
+            Log::error($decryptedData);
+
+            return response()->json([
+                'success' => true,
+                'attendance' => $decryptedData
+            ], 200);
+
+        }
+        catch(Exception $ex)
+        {
+            Log::error($ex->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Internal Server Error'
+            ], 500);
+        }
+    }
 
 }

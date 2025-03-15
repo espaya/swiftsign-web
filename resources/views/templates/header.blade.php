@@ -1,9 +1,9 @@
 <header class="header-top">
         <nav class="navbar navbar-light">
             <div class="navbar-left">
-                <a href="{{ route('dashboard') }}" class="sidebar-toggle">
+                <a href="{{ url('/') }}" class="sidebar-toggle">
                     <img class="svg" src="{{asset('img/svg/bars.svg')}}" alt="img"></a>
-                <a class="navbar-brand" href="{{ route('dashboard') }}">
+                <a class="navbar-brand" href="{{ url('/') }}">
                     <img class="dark" src="{{asset('SwiftSign Web.png')}}" alt="svg">
                 <img class="light" src="{{asset('SwiftSign Web.png')}}" alt="img"></a>
                 <div class="top-menu">

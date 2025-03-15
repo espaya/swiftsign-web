@@ -37,7 +37,7 @@ class EmployeeController extends Controller
 
             'fullname' => ['required', "regex:/^[A-Za-z\s\'-]+$/"],
 
-            'employee_id' => ['required', 'string', 'unique:employee,employee_id'],
+            'employee_id' => ['required', 'string', 'unique:employee,employee_id', 'unique:employee,employee_id'],
 
             'phone' => ['required', 'regex:/^[0-9]{10,15}$/', 'unique:employee,phone'],
 
@@ -85,7 +85,8 @@ class EmployeeController extends Controller
             'confirm_password.same' => 'Passwords do not match', // Fixed key from regex to same
 
             'employee_id.required' => 'This field is required',
-            'employee_id.string' => 'Invalid Employee ID'
+            'employee_id.string' => 'Invalid Employee ID',
+            'employee_id.unique' => 'You cannot use this'
         ]);
 
         
