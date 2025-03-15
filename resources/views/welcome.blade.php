@@ -128,7 +128,7 @@
             <div class="col-lg-5">
                 <div class="appie-hero-thumb-6">
                     <div class="thumb wow animated fadeInUp text-center" data-wow-duration="1000ms" data-wow-delay="600ms">
-                        <img width="50%" src="{{asset('img/android.png')}}" alt="">
+                        <img width="100%" src="{{asset('img/welcome.png')}}" alt="">
                         <div class="back-image">
                             <img src="{{asset('welcome/images/hero-shape-2.png')}}" alt="">
                         </div>
