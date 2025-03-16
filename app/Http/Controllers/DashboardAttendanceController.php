@@ -20,28 +20,31 @@ class DashboardAttendanceController extends Controller
 
     public function getAllAttendance()
     {
-        $attendance = LogAttendance::all()->map(function ($log) {
+        // Fetch attendance data ordered by id in descending order
+        $attendance = LogAttendance::orderBy('id', 'desc')->get()->map(function ($log) {
             $employee = Employee::where('userID', $log->userID)->first(); // Fetch employee
-        
+
             // Decrypt logged_at and format it
             $loggedAt = Crypt::decryptString($log->logged_at);
             $formattedLoggedAt = Carbon::parse($loggedAt)->format('jS F Y | h:i A');
-        
+
+            // Decrypt signed_out_at and format it
+            $signedOutAt = $log->signed_out_at ? Crypt::decryptString($log->signed_out_at) : 'Not Available';
+            $formattedSignedOutAt = $signedOutAt !== 'Not Available' ? Carbon::parse($signedOutAt)->format('jS F Y | h:i A') : 'Not Available';
+
             return [
                 'id' => $log->id,
                 'session_id' => $log->session_id,
                 'userID' => $log->userID,
                 'fullname' => $employee ? Crypt::decryptString($employee->fullname) : 'Unknown',
                 'logged_at' => $formattedLoggedAt, // Formatted logged_at
-                'signed_out_at' => $log->signed_out_at ? Crypt::decryptString($log->signed_out_at) : 'n/a',
+                'signed_out_at' => $formattedSignedOutAt, // Formatted signed_out_at
                 'expired' => $log->expired ? Crypt::decryptString($log->expired) : null,
                 'status' => Crypt::decryptString($log->status),
             ];
         });
 
         $countAttendance = LogAttendance::count(); // Get total attendance count
-
-        Log::error($attendance);
 
         return response()->json([
             'attendance' => $attendance,
