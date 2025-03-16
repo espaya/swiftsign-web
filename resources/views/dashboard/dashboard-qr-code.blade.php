@@ -10,8 +10,12 @@
       <!-- inject:css-->
       <link rel="stylesheet" href="{{asset('css/plugin.min.css')}}">
       <link rel="stylesheet" href="{{asset('style.css')}}">
+      <!-- Include DataTables CSS -->
+      <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
       <!-- endinject -->
       <link rel="icon" type="image/png" sizes="16x16" href="{{asset('SwiftSign Web.png')}}">
+
    </head>
    <body class="layout-light side-menu overlayScroll">
       <div class="mobile-search">
@@ -63,7 +67,6 @@
                                                          <span class="text-danger error-message" id="error-qr_code_name"></span>
                                                       </div>
                                                    </div>
-                                                   
                                                    <div class="col-md-6">
                                                       <div class="form-group mb-20">
                                                          <label class="mb-15">Status</label>
@@ -79,24 +82,22 @@
                                                       </div>
                                                    </div>
                                                 </div>
-
                                                 <div class="row">
                                                    <div class="col-md-6">
                                                       <div class="form-group mb-20">
-                                                      <label class="mb-15">Check-in (End time)</label>
-                                                      <input type="datetime-local" class="form-control" placeholder="expires at" autocomplete="off" name="expires_at" value="{{ old('expires_at') }}">
-                                                      <span class="text-danger error-message" id="error-expires_at"></span>
-                                                   </div>
+                                                         <label class="mb-15">Check-in (Start time)</label>
+                                                         <input type="datetime-local" class="form-control" autocomplete="off" name="check_in_at" value="{{ old('check_in_at') }}">
+                                                         <span class="text-danger error-message" id="error-check_in_at"></span>
+                                                      </div>
                                                    </div>
                                                    <div class="col-md-6">
                                                       <div class="form-group mb-20">
-                                                      <label class="mb-15">Checkout At</label>
-                                                      <input type="datetime-local" class="form-control" autocomplete="off" name="checkout_at" value="{{ old('checkout_at') }}">
-                                                      <span class="text-danger error-message" id="error-checkout_at"></span>
-                                                   </div>
+                                                         <label class="mb-15">Checkout At</label>
+                                                         <input type="datetime-local" class="form-control" autocomplete="off" name="checkout_at" value="{{ old('checkout_at') }}">
+                                                         <span class="text-danger error-message" id="error-checkout_at"></span>
+                                                      </div>
                                                    </div>
                                                 </div>
-
                                                 <div class="button-group d-flex pt-25">
                                                    <button type="submit" class="btn btn-primary btn-default btn-squared text-capitalize" id="submit-btn">
                                                    Generate
@@ -156,99 +157,61 @@
                            <div class="col-12">
                               <div class="contact-list-wrap mb-25">
                                  <div class="contact-list bg-white radius-xl w-100">
-                                    <div class="table-responsive">
-                                       <table class="table mb-0 table-borderless table-rounded">
-                                          <thead>
-                                             <tr>
-                                                <th>
-                                                   <div class="d-flex align-items-center">
-                                                      <div class="custom-checkbox  check-all">
-                                                         <input class="checkbox" type="checkbox" id="check-3">
-                                                         <label for="check-3">
-                                                         <span class="checkbox-text userDatatable-title">Name</span>
-                                                         </label>
-                                                      </div>
-                                                   </div>
-                                                </th>
-                                                <th class="c-email">
-                                                   <span>Status</span>
-                                                </th>
-                                                <th class="c-company">
-                                                   <span>Session ID</span>
-                                                </th>
-                                                <th class="c-position">
-                                                   <span class="">Expires at</span>
-                                                </th>
-                                                <th class="c-phone">
-                                                   <span class="">Action</span>
-                                                </th>
-                                                <th class="c-action">
-                                                   <span class="float-right"></span>
-                                                </th>
-                                             </tr>
-                                          </thead>
-                                          <tbody> </tbody>
-                                       </table>
+                                 <div class="row">
+                                    <div class="col-12">
+                                       <div class="contact-list-wrap mb-25">
+                                             <div class="contact-list bg-white radius-xl w-100">
+                                                <div class="table-responsive">
+                                                   <table id="sessionTable" class="table table-borderless table-rounded">
+                                                         <thead>
+                                                            <tr>
+                                                               <th>Name</th>
+                                                               <th>Status</th>
+                                                               <th>Session ID</th>
+                                                               <th>Expires at</th>
+                                                               <th>Action</th>
+                                                            </tr>
+                                                         </thead>
+                                                         <tbody>
+                                                            <!-- Dynamic data will be inserted here -->
+                                                         </tbody>
+                                                   </table>
+                                                </div>
+                                             </div>
+                                       </div>
                                     </div>
+                                 </div>
                                  </div>
                               </div>
                            </div>
                         </div>
-                        <div class="row">
-                           <div class="col-lg-12">
-                              <div class="d-flex justify-content-sm-end justify-content-star mt-1 mb-30">
-                                 <nav class="atbd-page ">
-                                    <ul class="atbd-pagination d-flex">
-                                       <li class="atbd-pagination__item">
-                                          <a href="#" class="atbd-pagination__link pagination-control"><span class="la la-angle-left"></span></a>
-                                          <a href="#" class="atbd-pagination__link"><span class="page-number">1</span></a>
-                                          <a href="#" class="atbd-pagination__link active"><span class="page-number">2</span></a>
-                                          <a href="#" class="atbd-pagination__link"><span class="page-number">3</span></a>
-                                          <a href="#" class="atbd-pagination__link pagination-control"><span class="page-number">...</span></a>
-                                          <a href="#" class="atbd-pagination__link"><span class="page-number">12</span></a>
-                                          <a href="#" class="atbd-pagination__link pagination-control"><span class="la la-angle-right"></span></a>
-                                          <a href="#" class="atbd-pagination__option">
-                                          </a>
-                                       </li>
-                                       <li class="atbd-pagination__item">
-                                          <div class="paging-option">
-                                             <select name="page-number" class="page-selection">
-                                                <option value="20">20/page</option>
-                                                <option value="40">40/page</option>
-                                                <option value="60">60/page</option>
-                                             </select>
-                                          </div>
-                                       </li>
-                                    </ul>
-                                 </nav>
-                              </div>
-                           </div>
-                        </div>
+                        
                      </div>
                   </div>
                </div>
             </div>
          </div>
          <div class="modal-info-warning modal fade" id="modal-info-warning" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-sm modal-info" role="document">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <div class="modal-info-body d-flex">
-                                        <div class="modal-info-icon warning">
-                                            <span data-feather="info"></span>
-                                        </div>
-                                        <div class="modal-info-text">
-                                            <p id="modal-message">Some contents...</p> <!-- Dynamic message will go here -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Ok</button>
-                                </div>
-                            </div>
+            <div class="modal-dialog modal-sm modal-info" role="document">
+               <div class="modal-content">
+                  <div class="modal-body">
+                     <div class="modal-info-body d-flex">
+                        <div class="modal-info-icon warning">
+                           <span data-feather="info"></span>
                         </div>
-                    </div>
-                    <!-- ends: .modal-info-warning -->
+                        <div class="modal-info-text">
+                           <p id="modal-message">Some contents...</p>
+                           <!-- Dynamic message will go here -->
+                        </div>
+                     </div>
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Ok</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- ends: .modal-info-warning -->
          <!-- DELETE CONFIRMATION MODAL -->
          <div class="modal-info-delete modal fade" id="modal-info-delete" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-sm modal-info" role="document">
@@ -275,7 +238,6 @@
                </div>
             </div>
          </div>
-
          @include('templates/footer')
       </main>
       <div id="overlayer">
@@ -294,8 +256,10 @@
       <!-- inject:js-->
       <script src="{{asset('js/plugins.min.js')}}"></script>
       <script src="{{asset('js/script.min.js')}}"></script>
+      <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
       <!-- endinject-->
       <script>
+         // Generate QR Code
          $(document).ready(function () {
              $('#qr-form').on('submit', function (e) {
                  e.preventDefault(); // Prevent default form submission
@@ -353,164 +317,162 @@
          });
       </script>
 
-<script>
-    $(document).ready(function () {
-    let allDataUrl = "{{ route('dashboard.qr.code.all') }}";
-    let searchUrl = "{{ route('search.qr') }}";
-
-    function fetchAllQRCodeData() {
-    $.ajax({
-        url: allDataUrl,
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            if (Array.isArray(response) && response.length > 0) {
-                populateTable(response);
-            } else {
-                console.log("No data received, showing default.");
-                $("table tbody").html('<tr><td colspan="5" class="text-center">No QR Codes Found</td></tr>');
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error("Error fetching QR codes:", error);
-            showError("Error loading data");
-        }
-    });
-}
-
-
-
-   function fetchSearchQRCodeData(query) {
-      $.ajax({
-         url: searchUrl,
-         type: "GET",
-         data: { query: query },
-         dataType: "json",
-         success: function (response) {
-
-               if (!Array.isArray(response) || response.length === 0) {
-                  console.log("No search results, loading default data.");
-                  fetchAllQRCodeData(); // ✅ Load default data if search is empty
-               } else {
-                  populateTable(response);
-               }
-         },
-         error: function (xhr, status, error) {
-               console.error("Error fetching search results:", error);
-               showError("Error fetching search results");
+      <script>
+         $(document).ready(function () {
+         let allDataUrl = "{{ route('dashboard.qr.code.all') }}";
+         let searchUrl = "{{ route('search.qr') }}";
+         
+         function fetchAllQRCodeData() {
+         $.ajax({
+             url: allDataUrl,
+             type: "GET",
+             dataType: "json",
+             success: function (response) {
+                 if (Array.isArray(response) && response.length > 0) {
+                     populateTable(response);
+                 } else {
+                     console.log("No data received, showing default.");
+                     $("table tbody").html('<tr><td colspan="5" class="text-center">No QR Codes Found</td></tr>');
+                 }
+             },
+             error: function (xhr, status, error) {
+                 console.error("Error fetching QR codes:", error);
+                 showError("Error loading data");
+             }
+         });
          }
-      });
-   }
-
-
-    function populateTable(data) {
-    let tableBody = $("table tbody");
-    tableBody.empty(); // Clear existing data
-
-    $.each(data, function (index, qr) {
-        let imageUrl = `/qrcodes/${qr.qrcode}`;
-        let row = `
-            <tr>
-                <td>
-                    <div class="contact-item d-flex align-items-center">
-                        <div class="contact-personal-wrap">
-                            <div class="checkbox-group-wrapper">
-                                <div class="checkbox-group d-flex">
-                                    <div class="checkbox-theme-default custom-checkbox checkbox-group__single d-flex">
-                                        <input class="checkbox" type="checkbox" id="check-${qr.id}">
-                                        <label for="check-${qr.id}"></label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="contact-personal-info d-flex">
-                            <a href="${imageUrl}" target="_blank" class="profile-image rounded-circle d-block m-0 wh-38"
-                            style="background-image:url('${imageUrl}'); background-size: cover;"></a>
-                            <div class="contact_title">
-                                <h6><a href="#">${qr.qr_code_name || 'N/A'}</a></h6>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-                <td><span class="alert ${ qr.status == 'EXPIRED' ? 'alert-danger' : 'alert-success' }">${qr.status.toUpperCase() || 'N/A'}</span></td>
-                <td><span class="com-name">${qr.session_id || 'N/A'}</span></td>
-                <td><span class="position">${qr.expires_at || 'N/A'}</span></td>
-                <td>
-                    <div class="d-flex gap-2">
-                        <a class="btn btn-sm btn-primary" href="${imageUrl}" target="_blank">
-                            <i class="fa fa-eye"></i> View
-                        </a>
-                        <a class="btn btn-sm btn-danger delete-btn" data-name="${qr.qr_code_name}" data-qr="${imageUrl}" data-id="${qr.id}" href="javascript:void(0);">
-                            <i class="fa fa-trash"></i> Delete
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        `;
-        tableBody.append(row);
-    });
-}
-
-
-    function showError(message) {
-        let tableBody = $("table tbody");
-        tableBody.html(`<tr><td colspan="5" class="text-center">${message}</td></tr>`);
-    }
-
-    // Prevent form submission (Search should work via AJAX)
-    $("#search-qr").on("submit", function (e) {
-        e.preventDefault();
-    });
-
-    // Live search
-    $("#search-qr input[name='query']").on("keyup", function () {
-        let query = $(this).val().trim();
-
-        if (query.length > 0) {
-            fetchSearchQRCodeData(query);
-        } else {
-            fetchAllQRCodeData();
-        }
-    });
-
-    // Load all data initially
-    fetchAllQRCodeData();
-
-    // Refresh every 5 seconds
-    setInterval(() => {
-        let query = $("#search-qr input[name='query']").val().trim();
-        if (query.length > 0) {
-            fetchSearchQRCodeData(query);
-        } else {
-            fetchAllQRCodeData();
-        }
-    }, 5000);
-});
-
-
-</script>
-
-
-
+         
+         
+         
+         function fetchSearchQRCodeData(query) {
+           $.ajax({
+              url: searchUrl,
+              type: "GET",
+              data: { query: query },
+              dataType: "json",
+              success: function (response) {
+         
+                    if (!Array.isArray(response) || response.length === 0) {
+                       console.log("No search results, loading default data.");
+                       fetchAllQRCodeData(); // ✅ Load default data if search is empty
+                    } else {
+                       populateTable(response);
+                    }
+              },
+              error: function (xhr, status, error) {
+                    console.error("Error fetching search results:", error);
+                    showError("Error fetching search results");
+              }
+           });
+         }
+         
+         
+         function populateTable(data) {
+         let tableBody = $("table tbody");
+         tableBody.empty(); // Clear existing data
+         
+         $.each(data, function (index, qr) {
+             let imageUrl = `/qrcodes/${qr.qrcode}`;
+             let row = `
+                 <tr>
+                     <td>
+                         <div class="contact-item d-flex align-items-center">
+                             <div class="contact-personal-wrap">
+                                 <div class="checkbox-group-wrapper">
+                                     <div class="checkbox-group d-flex">
+                                         <div class="checkbox-theme-default custom-checkbox checkbox-group__single d-flex">
+                                             <input class="checkbox" type="checkbox" id="check-${qr.id}">
+                                             <label for="check-${qr.id}"></label>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="contact-personal-info d-flex">
+                                 <a href="${imageUrl}" target="_blank" class="profile-image rounded-circle d-block m-0 wh-38"
+                                 style="background-image:url('${imageUrl}'); background-size: cover;"></a>
+                                 <div class="contact_title">
+                                     <h6><a href="#">${qr.qr_code_name || 'N/A'}</a></h6>
+                                 </div>
+                             </div>
+                         </div>
+                     </td>
+                     <td><span class="alert ${ qr.status == 'EXPIRED' ? 'alert-danger' : 'alert-success' }">${qr.status.toUpperCase() || 'N/A'}</span></td>
+                     <td><span class="com-name">${qr.session_id || 'N/A'}</span></td>
+                     <td><span class="position">${qr.expires_at || 'N/A'}</span></td>
+                     <td>
+                         <div class="d-flex gap-2">
+                             <a class="btn btn-sm btn-primary" href="${imageUrl}" target="_blank">
+                                 <i class="fa fa-eye"></i> View
+                             </a>
+                             <a class="btn btn-sm btn-danger delete-btn" data-name="${qr.qr_code_name}" data-qr="${imageUrl}" data-id="${qr.id}" href="javascript:void(0);">
+                                 <i class="fa fa-trash"></i> Delete
+                             </a>
+                         </div>
+                     </td>
+                 </tr>
+             `;
+             tableBody.append(row);
+         });
+         }
+         
+         
+         function showError(message) {
+             let tableBody = $("table tbody");
+             tableBody.html(`<tr><td colspan="5" class="text-center">${message}</td></tr>`);
+         }
+         
+         // Prevent form submission (Search should work via AJAX)
+         $("#search-qr").on("submit", function (e) {
+             e.preventDefault();
+         });
+         
+         // Live search
+         $("#search-qr input[name='query']").on("keyup", function () {
+             let query = $(this).val().trim();
+         
+             if (query.length > 0) {
+                 fetchSearchQRCodeData(query);
+             } else {
+                 fetchAllQRCodeData();
+             }
+         });
+         
+         // Load all data initially
+         fetchAllQRCodeData();
+         
+         // Refresh every 5 seconds
+         setInterval(() => {
+             let query = $("#search-qr input[name='query']").val().trim();
+             if (query.length > 0) {
+                 fetchSearchQRCodeData(query);
+             } else {
+                 fetchAllQRCodeData();
+             }
+         }, 5000);
+         });
+         
+         
+      </script>
 
       <script>
+         // Delete QR Code
          let qrIdToDelete = null; // Store QR code ID
-
+         
          $(document).on("click", ".delete-btn", function () {
             qrIdToDelete = $(this).data("id"); // Store QR code ID
             let qrImage = $(this).data("qr"); // Get QR Code Image URL
             let qrName = $(this).data("name"); // Get QR name
-
+         
             if (qrImage) {
                $("#qr-code-preview").attr("src", qrImage).show(); // Set and show QR Code
                $("#qr-name").text(qrName).show();
             } else {
                $("#qr-code-preview").hide(); // Hide if no QR code found
             }
-
+         
             $("#modal-info-delete").modal("show"); // Show modal
          });
-
+         
          // When "Yes" button is clicked, delete the QR code
          $("#confirm-delete").on("click", function () {
             if (qrIdToDelete) {
@@ -535,7 +497,7 @@
                });
             }
          });
-
+         
          // Function to show messages in a div
          function showMessage(type, message) {
             $("#message-container").html(
@@ -549,36 +511,60 @@
          }
       </script>
 
-<script>
-    $(document).ready(function () {
-        $('#logout-link').click(function (e) {
-            e.preventDefault(); // Prevent default link behavior
+      <script>
+         // Logout Code
+         $(document).ready(function () {
+             $('#logout-link').click(function (e) {
+                 e.preventDefault(); // Prevent default link behavior
+         
+                 $.ajax({
+                     url: '/logout',  // Your logout route
+                     type: 'POST',
+                     data: {
+                         _token: $('meta[name="csrf-token"]').attr('content')  // CSRF token for Laravel
+                     },
+                     success: function (response) {
+                         if (response.success) {
+                             window.location.href = response.redirect || '/login';  // Redirect to login page
+                         } else {
+                             // Update modal content and show it
+                             $('#modal-message').text(response.message || "Logout failed.");
+                             $('#modal-info-warning').modal('show');
+                         }
+                     },
+                     error: function (xhr) {
+                         // Update modal content and show it for errors
+                         $('#modal-message').text("An error occurred. Please try again.");
+                         $('#modal-info-warning').modal('show');
+                     }
+                 });
+             });
+         });
+      </script>
 
-            $.ajax({
-                url: '/logout',  // Your logout route
-                type: 'POST',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content')  // CSRF token for Laravel
-                },
-                success: function (response) {
-                    if (response.success) {
-                        window.location.href = response.redirect || '/login';  // Redirect to login page
-                    } else {
-                        // Update modal content and show it
-                        $('#modal-message').text(response.message || "Logout failed.");
-                        $('#modal-info-warning').modal('show');
-                    }
-                },
-                error: function (xhr) {
-                    // Update modal content and show it for errors
-                    $('#modal-message').text("An error occurred. Please try again.");
-                    $('#modal-info-warning').modal('show');
-                }
-            });
-        });
-    });
-</script>
-
-
+   <script>
+      $('#sessionTable').DataTable({
+         "processing": true,
+         "serverSide": false, // Change to false since your API returns all data at once
+         "ajax": {
+            "url": "/dashboard/qr-code/all", // Correct API endpoint
+            "type": "GET",
+            "dataSrc": "" // Because the API returns a plain JSON array
+         },
+         "columns": [
+            { "data": "qr_code_name" },
+            { "data": "status" },
+            { "data": "session_id" },
+            { "data": "expires_at" },
+            {
+                  "data": "qrcode",
+                  "render": function(data, type, row) {
+                     return `<img src="/storage/qrcodes/${data}" width="50">`;
+                  }
+            }
+         ]
+      });
+   </script>
+      
    </body>
 </html>
