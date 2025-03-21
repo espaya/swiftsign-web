@@ -41,12 +41,10 @@ class MobileAccountController extends Controller
             // Debugging: Print the file path
             $filePath = public_path('uploads/profile_pictures/' . $img);
 
-            Log::info("File Path: $filePath");
 
             // Check if the file exists
             if (!file_exists($filePath)) 
             {
-                Log::error("File not found: $filePath");
                 return response()->json([
                     'success' => false,
                     'message' => 'Image file not found'
@@ -56,7 +54,6 @@ class MobileAccountController extends Controller
             // Generate the public URL for the image
             $image_url = asset('uploads/profile_pictures/' . $img);
             
-            Log::info("Image URL: $image_url");
 
             return response()->json([
                 'success' => true,
@@ -141,6 +138,8 @@ class MobileAccountController extends Controller
 
     public function updateUsernameEmail(Request $request)
     {
+        Log::error($request->userID);
+
         $request->validate([
             'email' => [
                 'required',
@@ -155,12 +154,14 @@ class MobileAccountController extends Controller
             'userID' => ['required'],
         ]);
 
+        $userID = $request->userID;
+
         try 
         {
             DB::beginTransaction();
     
             // Find the user
-            $user = User::find($request->userID);
+            $user = User::find($userID)->first();
     
             if (!$user) 
             {
@@ -194,7 +195,7 @@ class MobileAccountController extends Controller
             DB::rollBack();
     
             // Log the error for debugging
-            Log::error('Error updating user: ' . $ex->getMessage());
+            Log::error('Error updating user: ' . $ex);
     
             return response()->json([
                 'success' => false,

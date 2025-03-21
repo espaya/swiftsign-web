@@ -13,7 +13,7 @@ class QRCode extends Model
         'status',
         'session_id',
         'qrcode',
-        'expires_at',
+        'check_in_at',
         'qr_code_name_plaintext',
         'checkout_at'
     ];

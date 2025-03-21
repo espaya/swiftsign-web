@@ -59,7 +59,7 @@
 
                                     <div class="overview-content">
                                         <h1>7,461</h1>
-                                        <p>New Contact</p>
+                                        <p>Total Employee(s)</p>
                                         <div class="ap-po-details-time">
                                             <span class="color-success"><i class="las la-arrow-up"></i>
                                                 <strong>25%</strong></span>
@@ -95,7 +95,7 @@
 
                                     <div class="overview-content">
                                         <h1>3,254</h1>
-                                        <p>New Deals</p>
+                                        <p>Total Attendance(s)</p>
                                         <div class="ap-po-details-time">
                                             <span class="color-success"><i class="las la-arrow-up"></i>
                                                 <strong>25%</strong></span>
@@ -125,13 +125,9 @@
                             <div class="ap-po-details ap-po-details--2 p-25 radius-xl bg-white d-flex justify-content-between">
                                 <div>
 
-
-
-
-
                                     <div class="overview-content">
                                         <h1>541</h1>
-                                        <p>New Leads</p>
+                                        <p>Total QR Codes</p>
                                         <div class="ap-po-details-time">
                                             <span class="color-danger"><i class="las la-arrow-down"></i>
                                                 <strong>8.2%</strong></span>

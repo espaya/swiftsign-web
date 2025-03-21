@@ -49,7 +49,7 @@ class QRCodeController extends Controller
                     'session_id' => $qr->session_id ? $qr->session_id : null,
                     // 'qrcode' => $qr->qrcode ? asset(Crypt::decryptString($qr->qrcode)) : null,
                     'qrcode' => $qr->qrcode ? $qr->qrcode : null,
-                    'expires_at' => $qr->expires_at ? Crypt::decryptString($qr->expires_at) : null,
+                    'expires_at' => $qr->checkout_at ? Crypt::decryptString($qr->checkout_at) : null,
                 ];
             });
     
@@ -62,7 +62,6 @@ class QRCodeController extends Controller
             ], 500);
         }
     }
-
 
     public function getAllQrCode()
     {
@@ -79,7 +78,7 @@ class QRCodeController extends Controller
             // Decrypt only if values are not null
             $qrCodes = $qrCodes->map(function ($qr) {
                 // Decrypt the expires_at field if it's not null
-                $expiresAt = $qr->expires_at ? Crypt::decryptString($qr->expires_at) : null;
+                $expiresAt = $qr->checkout_at ? Crypt::decryptString($qr->checkout_at) : null;
 
                 // Format the expires_at field if it's not null
                 $formattedExpiresAt = $expiresAt ? Carbon::parse($expiresAt)->format('jS F Y | h:i A') : null;
@@ -124,8 +123,8 @@ class QRCodeController extends Controller
         $request->validate([
             'qr_code_name' => ['required','string','max:255', 'unique:qrcode,qr_code_name'],
             'status' => ['required','in:active,deactivated,expired'],
-            'expires_at' => ['required', 'date', 'after:now'],
-            'checkout_at' => ['required', 'date', 'after:now', 'different:expires_at']
+            'check_in_at' => ['required', 'date', 'after:now'],
+            'checkout_at' => ['required', 'date', 'after:now', 'different:check_in_at']
         ], [
             'qr_code_name.required' => 'This field is required',
             'qr_code_name.string' => 'Invalid input',
@@ -135,9 +134,9 @@ class QRCodeController extends Controller
             'status.required' => 'This field is required',
             'status.in' => 'Invalid input',
 
-            'expires_at.required' => 'This field is required',
-            'expires_at.date' => 'Invalid input',
-            'expires_at.after' => 'Input must be in the future only',
+            'check_in_at.required' => 'This field is required',
+            'check_in_at.date' => 'Invalid input',
+            'check_in_at.after' => 'Input must be in the future only',
 
             'checkout_at.required' => 'This field is required',
             'checkout_at.date' => 'Invalid input',
@@ -158,32 +157,15 @@ class QRCodeController extends Controller
             $dataToEncrypt = json_encode([
                 'session_id' => $session_id,
                 'timestamp' => $timestamp,
-                'expires_at' => $request->expires_at, 
-                'checkout_at' => $request->checkout_at
+                'check_in_at' => $request->check_in_at, 
+                'checkout_at' => $request->checkout_at 
             ]);
-
-            // $iv = random_bytes(16);
-            // $secretKey = base64_decode(env('APP_KEY')); // Ensure this is 32 bytes
-
-            // $dataToEncrypt = json_encode($dataToEncrypt); // Your data
-
-            // Apply PKCS7 padding manually
-            // $paddedData = $this->pkcs7_pad($dataToEncrypt, 16);
-
-            // $encryptedData = openssl_encrypt($paddedData, 'aes-256-cbc', $secretKey, OPENSSL_RAW_DATA, $iv);
-
-            // Concatenate IV with the encrypted data
-            // $finalData = base64_encode($iv . $encryptedData);
-
-            // Encode again to make it safely transferable
-            // $signature = base64_encode($finalData);
-
 
             // $encryptedData = openssl_encrypt($dataToEncrypt, 'aes-256-cbc', $secretKey, 0, $iv);
             $signature = base64_encode($dataToEncrypt);
 
            // Convert expires_at to minutes from now
-            $expiresAt = Carbon::parse($request->expires_at); 
+            $expiresAt = Carbon::parse($request->checkout_at); 
             $expiresInMinutes = now()->diffInMinutes($expiresAt, false); // `false` prevents negative values
 
             // Ensure expiration time is not negative (fallback to 5 minutes if past)
@@ -217,6 +199,7 @@ class QRCodeController extends Controller
             // Save the QR code image
             $result->saveToFile($filePath); // ✅ Using Laravel's method instead of file_put_contents
 
+            $checkInAt = Carbon::parse($request->check_in_at)->format('Y-m-d H:i:s');
 
             // Save to Database
             ModelsQRCode::create([
@@ -224,7 +207,7 @@ class QRCodeController extends Controller
                 'status' => Crypt::encryptString($request->status),
                 'session_id' => $session_id,
                 'qr_code_name_plaintext' => $request->qr_code_name,
-                'expires_at' => Crypt::encryptString($request->expires_at),
+                'check_in_at' => Crypt::encryptString($checkInAt),
                 'qrcode' => $sigName,
                 'checkout_at' => Crypt::encryptString($request->checkout_at),
             ]);
@@ -240,7 +223,7 @@ class QRCodeController extends Controller
         {
             DB::rollBack();
 
-            Log::error($ex->getMessage());
+            Log::error('QR code generation error: ' . $ex->getMessage());
             return response()->json([
                 'status' => 'error',
                 'message' => 'An Unknown Error Occurred:' . $ex->getMessage(),

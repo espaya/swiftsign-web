@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardAttendanceController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QRCodeController;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,6 +18,10 @@ Route::group(['middleware' => ['admin', 'prevent.history.back']], function(){
     Route::get('/dashboard', function(){
         return view('dashboard.dashboard');
     })->name('dashboard');
+
+    Route::get('/dashboard/total-employee', [DashboardController::class, 'totalEmployees'])->name('dashboard.total.employee');
+    Route::get('/dashboard/total-attendance', [DashboardController::class, 'totalAttendances'])->name('dashboard.total.attendance');
+    Route::get('/dashboard/total-qr-codes', [DashboardController::class, 'totalQrCodes'])->name('dashboard.total.qrcodes');
 
     Route::get('/dashboard/employees', function(){
         return view('dashboard.dashboard-employees');

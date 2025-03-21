@@ -278,22 +278,7 @@
                     </li>
                     <!-- ends: .nav-notification -->
                     
-                    <!-- ends: .nav-settings -->
-                    
-                    <!-- ends: .nav-support -->
-                    <li class="nav-flag-select">
-                        <div class="dropdown-custom">
-                            <a href="javascript:;" class="nav-item-toggle">
-                                <img src="{{asset('img/flag.png')}}" alt="" class="rounded-circle">
-                            </a>
-                            <div class="dropdown-wrapper dropdown-wrapper--small">
-                                <a href=""><img src="{{asset('img/eng.png')}}" alt=""> English</a>
-                                <a href=""><img src="{{asset('img/ger.png')}}" alt=""> German</a>
-                                <a href=""><img src="{{asset('img/spa.png')}}" alt=""> Spanish</a>
-                                <a href=""><img src="{{asset('img/tur.png')}}" alt=""> Turkish</a>
-                            </div>
-                        </div>
-                    </li>
+                   
                     <!-- ends: .nav-flag-select -->
                     <li class="nav-author">
                         <div class="dropdown-custom">

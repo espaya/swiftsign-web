@@ -157,35 +157,75 @@
                            <div class="col-12">
                               <div class="contact-list-wrap mb-25">
                                  <div class="contact-list bg-white radius-xl w-100">
-                                 <div class="row">
-                                    <div class="col-12">
-                                       <div class="contact-list-wrap mb-25">
-                                             <div class="contact-list bg-white radius-xl w-100">
-                                                <div class="table-responsive">
-                                                   <table id="sessionTable" class="table table-borderless table-rounded">
-                                                         <thead>
-                                                            <tr>
-                                                               <th>Name</th>
-                                                               <th>Status</th>
-                                                               <th>Session ID</th>
-                                                               <th>Expires at</th>
-                                                               <th>Action</th>
-                                                            </tr>
-                                                         </thead>
-                                                         <tbody>
-                                                            <!-- Dynamic data will be inserted here -->
-                                                         </tbody>
-                                                   </table>
-                                                </div>
-                                             </div>
-                                       </div>
+                                    <div class="table-responsive">
+                                       <table class="table mb-0 table-borderless table-rounded">
+                                          <thead>
+                                             <tr>
+                                                <th>
+                                                   <div class="d-flex align-items-center">
+                                                      <div class="custom-checkbox  check-all">
+                                                         <input class="checkbox" type="checkbox" id="check-3">
+                                                         <label for="check-3">
+                                                         <span class="checkbox-text userDatatable-title">Name</span>
+                                                         </label>
+                                                      </div>
+                                                   </div>
+                                                </th>
+                                                <th class="c-email">
+                                                   <span>Status</span>
+                                                </th>
+                                                <th class="c-company">
+                                                   <span>Session ID</span>
+                                                </th>
+                                                <th class="c-position">
+                                                   <span class="">Expires at</span>
+                                                </th>
+                                                <th class="c-phone">
+                                                   <span class="">Action</span>
+                                                </th>
+                                                <th class="c-action">
+                                                   <span class="float-right"></span>
+                                                </th>
+                                             </tr>
+                                          </thead>
+                                          <tbody> </tbody>
+                                       </table>
                                     </div>
-                                 </div>
                                  </div>
                               </div>
                            </div>
                         </div>
                         
+                        <div class="row">
+                           <div class="col-lg-12">
+                              <div class="d-flex justify-content-sm-end justify-content-star mt-1 mb-30">
+                                 <nav class="atbd-page ">
+                                    <ul class="atbd-pagination d-flex">
+                                       <li class="atbd-pagination__item">
+                                          <a href="#" class="atbd-pagination__link pagination-control"><span class="la la-angle-left"></span></a>
+                                          <a href="#" class="atbd-pagination__link"><span class="page-number">1</span></a>
+                                          <a href="#" class="atbd-pagination__link active"><span class="page-number">2</span></a>
+                                          <a href="#" class="atbd-pagination__link"><span class="page-number">3</span></a>
+                                          <a href="#" class="atbd-pagination__link pagination-control"><span class="page-number">...</span></a>
+                                          <a href="#" class="atbd-pagination__link"><span class="page-number">12</span></a>
+                                          <a href="#" class="atbd-pagination__link pagination-control"><span class="la la-angle-right"></span></a>
+                                          <a href="#" class="atbd-pagination__option">
+                                          </a>
+                                       </li>
+                                       <li class="atbd-pagination__item">
+                                          <div class="paging-option">
+                                             <select name="page-number" class="page-selection">
+                                                <option value="20">20/page</option>
+                                                <option value="40">40/page</option>
+                                                <option value="60">60/page</option>
+                                             </select>
+                                          </div>
+                                       </li>
+                                    </ul>
+                                 </nav>
+                              </div>
+                           </div>
+                        </div>
                      </div>
                   </div>
                </div>
@@ -543,26 +583,28 @@
       </script>
 
    <script>
-      $('#sessionTable').DataTable({
-         "processing": true,
-         "serverSide": false, // Change to false since your API returns all data at once
-         "ajax": {
-            "url": "/dashboard/qr-code/all", // Correct API endpoint
-            "type": "GET",
-            "dataSrc": "" // Because the API returns a plain JSON array
-         },
-         "columns": [
-            { "data": "qr_code_name" },
-            { "data": "status" },
-            { "data": "session_id" },
-            { "data": "expires_at" },
-            {
-                  "data": "qrcode",
-                  "render": function(data, type, row) {
-                     return `<img src="/storage/qrcodes/${data}" width="50">`;
+      $(document).ready(function() {
+         $('#sessionTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                  "url": "/get-all-qr-code", // Your API endpoint
+                  "type": "GET",
+                  "dataSrc": function(json) {
+                     return json.data || [];
                   }
-            }
-         ]
+            },
+            "columns": [
+                  { "data": "name" },
+                  { "data": "status" },
+                  { "data": "session_id" },
+                  { "data": "expires_at" },
+                  { "data": "action" }
+            ],
+            "paging": true,
+            "searching": true,
+            "ordering": true
+         });
       });
    </script>
       

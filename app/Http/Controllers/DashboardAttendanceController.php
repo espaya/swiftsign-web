@@ -75,7 +75,7 @@ class DashboardAttendanceController extends Controller
         }
         catch(Exception $ex)
         {
-            Log::error($ex->getMessage());
+            Log::error($ex);
 
             return response()->json([
                 'success' => false,
