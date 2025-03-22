@@ -12,6 +12,7 @@
       <link rel="stylesheet" href="{{asset('style.css')}}">
       <!-- Include DataTables CSS -->
       <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+      <link rel="stylesheet" href="{{asset('css/bell-animation.css')}}">
       <!-- endinject -->
       <link rel="icon" type="image/png" sizes="16x16" href="{{asset('SwiftSign Web.png')}}">
    </head>
@@ -173,11 +174,15 @@
       </div>
       <div class="overlay-dark-sidebar"></div>
       <div class="customizer-overlay"></div>
+      <audio autoplay style="display: none;" id="notification-sound" src="{{ asset('sounds/notification.mp3') }}" preload="auto"></audio>
+
       <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDduF2tLXicDEPDMAtC6-NLOekX0A5vlnY"></script>
       <!-- inject:js-->
       <script src="{{asset('js/plugins.min.js')}}"></script>
       <script src="{{asset('js/script.min.js')}}"></script>
       <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+      <script src="{{ asset('js/notification.js') }}" ></script>
       <!-- endinject-->
       <script>
          function fetchAttendanceData() {

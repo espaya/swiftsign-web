@@ -197,82 +197,15 @@
                     <li class="nav-notification">
                         <div class="dropdown-custom">
                             <a href="javascript:;" class="nav-item-toggle">
-                                <span data-feather="bell"></span></a>
+                                <span id="notification-bell" data-feather="bell"></span>
+                                <span class="badge-circle badge-warning ml-1" id="unread-notification-count">0</span>
+                            </a>
                             <div class="dropdown-wrapper">
-                                <h2 class="dropdown-wrapper__title">Notifications <span class="badge-circle badge-warning ml-1">4</span></h2>
-                                <ul>
-                                    <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
-                                        <div class="nav-notification__type nav-notification__type--primary">
-                                            <span data-feather="inbox"></span>
-                                        </div>
-                                        <div class="nav-notification__details">
-                                            <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
-                                                <span>sent you a message</span>
-                                            </p>
-                                            <p>
-                                                <span class="time-posted">5 hours ago</span>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
-                                        <div class="nav-notification__type nav-notification__type--secondary">
-                                            <span data-feather="upload"></span>
-                                        </div>
-                                        <div class="nav-notification__details">
-                                            <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
-                                                <span>sent you a message</span>
-                                            </p>
-                                            <p>
-                                                <span class="time-posted">5 hours ago</span>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap">
-                                        <div class="nav-notification__type nav-notification__type--success">
-                                            <span data-feather="log-in"></span>
-                                        </div>
-                                        <div class="nav-notification__details">
-                                            <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
-                                                <span>sent you a message</span>
-                                            </p>
-                                            <p>
-                                                <span class="time-posted">5 hours ago</span>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="nav-notification__single nav-notification__single d-flex flex-wrap">
-                                        <div class="nav-notification__type nav-notification__type--info">
-                                            <span data-feather="at-sign"></span>
-                                        </div>
-                                        <div class="nav-notification__details">
-                                            <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
-                                                <span>sent you a message</span>
-                                            </p>
-                                            <p>
-                                                <span class="time-posted">5 hours ago</span>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="nav-notification__single nav-notification__single d-flex flex-wrap">
-                                        <div class="nav-notification__type nav-notification__type--danger">
-                                            <span data-feather="heart"></span>
-                                        </div>
-                                        <div class="nav-notification__details">
-                                            <p>
-                                                <a href="" class="subject stretched-link text-truncate" style="max-width: 180px;">James</a>
-                                                <span>sent you a message</span>
-                                            </p>
-                                            <p>
-                                                <span class="time-posted">5 hours ago</span>
-                                            </p>
-                                        </div>
-                                    </li>
+                                <h2 class="dropdown-wrapper__title">Notifications</h2>
+                                <ul id="notification-list">
+                                    <!-- Notifications will be dynamically inserted here -->
                                 </ul>
-                                <a href="" class="dropdown-wrapper__more">See all incoming activity</a>
+                                <a href="{{ route('dashboard.notifications') }}" class="dropdown-wrapper__more">See all incoming activity</a>
                             </div>
                         </div>
                     </li>

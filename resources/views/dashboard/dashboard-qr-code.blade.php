@@ -290,6 +290,8 @@
             </div>
          </span>
       </div>
+      <audio style="display: none;" id="notification-sound" src="{{ asset('sounds/notification.mp3') }}" preload="auto"></audio>
+      
       <div class="overlay-dark-sidebar"></div>
       <div class="customizer-overlay"></div>
       <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDduF2tLXicDEPDMAtC6-NLOekX0A5vlnY"></script>
@@ -297,6 +299,9 @@
       <script src="{{asset('js/plugins.min.js')}}"></script>
       <script src="{{asset('js/script.min.js')}}"></script>
       <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+      <script src="{{ asset('js/notification.js') }}" ></script>
+
       <!-- endinject-->
       <script>
          // Generate QR Code

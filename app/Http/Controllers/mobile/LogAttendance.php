@@ -5,6 +5,8 @@ namespace App\Http\Controllers\mobile;
 use App\Http\Controllers\Controller;
 use App\Models\mobile\LogAttendance as MobileLogAttendance;
 use App\Models\QRCode;
+use App\Models\User;
+use App\Notifications\NewAttendanceLogNotification;
 use Carbon\Carbon;
 use DateTime;
 use Error;
@@ -77,7 +79,7 @@ class LogAttendance extends Controller
                 {
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Your attendance for today is complete. Thank you 😊',
+                        'message' => 'Your attendance for this session is complete. Thank you 😊',
                     ], 200);
                 }
                 // If logged_at is not empty but signed_out_at is empty
@@ -88,17 +90,27 @@ class LogAttendance extends Controller
                     $expiresAt = Carbon::parse(Crypt::decryptString($expires_at));
 
                     // Compare the current time with the expiration time
-                    if (now()->lt($expiresAt)) {
+                    if (now()->lt($expiresAt)) 
+                    {
                         return response()->json([
                             'status' => 'error',
                             'message' => '🖐 You cannot sign out your attendance. Try again later.',
                         ], 400);
                     }
 
+                    $attendance = $checkedIn;
+
                     // Update the signed_out_at field with the current timestamp
-                    $checkedIn->update([
+                     $checkedIn->update([
                         'signed_out_at' => Crypt::encryptString(now()->toIso8601String()),
                     ]);
+
+                    $notify = 'update';
+
+                    // play a notification sound before notifying the admin
+
+                    // Notify the admin
+                    User::where('role', 'admin')->first()->notify(new NewAttendanceLogNotification($attendance, $checkedIn->userID, $notify));
 
                     DB::commit();
 
@@ -111,23 +123,28 @@ class LogAttendance extends Controller
             // If the user has not logged attendance yet, create a new record
             else 
             {
-            // Create a new attendance record
-            MobileLogAttendance::create([
-                'userID' => $request->userID,
-                'session_id' => $request->session_id,
-                'logged_at' => Crypt::encryptString($request->logged_at),
-                'signed_out_at' => null,
-                'expired' => Crypt::encryptString($expired),
-                'status' => Crypt::encryptString($status),
-            ]);
+                // Create a new attendance record
+                $attendance = MobileLogAttendance::create([
+                    'userID' => $request->userID,
+                    'session_id' => $request->session_id,
+                    'logged_at' => Crypt::encryptString($request->logged_at),
+                    'signed_out_at' => '',
+                    'expired' => Crypt::encryptString($expired),
+                    'status' => Crypt::encryptString($status),
+                ]);
 
-            DB::commit();
+                $notify = 'new';
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Your attendance has been logged successfully',
-            ], 200);
-            }
+                // Notify the admin
+                User::where('role', 'admin')->first()->notify(new NewAttendanceLogNotification($attendance, $attendance->userID, $notify));
+
+                DB::commit();
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Your attendance has been logged successfully',
+                ], 200);
+                }
         } 
         catch (Exception $ex) 
         {

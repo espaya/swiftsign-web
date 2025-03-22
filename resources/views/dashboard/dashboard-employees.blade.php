@@ -242,6 +242,8 @@
 
         @include('templates/footer')
     </main>
+
+    <audio style="display: none;" id="notification-sound" src="{{ asset('sounds/notification.mp3') }}" preload="auto"></audio>
     
 
 
@@ -249,6 +251,7 @@
     <!-- inject:js-->
     <script src="{{asset('js/plugins.min.js')}}"></script>
     <script src="{{asset('js/script.min.js')}}"></script>
+    <script src="{{ asset('js/notification.js') }}" ></script>
     <!-- endinject-->
     <script>
         $(document).ready(function () {

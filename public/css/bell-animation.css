@@ -1,0 +1,25 @@
+/* Shake animation */
+@keyframes shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(15deg); }
+    50% { transform: rotate(-15deg); }
+    75% { transform: rotate(15deg); }
+    100% { transform: rotate(0deg); }
+}
+
+/* Bounce animation */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Apply the animation to the bell icon */
+#notification-bell {
+    cursor: pointer;
+    animation: shake 1s ease-in-out infinite; /* Use 'bounce' for a bounce effect */
+}
+
+/* Stop the animation after the first interaction */
+#notification-bell.interacted {
+    animation: none;
+}

@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QRCodeController;
+use App\Http\Controllers\ShowNotificationController;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
 
@@ -68,6 +69,19 @@ Route::group(['middleware' => ['admin', 'prevent.history.back']], function(){
     Route::post('/dashboard/employee/block-employee/{id}', [ProfileController::class, 'blockEmployee'])->name('block.employee');
 
     Route::post('/logout', [LoginController::class, 'logout']);
+
+    /**
+     * Notifications
+     * **/
+    Route::get('/dashboard/attendance/notifications', function(){
+        return view('dashboard.dashboard-notification');
+    })->name('dashboard.notifications');
+
+    Route::get('/dashboard/attendance/notifications/unread', [ShowNotificationController::class, 'showUnreadNotification']);
+    
+    Route::get('/dashboard/attendance/notifications/mark-as-read', [ShowNotificationController::class, 'markAsRead']);
+
+
 });
 
 Route::middleware('guest')->group(function () {

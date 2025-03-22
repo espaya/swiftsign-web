@@ -293,6 +293,7 @@
       </div>
       <div class="overlay-dark-sidebar"></div>
       <div class="customizer-overlay"></div>
+      <audio style="display: none;" id="notification-sound" src="{{ asset('sounds/notification.mp3') }}" preload="auto"></audio>
 `
 
       <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDduF2tLXicDEPDMAtC6-NLOekX0A5vlnY"></script>
@@ -303,6 +304,7 @@
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <!-- Bootstrap JS (Ensure this is included AFTER jQuery) -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="{{ asset('js/notification.js') }}" ></script>
       <script>
          $(document).on("submit", "#profile-form", function (e) {
              e.preventDefault(); // Prevent full-page reload
