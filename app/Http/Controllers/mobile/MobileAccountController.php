@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\User;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class MobileAccountController extends Controller
 {
@@ -136,73 +138,71 @@ class MobileAccountController extends Controller
         }
     }
 
-    public function updateUsernameEmail(Request $request)
+    public function updateUsernameEmail(Request $request, $id)
     {
-        Log::error($request->userID);
-
-        $request->validate([
-            'email' => [
-                'required',
-                'email',
-                Rule::unique('users', 'email')->ignore($request->userID, 'id'),
-            ],
-            'username' => [
-                'required',
-                'string',
-                Rule::unique('users', 'name')->ignore($request->userID, 'id'),
-            ],
-            'userID' => ['required'],
-        ]);
-
-        $userID = $request->userID;
-
         try 
         {
-            DB::beginTransaction();
-    
-            // Find the user
-            $user = User::find($userID)->first();
-    
-            if (!$user) 
-            {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'User not found',
-                ], 404);
-            }
-    
-            // Update fields conditionally
-            $user->fill([
-                'name' => $request->username,
-                'email' => $request->email
+            $validated = $request->validate([
+                'email' => [
+                    'required',
+                    'email:rfc,dns',
+                    'max:255',
+                    Rule::unique('users', 'email')->ignore($id),
+                ],
+                'name' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    Rule::unique('users', 'name')->ignore($id),
+                ],
             ]);
-    
-            // Save the user
-            if($user->isDirty())
-            {
-                $user->save();
-            }
-    
-            DB::commit();
-    
-            return response()->json([
-                'success' => true,
-                'message' => 'Update Successful',
-            ], 200);
+
+            return DB::transaction(function () use ($validated, $id) {
+                $user = User::findOrFail($id);
+
+                $user->name = $validated['name'];
+                $user->email = $validated['email'];
+
+                if ($user->isDirty()) 
+                {
+                    $user->save();
+
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Profile updated successfully',
+                        'data' => [
+                            'name' => $user->name,
+                            'email' => $user->email,
+                        ]
+                    ], 200);
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'No changes detected',
+                ], 200);
+            });
         } 
-        catch (Exception $ex) 
-        {
-            DB::rollBack();
-    
-            // Log the error for debugging
-            Log::error('Error updating user: ' . $ex);
-    
+        catch (ValidationException $e) {
             return response()->json([
                 'success' => false,
-                'message' => $ex->getMessage(),
+                'message' => 'Validation failed',
+                'errors' => $e->errors(),
+            ], 422);
+        } 
+        catch (ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found',
+            ], 404);
+        } 
+        catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update profile. Please try again.',
             ], 500);
         }
-    
     }
+
 
 }
