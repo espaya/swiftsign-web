@@ -73,12 +73,10 @@ Route::group(['middleware' => ['admin', 'prevent.history.back']], function(){
     /**
      * Notifications
      * **/
-    Route::get('/dashboard/attendance/notifications', function(){
-        return view('dashboard.dashboard-notification');
-    })->name('dashboard.notifications');
+    Route::get('/dashboard/attendance/notifications', [ShowNotificationController::class, 'index'])->name('dashboard.notifications');
+    Route::delete('/dashboard/attendance/notifications/delete/{id}', [ShowNotificationController::class, 'destroy'])->name('notifications.destroy');
 
     Route::get('/dashboard/attendance/notifications/unread', [ShowNotificationController::class, 'showUnreadNotification']);
-    
     Route::get('/dashboard/attendance/notifications/mark-as-read', [ShowNotificationController::class, 'markAsRead']);
 
 
