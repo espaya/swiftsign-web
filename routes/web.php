@@ -16,9 +16,8 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['admin', 'prevent.history.back']], function(){
 
-    Route::get('/dashboard', function(){
-        return view('dashboard.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard/data', [DashboardController::class, 'result'])->name('dashboard.result');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/dashboard/total-employee', [DashboardController::class, 'totalEmployees'])->name('dashboard.total.employee');
     Route::get('/dashboard/total-attendance', [DashboardController::class, 'totalAttendances'])->name('dashboard.total.attendance');
