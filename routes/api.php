@@ -19,7 +19,7 @@ Route::post('/employee/update-profile-picture', [MobileAccountController::class,
 
 Route::get('/employee/get-profile-pic/{id}', [MobileAccountController::class, 'getProfilePicture'])->name('mobile.get.profile.picture');
 
-Route::post('/employee/update-email-username', [MobileAccountController::class, 'updateUsernameEmail'])
+Route::post('/employee/update-email-username/{id}', [MobileAccountController::class, 'updateUsernameEmail'])
     ->name('mobile.update.username.email');
 
 Route::get('/employee/log-attendance/all/{id}', [LogAttendance::class, 'getAttendance']);

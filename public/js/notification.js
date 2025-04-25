@@ -1,18 +1,14 @@
 $(document).ready(function() {
     let lastFetchedNotificationId = null;
+    let isInitialLoad = true; // Flag to track initial page load
 
     // Function to play the notification sound
     function playNotificationSound() {
         const notificationSound = document.getElementById('notification-sound');
-
-        if (!notificationSound) {
-            console.error('Audio element not found.');
-            return;
-        }
+        if (!notificationSound) return;
 
         notificationSound.play()
-            .then(() => console.log('Notification sound played successfully.'))
-            .catch(error => console.error('Error playing notification sound:', error));
+            .catch(error => console.error('Error playing sound:', error));
     }
 
     // Function to fetch unread notifications
@@ -26,23 +22,27 @@ $(document).ready(function() {
                 const unreadCount = $('#unread-notification-count');
 
                 if (notifications.length > 0) {
-                    const latestNotificationId = notifications[0].id;
-
-                    // Play sound only if a new notification has arrived
-                    if (lastFetchedNotificationId === null || latestNotificationId > lastFetchedNotificationId) {
+                    const latestNotification = notifications[0];
+                    
+                    // Only play sound if:
+                    // 1. It's not the initial page load
+                    // 2. We have a new notification that wasn't in the previous fetch
+                    if (!isInitialLoad && 
+                        (lastFetchedNotificationId === null || 
+                         latestNotification.id > lastFetchedNotificationId)) {
                         playNotificationSound();
-                        lastFetchedNotificationId = latestNotificationId;
                     }
+                    
+                    lastFetchedNotificationId = latestNotification.id;
                 }
 
-                // Clear existing notifications
+                // Update UI
                 notificationList.empty();
                 unreadCount.text(notifications.length);
 
-                // Append each notification to the list
                 notifications.forEach(function(notification) {
                     const notificationItem = `
-                        <li class="nav-notification__single nav-notification__single--unread d-flex flex-wrap" data-id="${notification.id}">
+                        <li class="nav-notification__single ${notification.read_at ? '' : 'nav-notification__single--unread'} d-flex flex-wrap" data-id="${notification.id}">
                             <div class="nav-notification__type nav-notification__type--primary">
                                 <span data-feather="inbox"></span>
                             </div>
@@ -51,7 +51,7 @@ $(document).ready(function() {
                                     <a href="#" class="subject stretched-link text-truncate" style="max-width: 180px;">${notification.data.message}</a>
                                 </p>
                                 <p>
-                                    <span class="time-posted">${new Date(notification.data.timestamp).toLocaleString()}</span>
+                                    <span class="time-posted">${new Date(notification.created_at).toLocaleString()}</span>
                                 </p>
                             </div>
                         </li>
@@ -62,6 +62,9 @@ $(document).ready(function() {
                 if (typeof feather !== 'undefined') {
                     feather.replace();
                 }
+                
+                // After first load, set flag to false
+                isInitialLoad = false;
             },
             error: function(xhr, status, error) {
                 console.error('Error fetching notifications:', error);
@@ -69,32 +72,30 @@ $(document).ready(function() {
         });
     }
 
-    // Fetch notifications on page load
+    // Initial fetch
     fetchUnreadNotifications();
 
-    // Poll every 5 seconds to check for new notifications
-    setInterval(fetchUnreadNotifications, 5000);
+    // Poll every 5 seconds
+    const pollInterval = setInterval(fetchUnreadNotifications, 5000);
 
-
-    // Mark notification as read when clicked
+    // Mark as read handler
     $(document).on('click', '.nav-notification__single', function() {
         const notificationId = $(this).data('id');
-
         $.ajax({
             url: `/dashboard/attendance/notifications/mark-as-read/${notificationId}`,
             method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Add CSRF token
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            success: function(response) {
-                // Remove the "unread" class and update the UI
+            success: function() {
                 $(`[data-id="${notificationId}"]`).removeClass('nav-notification__single--unread');
-                fetchUnreadNotifications(); // Refresh the notification list
-            },
-            error: function(xhr, status, error) {
-                console.error('Error marking notification as read:', error);
+                fetchUnreadNotifications();
             }
         });
     });
 
+    // Clean up interval when leaving page
+    $(window).on('beforeunload', function() {
+        clearInterval(pollInterval);
+    });
 });

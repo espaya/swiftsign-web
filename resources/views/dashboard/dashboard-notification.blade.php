@@ -203,6 +203,8 @@
       <!-- inject:js-->
       <script src="{{asset('js/plugins.min.js')}}"></script>
       <script src="{{asset('js/script.min.js')}}"></script>
+      <script src="{{ asset('js/notification.js') }}" ></script>
+
       <!-- endinject-->
    </body>
 </html>
