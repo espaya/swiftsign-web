@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>SwiftSign - Employees</title>
-    <link href="../../../../css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Employees - SwiftSign</title>
     <!-- inject:css-->
     <link rel="stylesheet" href="{{asset('css/plugin.min.css')}}">
     <link rel="stylesheet" href="{{asset('style.css')}}">
@@ -219,15 +218,6 @@
                                                 <a href="#" class="atbd-pagination__option">
                                                 </a>
                                             </li>
-                                            <li class="atbd-pagination__item">
-                                                <div class="paging-option">
-                                                <select name="page-number" class="page-selection">
-                                                    <option value="20">20/page</option>
-                                                    <option value="40">40/page</option>
-                                                    <option value="60">60/page</option>
-                                                </select>
-                                                </div>
-                                            </li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -316,37 +306,21 @@
 </script>
 
 <script>
-$(document).ready(function() {
-    // Function to fetch employees (default data)
-    function fetchEmployees() {
+$(document).ready(function () {
+    function fetchEmployees(page = 1) {
         $.ajax({
-            url: "{{ route('dashboard.employees.all') }}",
+            url: "{{ route('dashboard.employees.all') }}?page=" + page,
             type: "GET",
-            success: function(response) {
+            success: function (response) {
                 updateTable(response.employees);
+                renderPagination(response.pagination);
             }
         });
     }
 
-    // Function to search employees
-    function searchEmployees(query) {
-        $.ajax({
-            url: "{{ route('dashboard.employees.search') }}",
-            type: "POST",
-            data: {
-                search: query,
-                _token: $('meta[name="csrf-token"]').attr("content"), // CSRF token
-            },
-            success: function(response) {
-                updateTable(response.employees);
-            }
-        });
-    }
-
-    // Function to update the table dynamically
     function updateTable(employees) {
-        $("#employeeBody").html(""); // Clear table before appending
-        $.each(employees, function(index, employee) {
+        $("#employeeBody").html("");
+        $.each(employees, function (index, employee) {
             $("#employeeBody").append(`
                 <tr>
                     <td>${employee.fullname}</td>
@@ -355,7 +329,7 @@ $(document).ready(function() {
                     <td>${employee.phone}</td>
                     <td>
                         <div class="d-flex">
-                            <a href="/dashboard/employees/${employee.userID}" title="View" class="border-0 bg-transparent view-btn me-3" data-id="${employee.userID}">
+                            <a href="/dashboard/employees/${employee.userID}" title="View" class="border-0 bg-transparent view-btn me-3">
                                 <i class="fas fa-eye text-primary fs-5"></i>
                             </a>
                             <button title="Delete" class="border-0 bg-transparent delete-btn" data-id="${employee.id}">
@@ -368,26 +342,44 @@ $(document).ready(function() {
         });
     }
 
-    // Fetch employees on page load
-    fetchEmployees();
+    function renderPagination(pagination) {
+        const { current_page, last_page } = pagination;
+        let pagesHTML = '';
 
-    // Automatically refresh employees every 1 second when not searching
-    let autoRefresh = setInterval(fetchEmployees, 1000);
+        // Prev
+        pagesHTML += `<li><a href="#" class="atbd-pagination__link pagination-btn" data-page="${current_page - 1}" ${current_page === 1 ? 'disabled' : ''}><span class="la la-angle-left"></span></a></li>`;
 
-    // Live search event
-    $("#search-employee-form input[name='search']").on("keyup", function() {
-        let query = $(this).val().trim();
+        // Page numbers (scalable)
+        const maxVisiblePages = 5;
+        let start = Math.max(current_page - Math.floor(maxVisiblePages / 2), 1);
+        let end = Math.min(start + maxVisiblePages - 1, last_page);
 
-        if (query.length > 0) {
-            clearInterval(autoRefresh); // Stop auto-refresh when searching
-            searchEmployees(query);
-        } else {
-            autoRefresh = setInterval(fetchEmployees, 1000); // Restart auto-refresh
-            fetchEmployees(); // Load default data
+        if (end - start < maxVisiblePages - 1) {
+            start = Math.max(end - maxVisiblePages + 1, 1);
+        }
+
+        for (let i = start; i <= end; i++) {
+            pagesHTML += `<li><a href="#" class="atbd-pagination__link pagination-btn ${i === current_page ? 'active' : ''}" data-page="${i}"><span class="page-number">${i}</span></a></li>`;
+        }
+
+        // Next
+        pagesHTML += `<li><a href="#" class="atbd-pagination__link pagination-btn" data-page="${current_page + 1}" ${current_page === last_page ? 'disabled' : ''}><span class="la la-angle-right"></span></a></li>`;
+
+        $(".atbd-pagination").html(`<ul class="atbd-pagination d-flex">${pagesHTML}</ul>`);
+    }
+
+    // Handle pagination clicks
+    $(document).on("click", ".pagination-btn", function (e) {
+        e.preventDefault();
+        const page = parseInt($(this).data("page"));
+        if (!isNaN(page)) {
+            fetchEmployees(page);
         }
     });
-});
 
+    // Initial load
+    fetchEmployees();
+});
 </script>
 
 <script>

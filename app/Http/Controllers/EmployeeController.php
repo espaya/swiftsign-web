@@ -17,21 +17,33 @@ use Illuminate\Validation\Rule;
 
 class EmployeeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::orderBy('id', 'DESC')->get()->map(function ($employee) {
+        $perPage = 10;
+
+        $employees = Employee::orderBy('id', 'DESC')->paginate($perPage);
+
+        // Decrypt and map paginated items
+        $employees->getCollection()->transform(function ($employee) {
             return [
                 'id' => $employee->id,
                 'fullname' => Crypt::decryptString($employee->fullname),
                 'position' => Crypt::decryptString($employee->position),
                 'phone' => Crypt::decryptString($employee->phone),
                 'employee_id' => Crypt::decryptString($employee->employee_id),
-                'userID' => $employee->userID
+                'userID' => $employee->userID,
             ];
-        });        
-    
-        return response()->json(['employees' => $employees]);
+        });
+
+        return response()->json([
+            'employees' => $employees->items(),
+            'pagination' => [
+                'current_page' => $employees->currentPage(),
+                'last_page' => $employees->lastPage(),
+            ],
+        ]);
     }
+
 
     public function save(Request $request)
     {
