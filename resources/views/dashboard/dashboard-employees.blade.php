@@ -358,9 +358,6 @@ $(document).ready(function() {
                             <a href="/dashboard/employees/${employee.userID}" title="View" class="border-0 bg-transparent view-btn me-3" data-id="${employee.userID}">
                                 <i class="fas fa-eye text-primary fs-5"></i>
                             </a>
-                            <button title="Edit" class="border-0 bg-transparent edit-btn me-3" data-id="${employee.id}">
-                                <i class="fas fa-edit text-primary fs-5"></i>
-                            </button>
                             <button title="Delete" class="border-0 bg-transparent delete-btn" data-id="${employee.id}">
                                 <i class="fas fa-trash text-danger fs-5"></i>
                             </button>

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\mobile\LogAttendance;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -25,6 +27,18 @@ class User extends Authenticatable
         'password',
     ];
 
+
+    public function employee()
+    {
+        return $this->hasOne(Employee::class, 'userID', 'id');
+    }
+
+    public function attendance()
+    {
+        return $this->hasMany(LogAttendance::class, 'userID', 'id');
+    }
+
+    
     protected $dates = ['deleted_at'];
 
     /**

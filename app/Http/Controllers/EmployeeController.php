@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\mobile\LogAttendance;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+
 
 class EmployeeController extends Controller
 {
@@ -270,4 +272,66 @@ class EmployeeController extends Controller
 
         return response()->json(['employees' => $employees]);
     }
+
+
+
+    public function singleUserAttendance($id)
+    {
+        try {
+            $perPage = 10;
+
+            $attendance = LogAttendance::with('qrcode') // eager load qrcode
+                ->where('userID', $id)
+                ->orderBy('id', 'desc')
+                ->paginate($perPage);
+
+            if ($attendance->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No Attendance Data Found'
+                ], 404);
+            }
+
+            // Decrypt fields and add qr_code_name
+            $data = $attendance->getCollection()->map(function ($record) {
+                try {
+                    $record->logged_at = Crypt::decryptString($record->logged_at);
+                    $record->signed_out_at = $record->signed_out_at ? Crypt::decryptString($record->signed_out_at) : null;
+                    $record->expired = $record->expired ? Crypt::decryptString($record->expired) : null;
+                    $record->status = Crypt::decryptString($record->status);
+
+                    // Decrypt qr_code_name from related qrcode
+                    if ($record->qrcode && $record->qrcode->qr_code_name) {
+                        $record->qr_code_name = Crypt::decryptString($record->qrcode->qr_code_name);
+                    } else {
+                        $record->qr_code_name = null;
+                    }
+
+                } catch (Exception $e) {
+                    Log::warning("Decryption failed for attendance ID: {$record->id}");
+                    $record->qr_code_name = null;
+                }
+
+                return $record;
+            });
+
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+                'pagination' => [
+                    'totalPages' => $attendance->lastPage(),
+                    'currentPage' => $attendance->currentPage(),
+                    'perPage' => $attendance->perPage()
+                ]
+            ], 200);
+        } catch (Exception $ex) {
+            Log::error('Unknown error occurred whilst fetching attendance: ' . $ex->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Unknown error occurred whilst fetching attendance'
+            ], 500);
+        }
+    }
+
+
 }

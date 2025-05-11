@@ -47,6 +47,8 @@
                                 <h4 class="text-capitalize breadcrumb-title">My profile</h4>
                             </div>
 
+                            <div id="error-message"></div>
+
                         </div>
                         <div class="col-xxl-3 col-lg-4 col-sm-5">
                             <!-- Profile Acoount -->
@@ -58,15 +60,15 @@
                                             <input id="file-upload" type="file" name="fileUpload" class="d-none">
                                             <label for="file-upload">
                                                 <!-- Profile picture image-->
-                                                <img class="ap-img__main rounded-circle wh-120" src="{{asset('img/author/profile.png')}}" alt="profile">
-                                                <span class="cross" id="remove_pro_pic">
+                                                <img class="ap-img__main rounded-circle wh-120" src="{{ Auth::check() && optional(Auth::user()->employee)->pic ? asset('uploads/profile_pictures/' . Auth::user()->employee->pic) : asset('img/Sample_User_Icon.png') }}" alt="profile">
+                                                <span class="cross" id="remove_pro_pic"> 
                                                     <span data-feather="camera"></span>
                                                 </span>
                                             </label>
                                         </div>
                                         <div class="ap-nameAddress pb-3">
-                                            <h5 class="ap-nameAddress__title">Duran Clayton</h5>
-                                            <p class="ap-nameAddress__subTitle fs-14 m-0">UI/UX Designer</p>
+                                            <h5 class="ap-nameAddress__title"> {{ Auth::check() ? ucfirst(Auth::user()->name) : '' }} </h5>
+                                            <p class="ap-nameAddress__subTitle fs-14 m-0"> {{ Auth::check() ? ucfirst(Auth::user()->role) : '' }} </p>
                                         </div>
                                     </div>
                                     <div class="ps-tab p-20 pb-25">
@@ -78,8 +80,7 @@
                                                 setting</a>
                                             <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
                                                 <span data-feather="key"></span>change password</a>
-                                            <a class="nav-link" id="v-pills-notification-tab" data-toggle="pill" href="#v-pills-notification" role="tab" aria-controls="v-pills-notification" aria-selected="false">
-                                                <span data-feather="bell"></span>notification</a>
+                                                
                                         </div>
                                     </div>
 
@@ -88,19 +89,6 @@
                             <!-- Profile Acoount End -->
                         </div>
                         <div class="col-xxl-9 col-lg-8 col-sm-7">
-                            <div class="as-cover">
-                                <div class="as-cover__imgWrapper">
-                                    <input id="file-upload1" type="file" name="fileUpload" class="d-none">
-                                    <label for="file-upload1">
-                                        <img src="{{asset('img/ap-header.png')}}" alt="image" class="w-100">
-                                        <span class="ap-cover__changeImgBtn">
-                                            <span class="btn btn-outline-primary cover-btn">
-                                                <span data-feather="camera"></span>Change
-                                                Cover</span>
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
                             <div class="mb-50">
                                 <div class="tab-content" id="v-pills-tabContent">
                                     <div class="tab-pane fade  show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
@@ -174,24 +162,8 @@
                                                                     </div>
                                                                     <div class="button-group d-flex flex-wrap pt-30 mb-15">
 
-
-
                                                                         <button class="btn btn-primary btn-default btn-squared mr-15 text-capitalize">update profile
                                                                         </button>
-
-
-
-
-
-
-
-
-                                                                        <button class="btn btn-light btn-default btn-squared fw-400 text-capitalize">cancel
-                                                                        </button>
-
-
-
-
 
                                                                     </div>
                                                                 </form>
@@ -218,18 +190,16 @@
                                                     <div class="row justify-content-center">
                                                         <div class="col-xxl-6 col-lg-8 col-sm-10">
                                                             <div class="edit-profile__body mx-lg-20">
-                                                                <form>
+                                                                <form id="username-email-form" method="POST">
                                                                     <div class="form-group mb-20">
                                                                         <label for="name1">username</label>
-                                                                        <input type="text" class="form-control" id="name1" placeholder="Duran Clayton">
-                                                                        <small id="passwordHelpInline2" class="text-light fs-13">Your
-                                                                            Dashboard URL:
-                                                                            https://dashboard.com/<span class="color-dark">clayton</span>
-                                                                        </small>
+                                                                        <input name="name" type="text" class="form-control" id="name" value="{{ Auth::user()->name }}" autocomplete="off">
+                                                                        <small id="error-name" style="color: red !important;" class="text-light fs-13"></small>
                                                                     </div>
                                                                     <div class="form-group mb-1">
                                                                         <label for="email45">email</label>
-                                                                        <input type="email" class="form-control" id="email45" placeholder="Contact@example.com">
+                                                                        <input name="email" type="text" class="form-control" id="email" autocomplete="off" value="{{ Auth::user()->email }}">
+                                                                        <small id="error-email" style="color: red !important;" class="text-light fs-13"></small>
                                                                     </div>
 
                                                                 </form>
@@ -240,46 +210,9 @@
                                                 <div class="card-footer">
                                                     <div class="row justify-content-center align-items-center">
                                                         <div class="col-xxl-6 col-lg-8 col-sm-10">
-                                                            <div class="d-flex justify-content-between mt-1 align-items-center flex-wrap">
-                                                                <div class="text-capitalize py-10">
-                                                                    <h6>close account</h6>
-                                                                    <span class="fs-13 color-light fw-400">Delete your account and
-                                                                        account
-                                                                        data</span>
-                                                                </div>
-                                                                <div class="my-sm-0 my-10 py-10">
-
-
-
-                                                                    <button class="btn btn-danger btn-default btn-squared fw-400 text-capitalize">close account
-                                                                    </button>
-
-
-
-
-
-                                                                </div>
-                                                            </div>
                                                             <div class="button-group d-flex flex-wrap pt-35 mb-35">
-
-
-
-                                                                <button class="btn btn-primary btn-default btn-squared mr-15 text-capitalize">Save Changes
+                                                                <button id="update-username-email-button" class="btn btn-primary btn-default btn-squared mr-15 text-capitalize">Save Changes
                                                                 </button>
-
-
-
-
-
-
-
-
-                                                                <button class="btn btn-light btn-default btn-squared fw-400 text-capitalize">cancel
-                                                                </button>
-
-
-
-
 
                                                             </div>
                                                         </div>
@@ -304,42 +237,32 @@
                                                     <div class="row justify-content-center">
                                                         <div class="col-xxl-6 col-lg-8 col-sm-10">
                                                             <div class="edit-profile__body mx-lg-20">
-                                                                <form>
+                                                                <form id="password-form" action="#" method="POST">
                                                                     <div class="form-group mb-20">
                                                                         <label for="name">old passowrd</label>
-                                                                        <input type="text" class="form-control" id="name">
+                                                                        <input name="old_password" type="password" class="form-control" id="old-password" autocomplete="off">
+                                                                        <small id="error-old_password" class="text-light fs-13" style="color: red !important;"></small>
                                                                     </div>
                                                                     <div class="form-group mb-1">
                                                                         <label for="password-field">new password</label>
                                                                         <div class="position-relative">
-                                                                            <input id="password-field" type="password" class="form-control pr-50" name="password" value="secret">
+                                                                            <input id="new-password" type="password" class="form-control pr-50" name="new_password" autocomplete="off">
                                                                             <span class="fa fa-fw fa-eye-slash text-light fs-16 field-icon toggle-password2"></span>
                                                                         </div>
-                                                                        <small id="passwordHelpInline" class="text-light fs-13">Minimum
-                                                                            6
-                                                                            characters
-                                                                        </small>
+                                                                        <small id="error-new_password" class="text-light fs-13" style="color: red !important;"></small>
+                                                                    </div>
+                                                                    <div class="form-group mb-1">
+                                                                        <label for="password-field">Retype password</label>
+                                                                        <div class="position-relative">
+                                                                            <input id="confirm-password" type="password" class="form-control pr-50" name="confirm_password" autocomplete="off">
+                                                                            <span class="fa fa-fw fa-eye-slash text-light fs-16 field-icon toggle-password2"></span>
+                                                                        </div>
+                                                                        <small id="error-confirm_password" class="text-light fs-13" style="color: red !important;"></small>
                                                                     </div>
                                                                     <div class="button-group d-flex flex-wrap pt-45 mb-35">
 
-
-
                                                                         <button class="btn btn-primary btn-default btn-squared mr-15 text-capitalize">Save Changes
                                                                         </button>
-
-
-
-
-
-
-
-
-                                                                        <button class="btn btn-light btn-default btn-squared fw-400 text-capitalize">cancel
-                                                                        </button>
-
-
-
-
 
                                                                     </div>
                                                                 </form>
@@ -374,169 +297,7 @@
                     <!-- ends: .modal-info-warning -->
                                     
 
-                                    <div class="tab-pane fade" id="v-pills-notification" role="tabpanel" aria-labelledby="v-pills-notification-tab">
-                                        <!-- Edit Profile -->
-                                        <div class="edit-profile edit-social mt-25">
-                                            <div class="card">
-                                                <div class="card-header px-sm-25 px-3">
-                                                    <div class="edit-profile__title">
-                                                        <h6>social profiles</h6>
-                                                        <span class="fs-13 color-light fw-400">Add elsewhere links to your
-                                                            profile</span>
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="notification-content p-25 border mb-25">
-                                                        <div class="notification-content__title d-flex justify-content-between flex-wrap pb-20 text-capitalize">
-                                                            <h6 class="fs-15 text-light fw-500 lh-normal">Notifications</h6>
-                                                            <a class="text-primary fs-13" href="#">toggle all</a>
-                                                        </div>
-                                                        <div class="global-shadow radius-xl bg-white">
-                                                            <div class="notification-content__body p-25 border-bottom">
-                                                                <div class="d-flex justify-content-between flex-wrap align-items-center">
-                                                                    <div class="div">
-                                                                        <h6>Company News</h6>
-                                                                        <span>Get company news, announcements, and product
-                                                                            updates</span>
-                                                                    </div>
-                                                                    <div class="custom-control custom-switch my-lg-0 my-10">
-                                                                        <input type="checkbox" class="custom-control-input" id="nc1">
-                                                                        <label class="custom-control-label" for="nc1"></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="notification-content__body p-25 border-bottom">
-                                                                <div class="d-flex justify-content-between flex-wrap align-items-center">
-                                                                    <div class="div">
-                                                                        <h6>Meetups Near You</h6>
-                                                                        <span>Get company news, announcements, and product
-                                                                            updates</span>
-                                                                    </div>
-                                                                    <div class="custom-control custom-switch my-lg-0 my-10">
-                                                                        <input type="checkbox" class="custom-control-input" id="nc2">
-                                                                        <label class="custom-control-label" for="nc2"></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="notification-content__body p-25 border-bottom">
-                                                                <div class="d-flex justify-content-between flex-wrap align-items-center">
-                                                                    <div class="div">
-                                                                        <h6>Opportunities</h6>
-                                                                        <span>Get company news, announcements, and product
-                                                                            updates</span>
-                                                                    </div>
-                                                                    <div class="custom-control custom-switch my-lg-0 my-10">
-                                                                        <input type="checkbox" class="custom-control-input" id="nc3">
-                                                                        <label class="custom-control-label" for="nc3"></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="notification-content__body p-25">
-                                                                <div class="d-flex justify-content-between flex-wrap align-items-center">
-                                                                    <div class="div">
-                                                                        <h6>Weekly Newsletters</h6>
-                                                                        <span>Get company news, announcements, and product
-                                                                            updates</span>
-                                                                    </div>
-                                                                    <div class="custom-control custom-switch my-lg-0 my-10">
-                                                                        <input type="checkbox" class="custom-control-input" id="nc4">
-                                                                        <label class="custom-control-label" for="nc4"></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="notification-content p-25 border mb-25">
-                                                        <div class="notification-content__title d-flex justify-content-between flex-wrap pb-20 text-capitalize">
-                                                            <h6 class="fs-15 text-light fw-500 lh-normal">Account Activity</h6>
-                                                            <a class="text-primary fs-13" href="#">toggle all</a>
-                                                        </div>
-                                                        <div class="global-shadow radius-xl bg-white">
-                                                            <div class="notification-content__body p-25 border-bottom">
-                                                                <div class="d-flex justify-content-between flex-wrap align-items-center">
-                                                                    <div class="div">
-                                                                        <h6>Anyone seeing my profile page</h6>
-                                                                    </div>
-                                                                    <div class="custom-control custom-switch my-lg-0 my-10">
-                                                                        <input type="checkbox" class="custom-control-input" id="nc5">
-                                                                        <label class="custom-control-label" for="nc5"></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="notification-content__body p-25 border-bottom">
-                                                                <div class="d-flex justify-content-between flex-wrap align-items-center">
-                                                                    <div class="div">
-                                                                        <h6>Anyone follow me</h6>
-                                                                    </div>
-                                                                    <div class="custom-control custom-switch my-lg-0 my-10">
-                                                                        <input type="checkbox" class="custom-control-input" id="nc6">
-                                                                        <label class="custom-control-label" for="nc6"></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="notification-content__body p-25 border-bottom">
-                                                                <div class="d-flex justify-content-between flex-wrap align-items-center">
-                                                                    <div class="div">
-                                                                        <h6>Someone mentions me</h6>
-                                                                    </div>
-                                                                    <div class="custom-control custom-switch my-lg-0 my-10">
-                                                                        <input type="checkbox" class="custom-control-input" id="nc7">
-                                                                        <label class="custom-control-label" for="nc7"></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="notification-content__body p-25 border-bottom">
-                                                                <div class="d-flex justify-content-between flex-wrap align-items-center">
-                                                                    <div class="div">
-                                                                        <h6>Someone accepts my invitation</h6>
-                                                                    </div>
-                                                                    <div class="custom-control custom-switch my-lg-0 my-10">
-                                                                        <input type="checkbox" class="custom-control-input" id="nc8">
-                                                                        <label class="custom-control-label" for="nc8"></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="notification-content__body p-25">
-                                                                <div class="d-flex justify-content-between flex-wrap align-items-center">
-                                                                    <div class="div">
-                                                                        <h6>Anyone send me a message</h6>
-                                                                    </div>
-                                                                    <div class="custom-control custom-switch my-lg-0 my-10">
-                                                                        <input type="checkbox" class="custom-control-input" id="nc9">
-                                                                        <label class="custom-control-label" for="nc9"></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="button-group d-flex flex-wrap pt-25 mb-25">
-
-
-
-                                                        <button class="btn btn-primary btn-default btn-squared mr-15 text-capitalize">Update notification Profiles
-                                                        </button>
-
-
-
-
-
-
-
-
-                                                        <button class="btn btn-light btn-default btn-squared fw-400 text-capitalize">cancel
-                                                        </button>
-
-
-
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <!-- Edit Profile End -->
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -563,13 +324,173 @@
     <audio style="display: none;" id="notification-sound" src="{{ asset('sounds/notification.mp3') }}" preload="auto"></audio>
     
 
-
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDduF2tLXicDEPDMAtC6-NLOekX0A5vlnY"></script>
     <!-- inject:js-->
     <script src="{{asset('js/plugins.min.js')}}"></script>
     <script src="{{asset('js/script.min.js')}}"></script>
     <script src="{{ asset('js/notification.js') }}" ></script>
     <!-- endinject-->
+
+    <script>
+        $(document).ready(function () {
+        $('#update-username-email-button').on('click', function (e) {
+            e.preventDefault(); // Prevent form submission
+
+            // Clear previous error messages
+            $('small[id^="error-"]').text('');
+            $('#error-message').html('');
+
+            // Gather form data
+            const formData = {
+                name: $('#name').val(),
+                email: $('#email').val(),
+                _token: $('meta[name="csrf-token"]').attr('content') // CSRF Token
+            };
+
+            // Get current user values (you should have these pre-populated in hidden fields or data attributes)
+            const currentName = $('#current-name').val(); // Assuming this is a hidden input with current name value
+            const currentEmail = $('#current-email').val(); // Assuming this is a hidden input with current email value
+
+            // Check if there are any changes
+            if (formData.name === currentName && formData.email === currentEmail) {
+                $('#error-message').html(`
+                    <div class="alert alert-warning">
+                        No changes detected. Please update your name or email.
+                    </div>
+                `);
+                return; // Stop the request if no changes
+            }
+
+            // Send the form data to the server
+            $.ajax({
+                url: '/dashboard/settings/update-username-email', // Your route URL
+                method: 'POST',
+                data: formData,
+                success: function (response, textStatus, jqXHR) {
+                    console.log("Response:", response); // Log the entire response for debugging
+
+                    if (response && response.message) {
+                        // Handle success
+                        $('#error-message').html(`
+                            <div class="alert alert-success">
+                                ${response.message}
+                            </div>
+                        `);
+                    } else {
+                        console.error('Unexpected response format', response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error response:", xhr.responseText); // Log the error response
+
+                    if (status === 'timeout') {
+                        $('#error-message').html(`
+                            <div class="alert alert-warning">
+                                The request timed out. Please try again later.
+                            </div>
+                        `);
+                    }
+                    // Handle validation errors (422)
+                    else if (xhr.status === 422) {
+                        const errors = xhr.responseJSON ? xhr.responseJSON.errors : {};
+                        for (const key in errors) {
+                            $(`#error-${key}`).text(errors[key][0]);
+                        }
+                    }
+                    // Handle Not Modified error (304) - custom message from server
+                    else if (xhr.status === 304) {
+                        $('#error-message').html(`
+                            <div class="alert alert-warning">
+                                ${xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'No changes were made.'}
+                            </div>
+                        `);
+                    }
+                    // Handle Internal Server Error (500) - custom message from server
+                    else if (xhr.status === 500) {
+                        $('#error-message').html(`
+                            <div class="alert alert-danger">
+                                ${xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'Something went wrong on the server. Please try again later.'}
+                            </div>
+                        `);
+                    }
+                    // Handle other errors
+                    else {
+                        $('#error-message').html(`
+                            <div class="alert alert-danger">
+                                Something went wrong. Please try again.
+                            </div>
+                        `);
+                    }
+                }
+            });
+        });
+    });
+
+    </script>
+
+
+
+
+
+    <script>
+    $(document).ready(function () {
+        $('#password-form').on('submit', function (e) {
+            e.preventDefault();
+
+            // Clear previous error messages
+            $('small[id^="error-"]').text('');
+            $('#error-message').html('');
+
+            $.ajax({
+                url: '/dashboard/settings/update-password',
+                method: 'POST',
+                data: $(this).serialize(),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    $('#error-message').html(`
+                        <div class="alert alert-success">
+                            Password updated successfully!
+                        </div>
+                    `);
+
+                    // Clear message after 5 seconds
+                    setTimeout(() => {
+                        $('#error-message').fadeOut('slow', function () {
+                            $(this).html('').show();
+                        });
+                    }, 5000);
+
+                    $('#password-form')[0].reset();
+                },
+                error: function (xhr) {
+                    if (xhr.status === 422) {
+                        const errors = xhr.responseJSON.errors;
+                        for (const key in errors) {
+                            $(`#error-${key}`).text(errors[key][0]);
+                        }
+                    } else {
+                        $('#error-message').html(`
+                            <div class="alert alert-danger">
+                                Something went wrong. Please try again.
+                            </div>
+                        `);
+
+                        // Clear error after 5 seconds
+                        setTimeout(() => {
+                            $('#error-message').fadeOut('slow', function () {
+                                $(this).html('').show();
+                            });
+                        }, 5000);
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+
+
     <script>
     $(document).ready(function () {
         $('#logout-link').click(function (e) {
@@ -599,6 +520,18 @@
         });
     });
 </script>
+<script>
+    $(document).ready(function () {
+        $(".toggle-password2").on("click", function () {
+            const $input = $(this).siblings("input");
+            const type = $input.attr("type") === "password" ? "text" : "password";
+
+            $input.attr("type", type);
+            $(this).toggleClass("fa-eye fa-eye-slash");
+        });
+    });
+</script>
+
 </body>
 
 </html>

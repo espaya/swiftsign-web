@@ -62,6 +62,8 @@
                                     setting</a>
                                     <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
                                     <span data-feather="key"></span>change password</a>
+                                    <a class="nav-link" id="v-pills-attendance-tab" data-toggle="pill" href="#v-pills-attendance" role="tab" aria-controls="v-pills-attendance" aria-selected="false">
+                                    <span data-feather="calendar"></span>Attendance Log</a>
                                  </div>
                               </div>
                            </div>
@@ -184,6 +186,78 @@
                               </div>
 
 
+                              <div class="tab-pane fade" id="v-pills-attendance" role="tabpanel" aria-labelledby="v-pills-attendance-tab">
+                                 <!-- Edit Profile -->
+                                 <div class="edit-profile ">
+                                    <div class="card">
+                                       <div class="card-header  px-sm-25 px-3">
+                                          <div class="edit-profile__title">
+                                             <h6>Attendance Log</h6>
+                                             <span class="fs-13 color-light fw-400">Attendance history for this user</span>
+                                             <div id="attendance-response"></div>
+                                          </div>
+                                       </div>
+
+                                       <div class="card-body">
+                                          <div class="row justify-content-center">
+                                             <div class="col-xxl-12 col-lg-8 col-sm-10">
+                                                <div class="edit-profile__body mx-lg-20">
+                                                   <div class="col-lg-12">
+                                                        <div class="userDatatable  p-30 bg-white radius-xl w-100 mb-30">
+                                                            <div class="table-responsive">
+                                                                <table class="table mb-0 table-borderless">
+                                                                    <thead>
+                                                                        <tr class="userDatatable-header">
+                                                                            <th>
+                                                                                <div class="d-flex align-items-center">
+                                                                                    <div class="custom-checkbox  check-all">
+                                                                                        <input class="checkbox" type="checkbox" id="check-3">
+                                                                                        <label for="check-3">
+                                                                                            <span class="checkbox-text userDatatable-title">Session</span>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </th>
+                                                                            <th>
+                                                                                <span class="userDatatable-title">Logged At</span>
+                                                                            </th>
+                                                                            <th>
+                                                                                <span class="userDatatable-title">Signed Out At</span>
+                                                                            </th>
+                                                                            <th>
+                                                                                <span class="userDatatable-title">Expired</span>
+                                                                            </th>
+                                                                            
+                                                                            <th>
+                                                                                <span class="userDatatable-title">status</span>
+                                                                            </th>
+                                                                            <th>
+                                                                                <span class="userDatatable-title float-right">action</span>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="attendance-body">
+                                                                        <!-- Dynamic content goes here -->
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="d-flex justify-content-end pt-30">
+                                                                <nav class="atbd-page ">
+                                                                    <ul id="pagination" class="atbd-pagination d-flex"></ul>
+                                                                </nav>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <!-- Edit Profile End -->
+                              </div>
+
+
                               
                         <div class="modal-info-delete modal fade" id="modal-info-delete" tabindex="-1" role="dialog" aria-hidden="true">
                     `       <div class="modal-dialog modal-sm modal-info" role="document">
@@ -295,8 +369,6 @@
       <div class="customizer-overlay"></div>
       <audio style="display: none;" id="notification-sound" src="{{ asset('sounds/notification.mp3') }}" preload="auto"></audio>
 `
-
-      <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDduF2tLXicDEPDMAtC6-NLOekX0A5vlnY"></script>
       <!-- inject:js-->
       <script src="{{asset('js/plugins.min.js')}}"></script>
       <script src="{{asset('js/script.min.js')}}"></script>
@@ -780,6 +852,7 @@
     });
 </script>
 
+<script src="{{ asset('js/single-user-attendance.js') }}"></script>
 
    </body>
 </html>

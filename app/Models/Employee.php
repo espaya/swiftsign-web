@@ -16,4 +16,9 @@ class Employee extends Model
         'employee_id',
         'pic'
     ];
+
+    public function employee()
+    {
+        return $this->belongsTo(User::class, 'userID', 'id');
+    }
 }

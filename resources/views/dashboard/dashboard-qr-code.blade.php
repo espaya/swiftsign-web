@@ -132,20 +132,7 @@
                               <div style="padding-top: 20px;" id="message-container"></div>
                            </div>
                         </div>
-                        <div class="project-top-right d-flex flex-wrap">
-                           <div class="project-category">
-                              <div class="d-flex align-items-center">
-                                 <p class="mb-0 mr-10 fs-14 color-light">sort by:</p>
-                                 <div class="project-category__select">
-                                    <select class="js-example-basic-single js-states form-control" id="event-category">
-                                       <option value="all" selected="">project category</option>
-                                       <option value="JAN">event</option>
-                                       <option value="FBR">Venues</option>
-                                    </select>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
+                       
                      </div>
                   </div>
                </div>

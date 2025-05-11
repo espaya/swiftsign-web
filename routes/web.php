@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QRCodeController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ShowNotificationController;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
@@ -37,10 +38,12 @@ Route::group(['middleware' => ['admin', 'prevent.history.back']], function(){
     Route::put('/dashboard/employees/update/{id}', [EmployeeController::class, 'update'])->name('dashboard.employees.update');
     Route::get('/dashboard/employees/get-employee/{id}', [EmployeeController::class, 'getEmployee'])->name('dashboard.employees.get.employee');
     Route::post('/dashboard/employees/search', [EmployeeController::class, 'search'])->name('dashboard.employees.search');
+    Route::get('/dashboard/employees/get-employee-attendance-history/{id}', [EmployeeController::class, 'singleUserAttendance']);
 
-    Route::get('/dashboard/settings', function(){
-        return view('dashboard.dashboard-settings');
-    })->name('dashboard.settings');
+    Route::get('/dashboard/settings', [SettingsController::class, 'index'])->name('dashboard.settings');
+    Route::post('/dashboard/settings/update-password', [SettingsController::class, 'updatePassword']);
+    Route::post('/dashboard/settings/update-username-email', [SettingsController::class, 'updateEmailUser']);
+
 
     Route::get('/dashboard/qr-code', [QRCodeController::class, 'index'])->name('dashboard.qr.code');
     Route::post('/dashboard/qr-code/generate', [QRCodeController::class, 'createQrCode'])->name('dashboard.qr.code.generate');

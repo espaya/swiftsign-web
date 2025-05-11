@@ -215,11 +215,16 @@
                     <!-- ends: .nav-flag-select -->
                     <li class="nav-author">
                         <div class="dropdown-custom">
-                            <a href="javascript:;" class="nav-item-toggle"><img src="{{asset('img/Sample_User_Icon.png')}}" alt="" class="rounded-circle"></a>
+                            <a href="javascript:;" class="nav-item-toggle">
+                                <img src="{{ Auth::check() && optional(Auth::user()->employee)->pic ? asset('uploads/profile_pictures/' . Auth::user()->employee->pic) : asset('img/Sample_User_Icon.png') }}" 
+                                    alt="Profile Picture" 
+                                    class="rounded-circle">
+                            </a>
+
                             <div class="dropdown-wrapper">
                                 <div class="nav-author__info">
                                     <div class="author-img">
-                                        <img src="{{asset('img/Sample_User_Icon.png')}}" alt="" class="rounded-circle">
+                                        <img src="{{ Auth::check() && optional(Auth::user()->employee)->pic ? asset('uploads/profile_pictures/' . Auth::user()->employee->pic) : asset('img/Sample_User_Icon.png') }}" alt="" class="rounded-circle">
                                     </div>
                                     <div>
                                         <h6>{{ Auth::check() ? ucfirst(Auth::user()->name) : '' }}</h6>
