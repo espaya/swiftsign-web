@@ -75,7 +75,7 @@
                                                                     <span class="checkbox-text">Keep me logged in</span>
                                                                 </label>
                                                             </div>
-                                                            <a href="forget-password.html">Forget password?</a>
+                                                            <!-- <a href="forget-password.html">Forget password?</a> -->
                                                         </div>
                                                         <div class="button-group d-flex pt-1 justify-content-md-start justify-content-center">
                                                             <button class="btn btn-primary btn-default btn-squared mr-15 text-capitalize lh-normal px-50 py-15 signIn-createBtn">
