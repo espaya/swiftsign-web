@@ -4,8 +4,7 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>SwiftSign - Attendance</title>
-      <link href="../../../../css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+      <title>Attendance - SwiftSign</title>
       <meta name="csrf-token" content="{{ csrf_token() }}">
       <!-- inject:css-->
       <link rel="stylesheet" href="{{asset('css/plugin.min.css')}}">
@@ -131,28 +130,7 @@
                         </div>
                         <div class="d-flex justify-content-end pt-30">
                            <nav class="atbd-page ">
-                              <ul class="atbd-pagination d-flex">
-                                 <li class="atbd-pagination__item">
-                                    <a href="#" class="atbd-pagination__link pagination-control"><span class="la la-angle-left"></span></a>
-                                    <a href="#" class="atbd-pagination__link"><span class="page-number">1</span></a>
-                                    <a href="#" class="atbd-pagination__link active"><span class="page-number">2</span></a>
-                                    <a href="#" class="atbd-pagination__link"><span class="page-number">3</span></a>
-                                    <a href="#" class="atbd-pagination__link pagination-control"><span class="page-number">...</span></a>
-                                    <a href="#" class="atbd-pagination__link"><span class="page-number">12</span></a>
-                                    <a href="#" class="atbd-pagination__link pagination-control"><span class="la la-angle-right"></span></a>
-                                    <a href="#" class="atbd-pagination__option">
-                                    </a>
-                                 </li>
-                                 <li class="atbd-pagination__item">
-                                    <div class="paging-option">
-                                       <select name="page-number" class="page-selection">
-                                          <option value="20">20/page</option>
-                                          <option value="40">40/page</option>
-                                          <option value="60">60/page</option>
-                                       </select>
-                                    </div>
-                                 </li>
-                              </ul>
+                              <ul class="atbd-pagination d-flex" id="pagination-container"></ul>
                            </nav>
                         </div>
                      </div>
@@ -176,7 +154,6 @@
       <div class="customizer-overlay"></div>
       <audio autoplay style="display: none;" id="notification-sound" src="{{ asset('sounds/notification.mp3') }}" preload="auto"></audio>
 
-      <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDduF2tLXicDEPDMAtC6-NLOekX0A5vlnY"></script>
       <!-- inject:js-->
       <script src="{{asset('js/plugins.min.js')}}"></script>
       <script src="{{asset('js/script.min.js')}}"></script>
@@ -185,84 +162,131 @@
       <script src="{{ asset('js/notification.js') }}" ></script>
       <!-- endinject-->
       <script>
-         function fetchAttendanceData() {
-         $.ajax({
-             url: "{{ route('dashboard.attendance.all') }}", // Laravel API Route
-             type: "GET",
-             dataType: "json",
-             success: function (response) {
-                 let tbody = $("table tbody");
-                 tbody.empty(); // Clear the table before appending new data
-         
-                 response.attendance.forEach((record, index) => {
-                     let row = `
-                         <tr>
-                             <td>
-                                 <div class="d-flex">
-                                     <div class="userDatatable__imgWrapper d-flex align-items-center">
-                                         <div class="checkbox-group-wrapper">
-                                             <div class="checkbox-group d-flex">
-                                                 <div class="checkbox-theme-default custom-checkbox checkbox-group__single d-flex">
-                                                     <input class="checkbox" type="checkbox" id="check-${index}">
-                                                     <label for="check-${index}"></label>
-                                                 </div>
-                                             </div>
-                                         </div>
-                                         <a href="#" class="profile-image rounded-circle d-block m-0 wh-38" 
-                                            style="background-image:url('{{asset("img/user.png")}}'); background-size: cover;"></a>
-                                     </div>
-                                     <div class="userDatatable-inline-title">
-                                         <a href="#" class="text-dark fw-500">
-                                             <h6>${record.fullname}</h6>
-                                         </a>
-                                         <p class="d-block mb-0">Session: ${record.session_id}</p>
-                                     </div>
-                                 </div>
-                             </td>
-                             <td><div class="userDatatable-content">${record.logged_at}</div></td>
-                             <td><div class="userDatatable-content">${record.signed_out_at}</div></td>
-                             <td>
-                                 <div class="userDatatable-content d-inline-block
-                                             ${record.expired === 'YES' ? 'alert-danger text-danger' : 'alert-success text-success'} 
-                                             rounded-pill p-1 text-center">
-                                     ${record.expired}
-                                 </div>
-                             </td>
-                             <td>
-                                 <div class="userDatatable-content d-inline-block">
-                                     <span class="bg-opacity-${record.status === 'SIGNED' ? 'success' : 'danger'} color-${record.status === 'SIGNED' ? 'success' : 'danger'} rounded-pill userDatatable-content-status">${record.status}</span>
-                                 </div>
-                             </td>
-                             <td>
-                                 <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
-                                     <li><a href="#" class="view"><span data-feather="eye"></span></a></li>
-                                     <li><a href="#" class="edit"><span data-feather="edit"></span></a></li>
-                                     <li><a href="${record.id}" class="remove"><span data-feather="trash-2"></span></a></li>
-                                 </ul>
-                             </td>
-                         </tr>
-                     `;
-         
-                     tbody.append(row);
-                 });
-         
-                 // ✅ Update the attendance count outside the table
-                 $(".count-attendance").text(response.count + ' Attendance');
-         
-                 feather.replace(); // Refresh Feather icons
-             },
-             error: function (xhr, status, error) {
-                 console.error("Error fetching attendance data:", error);
-             }
-         });
-         }
-         
-         // Fetch data initially
-         fetchAttendanceData();
-         
-         // Refresh data every 5 seconds
-         setInterval(fetchAttendanceData, 5000);
-         
+         function fetchAttendanceData(page = 1) {
+    $.ajax({
+        url: "{{ route('dashboard.attendance.all') }}",
+        type: "GET",
+        data: {
+            page: page,
+            per_page: 10 // Adjust as needed
+        },
+        success: function (response) {
+            const tbody = $("table tbody");
+            tbody.empty();
+
+            response.attendance.forEach((record, index) => {
+                tbody.append(`
+                    <tr>
+                        <td>
+                            <div class="d-flex">
+                                <div class="userDatatable__imgWrapper d-flex align-items-center">
+                                    <div class="checkbox-group-wrapper">
+                                        <div class="checkbox-group d-flex">
+                                            <div class="checkbox-theme-default custom-checkbox checkbox-group__single d-flex">
+                                                <input class="checkbox" type="checkbox" id="check-${index}">
+                                                <label for="check-${index}"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="profile-image rounded-circle d-block m-0 wh-38" 
+                                       style="background-image:url('{{asset("img/user.png")}}'); background-size: cover;"></a>
+                                </div>
+                                <div class="userDatatable-inline-title">
+                                    <a href="#" class="text-dark fw-500">
+                                        <h6>${record.fullname}</h6>
+                                    </a>
+                                    <p class="d-block mb-0">Session: ${record.session_id}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td><div class="userDatatable-content">${record.logged_at}</div></td>
+                        <td><div class="userDatatable-content">${record.signed_out_at}</div></td>
+                        <td>
+                            <div class="userDatatable-content d-inline-block 
+                                ${record.expired === 'YES' ? 'alert-danger text-danger' : 'alert-success text-success'} 
+                                rounded-pill p-1 text-center">
+                                ${record.expired}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="userDatatable-content d-inline-block">
+                                <span class="bg-opacity-${record.status === 'SIGNED' ? 'success' : 'danger'} 
+                                             color-${record.status === 'SIGNED' ? 'success' : 'danger'} 
+                                             rounded-pill userDatatable-content-status">${record.status}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
+                                <li><a href="#" class="view"><span data-feather="eye"></span></a></li>
+                                <li><a href="#" class="edit"><span data-feather="edit"></span></a></li>
+                                <li><a href="${record.id}" class="remove"><span data-feather="trash-2"></span></a></li>
+                            </ul>
+                        </td>
+                    </tr>
+                `);
+            });
+
+            renderPagination(response.pagination);
+            feather.replace();
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching attendance data:", error);
+        }
+    });
+}
+
+function renderPagination(pagination) {
+    const container = $("#pagination-container");
+    container.empty();
+
+    let { current_page, last_page } = pagination;
+
+    // Previous
+    container.append(`
+        <li class="atbd-pagination__item">
+            <a href="#" class="atbd-pagination__link pagination-control" data-page="${current_page - 1}" ${current_page === 1 ? 'disabled' : ''}>
+                <span class="la la-angle-left"></span>
+            </a>
+        </li>
+    `);
+
+    // Pages
+    for (let i = 1; i <= last_page; i++) {
+        if (i === current_page || i === 1 || i === last_page || Math.abs(current_page - i) <= 1) {
+            container.append(`
+                <li class="atbd-pagination__item">
+                    <a href="#" class="atbd-pagination__link ${i === current_page ? 'active' : ''}" data-page="${i}">
+                        <span class="page-number">${i}</span>
+                    </a>
+                </li>
+            `);
+        } else if (i === current_page - 2 || i === current_page + 2) {
+            container.append(`
+                <li class="atbd-pagination__item"><span class="atbd-pagination__link">...</span></li>
+            `);
+        }
+    }
+
+    // Next
+    container.append(`
+        <li class="atbd-pagination__item">
+            <a href="#" class="atbd-pagination__link pagination-control" data-page="${current_page + 1}" ${current_page === last_page ? 'disabled' : ''}>
+                <span class="la la-angle-right"></span>
+            </a>
+        </li>
+    `);
+}
+
+// Pagination click handler
+$(document).on("click", "#pagination-container .atbd-pagination__link", function (e) {
+    e.preventDefault();
+    const page = $(this).data("page");
+    if (page) fetchAttendanceData(page);
+});
+
+// Initial load
+fetchAttendanceData();
+
       </script>
 
         <script>

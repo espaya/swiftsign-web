@@ -13,22 +13,23 @@ use Carbon\Carbon;
 class DashboardAttendanceController extends Controller
 {
     // attendance method for admin
-    public function index()
+    public function index() 
     {
         return view('dashboard.dashboard-attendance');
     }
 
-    public function getAllAttendance()
+    public function getAllAttendance(Request $request)
     {
-        // Fetch attendance data ordered by id in descending order
-        $attendance = LogAttendance::orderBy('id', 'desc')->get()->map(function ($log) {
-            $employee = Employee::where('userID', $log->userID)->first(); // Fetch employee
+        $perPage = $request->input('per_page', 10); // Default 10 per page
+        $attendancePaginated = LogAttendance::orderBy('id', 'desc')->paginate($perPage);
 
-            // Decrypt logged_at and format it
+        // Transform paginated data
+        $attendanceData = $attendancePaginated->getCollection()->map(function ($log) {
+            $employee = Employee::where('userID', $log->userID)->first();
+
             $loggedAt = Crypt::decryptString($log->logged_at);
             $formattedLoggedAt = Carbon::parse($loggedAt)->format('jS F Y | h:i A');
 
-            // Decrypt signed_out_at and format it
             $signedOutAt = $log->signed_out_at ? Crypt::decryptString($log->signed_out_at) : 'Not Available';
             $formattedSignedOutAt = $signedOutAt !== 'Not Available' ? Carbon::parse($signedOutAt)->format('jS F Y | h:i A') : 'Not Available';
 
@@ -37,20 +38,24 @@ class DashboardAttendanceController extends Controller
                 'session_id' => $log->session_id,
                 'userID' => $log->userID,
                 'fullname' => $employee ? Crypt::decryptString($employee->fullname) : 'Unknown',
-                'logged_at' => $formattedLoggedAt, // Formatted logged_at
-                'signed_out_at' => $formattedSignedOutAt, // Formatted signed_out_at
+                'logged_at' => $formattedLoggedAt,
+                'signed_out_at' => $formattedSignedOutAt,
                 'expired' => $log->expired ? Crypt::decryptString($log->expired) : null,
                 'status' => Crypt::decryptString($log->status),
             ];
         });
 
-        $countAttendance = LogAttendance::count(); // Get total attendance count
-
         return response()->json([
-            'attendance' => $attendance,
-            'count' => $countAttendance
+            'attendance' => $attendanceData,
+            'pagination' => [
+                'current_page' => $attendancePaginated->currentPage(),
+                'last_page' => $attendancePaginated->lastPage(),
+                'per_page' => $attendancePaginated->perPage(),
+                'total' => $attendancePaginated->total()
+            ]
         ]);
     }
+
 
     public function destroy($id)
     {
