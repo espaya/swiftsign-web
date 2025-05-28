@@ -4,6 +4,7 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <meta name="csrf-token" content="{{ csrf_token() }}">
       <title>Notifications - SwiftSign</title>
       <!-- inject:css-->
       <link rel="stylesheet" href="{{asset('css/plugin.min.css')}}">
@@ -204,6 +205,7 @@
       <script src="{{asset('js/plugins.min.js')}}"></script>
       <script src="{{asset('js/script.min.js')}}"></script>
       <script src="{{ asset('js/notification.js') }}" ></script>
+      <script src="{{ asset('js/logout.js') }}"></script>
 
       <!-- endinject-->
    </body>

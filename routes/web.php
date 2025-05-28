@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CompanyProfileController;
 use App\Http\Controllers\DashboardAttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
@@ -28,10 +29,6 @@ Route::group(['middleware' => ['admin', 'prevent.history.back']], function(){
         return view('dashboard.dashboard-employees');
     })->name('dashboard.employees');
 
-    Route::get('/dashboard/team', function(){
-        return view('dashboard.team');
-    })->name('team');
-
     Route::get('/dashboard/employees/all', [EmployeeController::class, 'index'])->name('dashboard.employees.all');
     Route::post('/dashboard/employees/new', [EmployeeController::class, 'save'])->name('dashboard.employees.new');
     Route::get('/dashboard/employees/{uid}', [EmployeeController::class, 'view'])->name('dashboard.employees.view');
@@ -43,6 +40,7 @@ Route::group(['middleware' => ['admin', 'prevent.history.back']], function(){
     Route::get('/dashboard/settings', [SettingsController::class, 'index'])->name('dashboard.settings');
     Route::post('/dashboard/settings/update-password', [SettingsController::class, 'updatePassword']);
     Route::post('/dashboard/settings/update-username-email', [SettingsController::class, 'updateEmailUser']);
+    Route::post('/dashboard/settings/update-company-profile', [SettingsController::class, 'storeProfile']);
 
 
     Route::get('/dashboard/qr-code', [QRCodeController::class, 'index'])->name('dashboard.qr.code');

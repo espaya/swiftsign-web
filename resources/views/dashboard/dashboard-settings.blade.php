@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en" dir="ltr">
 
@@ -8,8 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Swift Sign - Settings</title>
-
-    <link href="../../../../css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- inject:css-->
 
@@ -61,7 +58,7 @@
                                             <label for="file-upload">
                                                 <!-- Profile picture image-->
                                                 <img class="ap-img__main rounded-circle wh-120" src="{{ Auth::check() && optional(Auth::user()->employee)->pic ? asset('uploads/profile_pictures/' . Auth::user()->employee->pic) : asset('img/Sample_User_Icon.png') }}" alt="profile">
-                                                <span class="cross" id="remove_pro_pic"> 
+                                                <span class="cross" id="remove_pro_pic">
                                                     <span data-feather="camera"></span>
                                                 </span>
                                             </label>
@@ -80,7 +77,7 @@
                                                 setting</a>
                                             <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
                                                 <span data-feather="key"></span>change password</a>
-                                                
+
                                         </div>
                                     </div>
 
@@ -98,7 +95,7 @@
                                                 <div class="card-header px-sm-25 px-3">
                                                     <div class="edit-profile__title">
                                                         <h6>Edit Profile</h6>
-                                                        <span class="fs-13 color-light fw-400">Set up your personal
+                                                        <span class="fs-13 color-light fw-400">Set up your company's
                                                             information</span>
                                                     </div>
                                                 </div>
@@ -106,65 +103,34 @@
                                                     <div class="row justify-content-center">
                                                         <div class="col-xxl-6 col-lg-8 col-sm-10">
                                                             <div class="edit-profile__body mx-lg-20">
-                                                                <form>
+                                                                <form id="company-profile-form" action="#" method="POST">
+                                                                    @csrf
+                                                                    @method('POST')
                                                                     <div class="form-group mb-20">
                                                                         <label for="names">name</label>
-                                                                        <input type="text" class="form-control" id="names" placeholder="Duran Clayton">
+                                                                        <input type="text" class="form-control" id="company_name" name="company_name" value="{{ $profile && $profile->company_name ? $profile->company_name : '' }}" autocomplete="off">
+                                                                        <small id="error-company_name" style="color: red;"></small>
                                                                     </div>
                                                                     <div class="form-group mb-20">
                                                                         <label for="phoneNumber1">phone number</label>
-                                                                        <input type="tel" class="form-control" id="phoneNumber1" placeholder="+440 2546 5236">
+                                                                        <input type="text" class="form-control" id="company_phone" autocomplete="off" value="{{ $profile && $profile->company_phone ? $profile->company_phone : '' }}" name="company_phone">
+                                                                        <small id="error-company_phone" style="color: red;"></small>
                                                                     </div>
                                                                     <div class="form-group mb-20">
-                                                                        <div class="countryOption">
-                                                                            <label for="countryOption">
-                                                                                country
-                                                                            </label>
-                                                                            <select class="js-example-basic-single js-states form-control" id="countryOption">
-                                                                                <option value="JAN">event</option>
-                                                                                <option value="FBR">Venues</option>
-                                                                            </select>
-                                                                        </div>
+                                                                        <label for="company1">address</label>
+                                                                        <input type="text" class="form-control" id="company_address" name="company_address" value="{{ $profile && $profile->company_address ? $profile->company_address : '' }}" autocomplete="off">
+                                                                        <small id="error-company_address" style="color: red;"></small>
                                                                     </div>
-                                                                    <div class="form-group mb-20">
-                                                                        <div class="cityOption">
-                                                                            <label for="cityOption">
-                                                                                city
-                                                                            </label>
-                                                                            <select class="js-example-basic-single js-states form-control" id="cityOption">
-                                                                                <option value="JAN">event</option>
-                                                                                <option value="FBR">Venues</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group mb-20">
-                                                                        <label for="company1">company name</label>
-                                                                        <input type="text" class="form-control" id="company1" placeholder="Example">
-                                                                    </div>
-                                                                    <div class="form-group mb-20">
-                                                                        <label for="website">website</label>
-                                                                        <input type="email" class="form-control" id="website" placeholder="www.example.com">
-                                                                    </div>
-                                                                    <div class="form-group mb-20">
-                                                                        <label for="userBio">user bio</label>
-                                                                        <textarea class="form-control" id="userBio" rows="5"></textarea>
-                                                                    </div>
-                                                                    <div class="form-group mb-20">
-                                                                        <div class="skillsOption">
-                                                                            <label for="skillsOption">
-                                                                                skils
-                                                                            </label>
-                                                                            <select class="js-example-basic-single js-states form-control" id="skillsOption" multiple="multiple">
-                                                                                <option value="JAN">event</option>
-                                                                                <option value="FBR">Venues</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="button-group d-flex flex-wrap pt-30 mb-15">
 
+                                                                    <div class="form-group mb-20">
+                                                                        <label for="company1">email</label>
+                                                                        <input type="text" class="form-control" id="company_email" value="{{ $profile && $profile->company_email ? $profile->company_email : '' }}" name="company_email" autocomplete="off">
+                                                                        <small id="error-company_email" style="color: red;"></small>
+                                                                    </div>
+
+                                                                    <div class="button-group d-flex flex-wrap pt-30 mb-15">
                                                                         <button class="btn btn-primary btn-default btn-squared mr-15 text-capitalize">update profile
                                                                         </button>
-
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -276,28 +242,25 @@
                                     </div>
 
                                     <div class="modal-info-warning modal fade" id="modal-info-warning" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-sm modal-info" role="document">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <div class="modal-info-body d-flex">
-                                        <div class="modal-info-icon warning">
-                                            <span data-feather="info"></span>
-                                        </div>
-                                        <div class="modal-info-text">
-                                            <p id="modal-message">Some contents...</p> <!-- Dynamic message will go here -->
+                                        <div class="modal-dialog modal-sm modal-info" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div class="modal-info-body d-flex">
+                                                        <div class="modal-info-icon warning">
+                                                            <span data-feather="info"></span>
+                                                        </div>
+                                                        <div class="modal-info-text">
+                                                            <p id="modal-message">Some contents...</p> <!-- Dynamic message will go here -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Ok</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Ok</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ends: .modal-info-warning -->
-                                    
-
-                                    
+                                    <!-- ends: .modal-info-warning -->
                                 </div>
                             </div>
                         </div>
@@ -308,7 +271,7 @@
 
         @include('templates/footer')
     </main>
-    
+
     <div id="overlayer">
         <span class="loader-overlay">
             <div class="atbd-spin-dots spin-lg">
@@ -322,215 +285,30 @@
     <div class="overlay-dark-sidebar"></div>
     <div class="customizer-overlay"></div>
     <audio style="display: none;" id="notification-sound" src="{{ asset('sounds/notification.mp3') }}" preload="auto"></audio>
-    
+
 
     <!-- inject:js-->
     <script src="{{asset('js/plugins.min.js')}}"></script>
     <script src="{{asset('js/script.min.js')}}"></script>
-    <script src="{{ asset('js/notification.js') }}" ></script>
+    <script src="{{ asset('js/notification.js') }}"></script>
+    <script src="{{ asset('js/company-profile.js') }}"></script>
+    <script src="{{ asset('js/logout.js') }}"></script>
+    <script src="{{ asset('js/update-username-email.js') }}"></script>
+    <script src="{{ asset('js/update-password.js') }}"></script>
     <!-- endinject-->
 
+
     <script>
-        $(document).ready(function () {
-        $('#update-username-email-button').on('click', function (e) {
-            e.preventDefault(); // Prevent form submission
+        $(document).ready(function() {
+            $(".toggle-password2").on("click", function() {
+                const $input = $(this).siblings("input");
+                const type = $input.attr("type") === "password" ? "text" : "password";
 
-            // Clear previous error messages
-            $('small[id^="error-"]').text('');
-            $('#error-message').html('');
-
-            // Gather form data
-            const formData = {
-                name: $('#name').val(),
-                email: $('#email').val(),
-                _token: $('meta[name="csrf-token"]').attr('content') // CSRF Token
-            };
-
-            // Get current user values (you should have these pre-populated in hidden fields or data attributes)
-            const currentName = $('#current-name').val(); // Assuming this is a hidden input with current name value
-            const currentEmail = $('#current-email').val(); // Assuming this is a hidden input with current email value
-
-            // Check if there are any changes
-            if (formData.name === currentName && formData.email === currentEmail) {
-                $('#error-message').html(`
-                    <div class="alert alert-warning">
-                        No changes detected. Please update your name or email.
-                    </div>
-                `);
-                return; // Stop the request if no changes
-            }
-
-            // Send the form data to the server
-            $.ajax({
-                url: '/dashboard/settings/update-username-email', // Your route URL
-                method: 'POST',
-                data: formData,
-                success: function (response, textStatus, jqXHR) {
-                    console.log("Response:", response); // Log the entire response for debugging
-
-                    if (response && response.message) {
-                        // Handle success
-                        $('#error-message').html(`
-                            <div class="alert alert-success">
-                                ${response.message}
-                            </div>
-                        `);
-                    } else {
-                        console.error('Unexpected response format', response);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log("Error response:", xhr.responseText); // Log the error response
-
-                    if (status === 'timeout') {
-                        $('#error-message').html(`
-                            <div class="alert alert-warning">
-                                The request timed out. Please try again later.
-                            </div>
-                        `);
-                    }
-                    // Handle validation errors (422)
-                    else if (xhr.status === 422) {
-                        const errors = xhr.responseJSON ? xhr.responseJSON.errors : {};
-                        for (const key in errors) {
-                            $(`#error-${key}`).text(errors[key][0]);
-                        }
-                    }
-                    // Handle Not Modified error (304) - custom message from server
-                    else if (xhr.status === 304) {
-                        $('#error-message').html(`
-                            <div class="alert alert-warning">
-                                ${xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'No changes were made.'}
-                            </div>
-                        `);
-                    }
-                    // Handle Internal Server Error (500) - custom message from server
-                    else if (xhr.status === 500) {
-                        $('#error-message').html(`
-                            <div class="alert alert-danger">
-                                ${xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'Something went wrong on the server. Please try again later.'}
-                            </div>
-                        `);
-                    }
-                    // Handle other errors
-                    else {
-                        $('#error-message').html(`
-                            <div class="alert alert-danger">
-                                Something went wrong. Please try again.
-                            </div>
-                        `);
-                    }
-                }
+                $input.attr("type", type);
+                $(this).toggleClass("fa-eye fa-eye-slash");
             });
         });
-    });
-
     </script>
-
-
-
-
-
-    <script>
-    $(document).ready(function () {
-        $('#password-form').on('submit', function (e) {
-            e.preventDefault();
-
-            // Clear previous error messages
-            $('small[id^="error-"]').text('');
-            $('#error-message').html('');
-
-            $.ajax({
-                url: '/dashboard/settings/update-password',
-                method: 'POST',
-                data: $(this).serialize(),
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (response) {
-                    $('#error-message').html(`
-                        <div class="alert alert-success">
-                            Password updated successfully!
-                        </div>
-                    `);
-
-                    // Clear message after 5 seconds
-                    setTimeout(() => {
-                        $('#error-message').fadeOut('slow', function () {
-                            $(this).html('').show();
-                        });
-                    }, 5000);
-
-                    $('#password-form')[0].reset();
-                },
-                error: function (xhr) {
-                    if (xhr.status === 422) {
-                        const errors = xhr.responseJSON.errors;
-                        for (const key in errors) {
-                            $(`#error-${key}`).text(errors[key][0]);
-                        }
-                    } else {
-                        $('#error-message').html(`
-                            <div class="alert alert-danger">
-                                Something went wrong. Please try again.
-                            </div>
-                        `);
-
-                        // Clear error after 5 seconds
-                        setTimeout(() => {
-                            $('#error-message').fadeOut('slow', function () {
-                                $(this).html('').show();
-                            });
-                        }, 5000);
-                    }
-                }
-            });
-        });
-    });
-</script>
-
-
-
-    <script>
-    $(document).ready(function () {
-        $('#logout-link').click(function (e) {
-            e.preventDefault(); // Prevent default link behavior
-
-            $.ajax({
-                url: '/logout',  // Your logout route
-                type: 'POST',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content')  // CSRF token for Laravel
-                },
-                success: function (response) {
-                    if (response.success) {
-                        window.location.href = response.redirect || '/login';  // Redirect to login page
-                    } else {
-                        // Update modal content and show it
-                        $('#modal-message').text(response.message || "Logout failed.");
-                        $('#modal-info-warning').modal('show');
-                    }
-                },
-                error: function (xhr) {
-                    // Update modal content and show it for errors
-                    $('#modal-message').text("An error occurred. Please try again.");
-                    $('#modal-info-warning').modal('show');
-                }
-            });
-        });
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $(".toggle-password2").on("click", function () {
-            const $input = $(this).siblings("input");
-            const type = $input.attr("type") === "password" ? "text" : "password";
-
-            $input.attr("type", type);
-            $(this).toggleClass("fa-eye fa-eye-slash");
-        });
-    });
-</script>
 
 </body>
 

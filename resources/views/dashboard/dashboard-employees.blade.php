@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en" dir="ltr">
 
@@ -51,25 +50,25 @@
                                 </div>
 
                                 <div class="modal-info-warning modal fade" id="modal-info-warning" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-sm modal-info" role="document">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <div class="modal-info-body d-flex">
-                                        <div class="modal-info-icon warning">
-                                            <span data-feather="info"></span>
-                                        </div>
-                                        <div class="modal-info-text">
-                                            <p id="modal-message">Some contents...</p> <!-- Dynamic message will go here -->
+                                    <div class="modal-dialog modal-sm modal-info" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div class="modal-info-body d-flex">
+                                                    <div class="modal-info-icon warning">
+                                                        <span data-feather="info"></span>
+                                                    </div>
+                                                    <div class="modal-info-text">
+                                                        <p id="modal-message">Some contents...</p> <!-- Dynamic message will go here -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Ok</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Ok</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ends: .modal-info-warning -->
+                                <!-- ends: .modal-info-warning -->
 
                                 <div class="action-btn">
                                     <a href="#" class="btn px-15 btn-primary" data-toggle="modal" data-target="#add-contact">
@@ -89,84 +88,84 @@
                                                 <div class="modal-body">
                                                     <div class="add-new-contact">
                                                         <!-- Status message container -->
-                                                    <div id="status-message" class="alert d-none"></div>
-                                                    <form id="employeeForm" enctype="multipart/form-data">
-                                                        @csrf
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group mb-20">
-                                                                    <label>Username:</label>
-                                                                    <input name="name" value="{{ old('name') }}" autocomplete="off" type="text" class="form-control form-control-lg" placeholder="Username">
-                                                                    <p class="text-danger error-name"></p> <!-- Error Placeholder -->
+                                                        <div id="status-message" class="alert d-none"></div>
+                                                        <form id="employeeForm" enctype="multipart/form-data">
+                                                            @csrf
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group mb-20">
+                                                                        <label>Username:</label>
+                                                                        <input name="name" value="{{ old('name') }}" autocomplete="off" type="text" class="form-control form-control-lg" placeholder="Username">
+                                                                        <p class="text-danger error-name"></p> <!-- Error Placeholder -->
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group mb-20">
+                                                                        <label>Email Address:</label>
+                                                                        <input name="email" value="{{ old('email') }}" autocomplete="off" type="text" class="form-control form-control-lg" placeholder="Email Address">
+                                                                        <p class="text-danger error-email"></p> <!-- Error Placeholder -->
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-md-6">
-                                                                <div class="form-group mb-20">
-                                                                    <label>Email Address:</label>
-                                                                    <input name="email" value="{{ old('email') }}" autocomplete="off" type="text" class="form-control form-control-lg" placeholder="Email Address">
-                                                                    <p class="text-danger error-email"></p> <!-- Error Placeholder -->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group mb-20">
+                                                                        <label>Password:</label>
+                                                                        <input name="password" autocomplete="off" type="password" class="form-control form-control-lg" placeholder="Password">
+                                                                        <p class="text-danger error-password"></p> <!-- Error Placeholder -->
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>
 
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group mb-20">
-                                                                    <label>Password:</label>
-                                                                    <input name="password" autocomplete="off" type="password" class="form-control form-control-lg" placeholder="Password">
-                                                                    <p class="text-danger error-password"></p> <!-- Error Placeholder -->
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-md-6">
-                                                                <div class="form-group mb-20">
-                                                                    <label>Repeat Password:</label>
-                                                                    <input name="confirm_password" autocomplete="off" type="password" class="form-control form-control-lg" placeholder="Repeat Password">
-                                                                    <p class="text-danger error-confirm_password"></p> <!-- Error Placeholder -->
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group mb-20">
-                                                                    <label>Full Name:</label>
-                                                                    <input name="fullname" value="{{ old('fullname') }}" autocomplete="off" type="text" class="form-control form-control-lg" placeholder="Your Name">
-                                                                    <p class="text-danger error-fullname"></p> <!-- Error Placeholder -->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group mb-20">
+                                                                        <label>Repeat Password:</label>
+                                                                        <input name="confirm_password" autocomplete="off" type="password" class="form-control form-control-lg" placeholder="Repeat Password">
+                                                                        <p class="text-danger error-confirm_password"></p> <!-- Error Placeholder -->
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-md-6">
-                                                                <div class="form-group mb-20">
-                                                                    <label>Phone Number:</label>
-                                                                    <input name="phone" value="{{ old('phone') }}" autocomplete="off" type="text" class="form-control form-control-lg" placeholder="Phone Number">
-                                                                    <p class="text-danger error-phone"></p> <!-- Error Placeholder -->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group mb-20">
+                                                                        <label>Full Name:</label>
+                                                                        <input name="fullname" value="{{ old('fullname') }}" autocomplete="off" type="text" class="form-control form-control-lg" placeholder="Your Name">
+                                                                        <p class="text-danger error-fullname"></p> <!-- Error Placeholder -->
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>
 
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group mb-20">
-                                                                    <label>Position:</label>
-                                                                    <input name="position" value="{{ old('position') }}" autocomplete="off" type="text" class="form-control form-control-lg" placeholder="Position">
-                                                                    <p class="text-danger error-position"></p> <!-- Error Placeholder -->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group mb-20">
+                                                                        <label>Phone Number:</label>
+                                                                        <input name="phone" value="{{ old('phone') }}" autocomplete="off" type="text" class="form-control form-control-lg" placeholder="Phone Number">
+                                                                        <p class="text-danger error-phone"></p> <!-- Error Placeholder -->
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group mb-20">
-                                                                    <label>Employee ID:</label>
-                                                                    <input name="employee_id" value="{{ old('employee_id') }}" autocomplete="off" type="text" class="form-control form-control-lg" placeholder="Employee ID">
-                                                                    <p class="text-danger error-employee_id"></p> <!-- Error Placeholder -->
-                                                                </div>
-                                                            </div>
-                                                        </div>
 
-                                                        <div class="button-group d-flex pt-20">
-                                                            <button id="save-button" type="submit" class="btn btn-primary btn-default btn-squared">Save</button>
-                                                        </div>
-                                                    </form>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group mb-20">
+                                                                        <label>Position:</label>
+                                                                        <input name="position" value="{{ old('position') }}" autocomplete="off" type="text" class="form-control form-control-lg" placeholder="Position">
+                                                                        <p class="text-danger error-position"></p> <!-- Error Placeholder -->
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group mb-20">
+                                                                        <label>Employee ID:</label>
+                                                                        <input name="employee_id" value="{{ old('employee_id') }}" autocomplete="off" type="text" class="form-control form-control-lg" placeholder="Employee ID">
+                                                                        <p class="text-danger error-employee_id"></p> <!-- Error Placeholder -->
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="button-group d-flex pt-20">
+                                                                <button id="save-button" type="submit" class="btn btn-primary btn-default btn-squared">Save</button>
+                                                            </div>
+                                                        </form>
 
                                                     </div>
                                                 </div>
@@ -189,20 +188,20 @@
                             <div class="contact-list bg-white radius-xl w-100">
                                 <div class="table-responsive">
 
-                                <table class="table mb-0 table-borderless table-rounded" id="employeeTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Full Name</th>
-                                            <th>Position</th>
-                                            <th>Employee ID</th>
-                                            <th>Phone</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="employeeBody">
-                                        <!-- Employees will be added here -->
-                                    </tbody>
-                                </table>
+                                    <table class="table mb-0 table-borderless table-rounded" id="employeeTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Full Name</th>
+                                                <th>Position</th>
+                                                <th>Employee ID</th>
+                                                <th>Phone</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="employeeBody">
+                                            <!-- Employees will be added here -->
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <div class="d-flex justify-content-end pt-30">
                                     <nav class="atbd-page ">
@@ -234,183 +233,15 @@
     </main>
 
     <audio style="display: none;" id="notification-sound" src="{{ asset('sounds/notification.mp3') }}" preload="auto"></audio>
-    
 
-
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDduF2tLXicDEPDMAtC6-NLOekX0A5vlnY"></script>
     <!-- inject:js-->
     <script src="{{asset('js/plugins.min.js')}}"></script>
     <script src="{{asset('js/script.min.js')}}"></script>
-    <script src="{{ asset('js/notification.js') }}" ></script>
+    <script src="{{ asset('js/notification.js') }}"></script>
+    <script src="{{ asset('js/logout.js') }}"></script>
+    <script src="{{ asset('js/add-employee.js') }}"></script>
+    <script src="{{ asset('js/get-all-employee.js') }}"></script>
     <!-- endinject-->
-    <script>
-        $(document).ready(function () {
-        $("#employeeForm").on("submit", function (e) {
-            e.preventDefault();
-
-            $(".text-danger").text(""); // Clear previous errors
-            let formData = new FormData(this); // Get form data
-
-            $.ajax({
-                url: "{{ route('dashboard.employees.new') }}",
-                type: "POST",
-                data: formData,
-                processData: false,
-                contentType: false,
-                headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-                },
-                beforeSend: function () {
-                    $("#save-button").attr("disabled", true).text("Submitting...");
-                    $("#staticBackdropLabel").text("Submitting...");
-                    $("#status-message").removeClass("alert-success alert-danger").addClass("d-none").text("");
-                },
-                success: function (response) {
-                    $("#save-button").attr("disabled", false).text("Save");
-                    $("#staticBackdropLabel").text("Employee Information");
-
-                    // Show success message
-                    $("#status-message")
-                        .removeClass("d-none alert-danger")
-                        .addClass("alert alert-success")
-                        .text(response.message);
-
-                    $("#employeeForm")[0].reset(); // Reset form on success
-                },
-                error: function (xhr) {
-                    $("button").attr("disabled", false).text("Save");
-                    $("#staticBackdropLabel").text("Employee Information");
-
-                    if (xhr.status === 422) { // Validation error
-                        let errors = xhr.responseJSON.errors;
-                        $.each(errors, function (key, value) {
-                            $(".error-" + key).text(value[0]); // Show field-specific errors
-                        });
-
-                        // Show error message
-                        $("#status-message")
-                            .removeClass("d-none alert-success")
-                            .addClass("alert alert-danger")
-                            .text("Please fix the errors below.");
-                    } else {
-                        $("#status-message")
-                            .removeClass("d-none alert-success")
-                            .addClass("alert alert-danger")
-                            .text("An unexpected error occurred. Please try again.");
-                    }
-                }
-            });
-        });
-    });
-
-</script>
-
-<script>
-$(document).ready(function () {
-    function fetchEmployees(page = 1) {
-        $.ajax({
-            url: "{{ route('dashboard.employees.all') }}?page=" + page,
-            type: "GET",
-            success: function (response) {
-                updateTable(response.employees);
-                renderPagination(response.pagination);
-            }
-        });
-    }
-
-    function updateTable(employees) {
-        $("#employeeBody").html("");
-        $.each(employees, function (index, employee) {
-            $("#employeeBody").append(`
-                <tr>
-                    <td>${employee.fullname}</td>
-                    <td>${employee.position}</td>
-                    <td>${employee.employee_id}</td>
-                    <td>${employee.phone}</td>
-                    <td>
-                        <div class="d-flex">
-                            <a href="/dashboard/employees/${employee.userID}" title="View" class="border-0 bg-transparent view-btn me-3">
-                                <i class="fas fa-eye text-primary fs-5"></i>
-                            </a>
-                            <button title="Delete" class="border-0 bg-transparent delete-btn" data-id="${employee.id}">
-                                <i class="fas fa-trash text-danger fs-5"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `);
-        });
-    }
-
-    function renderPagination(pagination) {
-        const { current_page, last_page } = pagination;
-        let pagesHTML = '';
-
-        // Prev
-        pagesHTML += `<li><a href="#" class="atbd-pagination__link pagination-btn" data-page="${current_page - 1}" ${current_page === 1 ? 'disabled' : ''}><span class="la la-angle-left"></span></a></li>`;
-
-        // Page numbers (scalable)
-        const maxVisiblePages = 5;
-        let start = Math.max(current_page - Math.floor(maxVisiblePages / 2), 1);
-        let end = Math.min(start + maxVisiblePages - 1, last_page);
-
-        if (end - start < maxVisiblePages - 1) {
-            start = Math.max(end - maxVisiblePages + 1, 1);
-        }
-
-        for (let i = start; i <= end; i++) {
-            pagesHTML += `<li><a href="#" class="atbd-pagination__link pagination-btn ${i === current_page ? 'active' : ''}" data-page="${i}"><span class="page-number">${i}</span></a></li>`;
-        }
-
-        // Next
-        pagesHTML += `<li><a href="#" class="atbd-pagination__link pagination-btn" data-page="${current_page + 1}" ${current_page === last_page ? 'disabled' : ''}><span class="la la-angle-right"></span></a></li>`;
-
-        $(".atbd-pagination").html(`<ul class="atbd-pagination d-flex">${pagesHTML}</ul>`);
-    }
-
-    // Handle pagination clicks
-    $(document).on("click", ".pagination-btn", function (e) {
-        e.preventDefault();
-        const page = parseInt($(this).data("page"));
-        if (!isNaN(page)) {
-            fetchEmployees(page);
-        }
-    });
-
-    // Initial load
-    fetchEmployees();
-});
-</script>
-
-<script>
-    $(document).ready(function () {
-        $('#logout-link').click(function (e) {
-            e.preventDefault(); // Prevent default link behavior
-
-            $.ajax({
-                url: '/logout',  // Your logout route
-                type: 'POST',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content')  // CSRF token for Laravel
-                },
-                success: function (response) {
-                    if (response.success) {
-                        window.location.href = response.redirect || '/login';  // Redirect to login page
-                    } else {
-                        // Update modal content and show it
-                        $('#modal-message').text(response.message || "Logout failed.");
-                        $('#modal-info-warning').modal('show');
-                    }
-                },
-                error: function (xhr) {
-                    // Update modal content and show it for errors
-                    $('#modal-message').text("An error occurred. Please try again.");
-                    $('#modal-info-warning').modal('show');
-                }
-            });
-        });
-    });
-</script>
 
 
 </body>

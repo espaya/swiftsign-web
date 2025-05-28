@@ -78,13 +78,6 @@ function renderAttendanceTable(data) {
                         <span class="${item.status === 'LATE' ? 'bg-opacity-danger color-danger' : 'bg-opacity-success color-success'} rounded-pill userDatatable-content-status active">${item.status}</span>
                     </div>
                 </td>
-                <td>
-                    <ul class="orderDatatable_actions mb-0 d-flex flex-wrap">
-                        <li><a href="#" class="view"><i data-feather="eye"></i></a></li>
-                        <li><a href="#" class="edit"><i data-feather="edit"></i></a></li>
-                        <li><a href="#" class="remove"><i data-feather="trash-2"></i></a></li>
-                    </ul>
-                </td>
             </tr>
         `;
     });

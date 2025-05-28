@@ -63,54 +63,51 @@ class QRCodeController extends Controller
         }
     }
 
-    public function getAllQrCode()
+    public function getAllQrCode(Request $request)
     {
-        try 
-        {
-            $qrCodes = ModelsQRCode::orderBy('id', 'DESC')->get();
-    
-            // Check if data exists
-            if ($qrCodes->isEmpty()) 
-            {
-                return response()->json([], 200); // Return an empty array if no data
+        try {
+            $perPage = $request->get('per_page', 10); // Items per page, default to 10
+            $qrCodes = ModelsQRCode::orderBy('id', 'DESC')->paginate($perPage);
+
+            if ($qrCodes->isEmpty()) {
+                return response()->json([], 200);
             }
-    
-            // Decrypt only if values are not null
-            $qrCodes = $qrCodes->map(function ($qr) {
-                // Decrypt the expires_at field if it's not null
+
+            // Transform each item
+            $transformed = $qrCodes->getCollection()->map(function ($qr) {
                 $expiresAt = $qr->checkout_at ? Crypt::decryptString($qr->checkout_at) : null;
-
-                // Format the expires_at field if it's not null
                 $formattedExpiresAt = $expiresAt ? Carbon::parse($expiresAt)->format('jS F Y | h:i A') : null;
+                $status = $qr->status ? Crypt::decryptString($qr->status) : null;
 
-                // Determine the status based on the comparison
-                $status = $qr->status ? Crypt::decryptString($qr->status) : null; // Original status
-
-                if($expiresAt) 
-                {
-                    // Overwrite the status if expires_at is not null
+                if ($expiresAt) {
                     $status = Carbon::parse($expiresAt)->isPast() ? 'EXPIRED' : 'ACTIVE';
                 }
+
                 return [
                     'id' => $qr->id,
                     'qr_code_name' => $qr->qr_code_name ? Crypt::decryptString($qr->qr_code_name) : null,
-                    'status' => $status, // Updated status
-                    'session_id' => $qr->session_id ? $qr->session_id : null,
-                    // 'qrcode' => $qr->qrcode ? asset(Crypt::decryptString($qr->qrcode)) : null,
-                    'qrcode' => $qr->qrcode ? $qr->qrcode : null,
+                    'status' => $status,
+                    'session_id' => $qr->session_id,
+                    'qrcode' => $qr->qrcode,
                     'expires_at' => $formattedExpiresAt,
                 ];
             });
-    
-            return response()->json($qrCodes, 200);
-        } 
-        catch (Exception $ex) 
-        {
-        
+
+            // Return data with pagination meta
+            return response()->json([
+                'data' => $transformed,
+                'current_page' => $qrCodes->currentPage(),
+                'last_page' => $qrCodes->lastPage(),
+                'total' => $qrCodes->total(),
+                'per_page' => $qrCodes->perPage(),
+            ], 200);
+
+        } catch (Exception $ex) {
             Log::error('Error fetching QR codes: ' . $ex->getMessage());
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
+
 
     function pkcs7_pad($data, $blockSize = 16)
     {

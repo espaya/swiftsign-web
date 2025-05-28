@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use PhpParser\Node\Expr;
 
 class ProfileController extends Controller
 {
@@ -85,14 +84,12 @@ class ProfileController extends Controller
     public function updatePassword(Request $request, $id)
     {
         $request->validate([
-            'old_password' => 'required',
             'new_password' => [
                 'required',
                 'regex:/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/'
             ]
         ], [
-            'old_password.required' => 'Old password is required',
-            'new_password.required' => 'New password is required',
+            'new_password.required' => 'This field is required',
             'new_password.regex' => 'Password must be at least 8 characters long, include one uppercase letter, one number, and one special character'
         ]);
 
@@ -102,20 +99,12 @@ class ProfileController extends Controller
 
             $findUser = User::find($id);
 
-            if (!$findUser) {
+            if (!$findUser) 
+            {
                 return response()->json([
                     'success' => false,
                     'message' => 'User Not Found'
                 ], 404);
-            }
-
-            // Check if the old password matches the stored password
-            if (!Hash::check($request->old_password, $findUser->password)) 
-            {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Incorrect old password'
-                ], 422);
             }
 
             // check if old and new password are same then throw an error

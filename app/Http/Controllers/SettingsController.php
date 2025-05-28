@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CompanyProfile;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,99 @@ class SettingsController extends Controller
 {
     public function index()
     {
-        return view('dashboard.dashboard-settings');
+        $id = Auth::id();
+
+        $profile = CompanyProfile::where('adminID', $id)->first();
+
+        return view('dashboard.dashboard-settings', ['profile' => $profile]);
+    }
+
+    public function storeProfile(Request $request)
+    {
+        $request->validate([
+            'company_name' => ['required', 'string'],
+            'company_phone' => [
+                'required', 
+                // 'regex:/^\+?\d{1 ,4}?[-.\s]?\(?\d{1}?\)?[-. \s]?\d{1 ,5}[-.\s]?\d{1 ,9}*$/'
+            ],
+
+            'company_address' => ['required', 'string'],
+            'company_email' => ['required', 'email']
+        ], [
+            'company_name.required' => 'This field is required',
+            'company_name.string' => 'Invalid input',
+
+            'company_phone.required' => 'This field is required',
+            'company_phone.regex' => 'Invalid phone number',
+            
+            'company_address.required' => 'This field is required',
+            'company_address.string' => 'Invalid input',
+
+            'company_email.required' => 'This field is required',
+            'company_email.email' => 'Invalid input'
+        ]);
+
+        $id = Auth::id();
+
+        try 
+        {
+            DB::beginTransaction();
+
+            $company_name = htmlspecialchars(trim($request->company_name), ENT_QUOTES, 'utf-8');
+            $company_phone = htmlspecialchars(trim($request->company_phone), ENT_QUOTES, 'utf-8');
+            $company_address = htmlspecialchars(trim($request->company_address), ENT_QUOTES, 'utf-8');
+            $company_email = htmlspecialchars(trim($request->company_email), ENT_QUOTES, 'utf-8');
+
+            $profile = CompanyProfile::where('adminID', $id)->first();
+
+            if($profile)
+            {
+                $profile->company_name = $company_name;
+                $profile->company_phone = $company_phone;
+                $profile->company_address = $company_address;
+                $profile->company_email = $company_email;
+
+                if($profile->isDirty())
+                {
+                    $profile->save();
+
+                    DB::commit();
+
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Company Profile Updated Successfully'
+                    ], 200);
+                }
+            }
+            else 
+            {
+                $company = new CompanyProfile();
+
+                $company->company_name = $company_name;
+                $company->company_phone = $company_phone;
+                $company->company_address = $company_address;
+                $company->company_email = $company_email;
+                $company->adminID = $id;
+
+                $company->save();
+
+                DB::commit();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Company Profile Updated Successfully'
+                ], 200);
+            }
+        }
+        catch(Exception $ex)
+        {
+            DB::rollBack();
+            Log::error("An error occurred whilst saving comapny's profile: " . $ex->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred whilst saving comapny\'s profile'
+            ], 500);
+        }
     }
 
     public function updateEmailUser(Request $request)
